@@ -48,6 +48,7 @@ def get_one_question(question_id):
             if row['id'] == question_id:
                 return row
 
+
 def get_answers(question_id):
     answers = []
     with open(ANSWERS_DATA) as file:

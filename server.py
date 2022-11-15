@@ -23,7 +23,8 @@ def add_question():
 def show_question(question_id):
     question = get_one_question(question_id)
     answers = get_answers(question_id)
-    return render_template('base.html', question=question, answers=answers)
+    answers = sorted(answers, key=lambda d: d['vote_number'])
+    return render_template('display-question.html', question=question, answers=answers)
 
 
 if __name__ == "__main__":
