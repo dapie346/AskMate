@@ -1,0 +1,41 @@
+* {
+    margin: 5px;
+    box-sizing: border-box;
+    padding: 2px;
+}
+
+body {
+    background-color: lemonchiffon;
+
+}
+
+a {
+    text-decoration: none;
+    color: red;
+    font-weight: bold;
+
+}
+
+h1 {
+    margin: 1px;
+}
+a:hover  {
+    color: mediumvioletred;
+
+}
+thead {
+    background-color: #333;
+    color: white;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tbody {
+    background-color: #F1DB75FF;
+
+}
+td {
+    margin: 5px;
+    padding: 3px;
+}
