@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from data_handler import *
 
 app = Flask(__name__)
@@ -25,6 +25,16 @@ def show_question(question_id):
     answers = get_answers(question_id)
     answers = sorted(answers, key=lambda d: d['vote_number'])
     return render_template('display-question.html', question=question, answers=answers)
+
+
+@app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
+def post_answer(question_id):
+    if request.method == 'POST':
+        message = request.form['message']
+        write_answer(message, question_id)
+        return redirect(url_for('show_question', question_id=question_id))
+    return render_template('post_answer.html')
+
 
 
 if __name__ == "__main__":

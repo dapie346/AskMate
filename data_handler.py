@@ -16,15 +16,14 @@ def get_all_questions():
 
     return list_of_dict
 
-def generate_question_id():
-    questions = get_all_questions()
+def generate_id(csv_data):
     while True:
         id = random.randint(1,9999)
-        if not any(id == question['id'] for question in questions):
+        if not any(id == record['id'] for record in csv_data):
             return id
 
 def write_question(question):
-    id = generate_question_id()
+    id = generate_id(get_all_questions())
     record = {
         'id': id,
         'submission_time': int(time.time()),
@@ -57,3 +56,25 @@ def get_answers(question_id):
             if row['question_id'] == question_id:
                 answers.append(row)
     return answers
+
+def get_all_answers():
+    with open(ANSWERS_DATA) as f:
+        dict_reader = DictReader(f)
+        list_of_dict = list(dict_reader)
+    return list_of_dict
+
+
+def write_answer(message, question_id):
+    id = generate_id(get_all_answers())
+    record = {
+        'id': id,
+        'submission_time': int(time.time()),
+        'vote_number': 0,
+        'question_id': question_id,
+        'message': message,
+        'image': '',  # add image here
+    }
+    with open(ANSWERS_DATA, "a") as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(record.values())
+

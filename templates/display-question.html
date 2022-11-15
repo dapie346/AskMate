@@ -9,7 +9,8 @@
         <h3>{{ answer['vote_number'] + '    ' + answer['message'] }}</h3>
     {% endfor %}
     <br>
-    <a href="#">Add an answer</a>
+    <a href="{{ url_for('post_answer', question_id = question['id']) }}">Add an answer</a>
+
     <br>
     <a href="{{ url_for('home_page') }}">Back to Main</a>
 {% endblock %}
