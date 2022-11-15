@@ -44,5 +44,14 @@ def post_answer(question_id):
     return render_template('post_answer.html')
 
 
+@app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
+def delete_question(question_id):
+    if request.method == 'POST':
+        all_questions = get_all_questions()
+        find_id(all_questions, question_id)
+        save_all(all_questions)
+    return redirect('/')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
