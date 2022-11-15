@@ -1,14 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 from data_handler import *
+from util import *
 
 app = Flask(__name__)
 
 
-@app.route("/")
-@app.route("/list")
+@app.route("/", methods=['GET', 'POST'])
+@app.route("/list", methods=['GET', 'POST'])
 def home_page():
-    all_questions = get_all_questions()
-    all_questions = sorted(all_questions, key=lambda d: d['submission_time'])
+    order_by = request.args.get('order_by', default='submission_time')
+    all_questions = sort_records(get_all_questions(), order_by)
     return render_template('home_page.html', all_questions=all_questions)
 
 
