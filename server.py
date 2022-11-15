@@ -16,7 +16,7 @@ def home_page():
 def add_question():
     if request.method == 'POST':
         id = write_question(request.form)
-        return redirect('/question/' + str(id))
+        return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
 
 @app.route("/question/<question_id>")
