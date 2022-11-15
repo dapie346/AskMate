@@ -1,5 +1,4 @@
 from flask import Flask, render_template
-
 from data_handler import *
 
 app = Flask(__name__)
@@ -9,8 +8,13 @@ app = Flask(__name__)
 @app.route("/list")
 def home_page():
     all_questions = get_all_user_story()
-    return render_template('base.html', all_questions=all_questions)
+    all_questions = sorted(all_questions, key=lambda d: d['submission_time'])
 
+    return render_template('home_page.html', all_questions=all_questions)
+
+@app.route("/add-question")
+def add_question():
+    return render_template('add-question.html')
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
