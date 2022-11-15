@@ -78,3 +78,9 @@ def write_answer(message, question_id):
         csv_writer = csv.writer(file)
         csv_writer.writerow(record.values())
 
+
+def save_all(all_questions):
+    with open(QUESTIONS_DATA, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=QUESTION_HEADER)
+        writer.writeheader()
+        writer.writerows(all_questions)
