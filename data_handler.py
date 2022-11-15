@@ -84,3 +84,10 @@ def save_all(all_questions):
         writer = csv.DictWriter(csvfile, fieldnames=QUESTION_HEADER)
         writer.writeheader()
         writer.writerows(all_questions)
+
+
+def find_id(all_questions, question_id):
+    for i, x in enumerate(all_questions):
+        for y in x:
+            if x.get(y) == question_id:
+                del all_questions[i]

@@ -40,11 +40,7 @@ def post_answer(question_id):
 def delete_question(question_id):
     if request.method == 'POST':
         all_questions = get_all_questions()
-        for i, x in enumerate(all_questions):
-            for y in x:
-                if x.get(y) == question_id:
-                    del all_questions[i]
-        print(all_questions)
+        find_id(all_questions, question_id)
         save_all(all_questions)
     return redirect('/')
 
