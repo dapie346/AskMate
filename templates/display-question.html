@@ -6,7 +6,7 @@
 
     {% for answer in answers %}
         <hr>
-        <h3>{{ answer['vote_number'] + '    ' + answer['message'] }}</h3>
+        <h3>{{ answer['vote_number'] }}    {{ answer['message'] }}</h3>
     {% endfor %}
     <br>
     <a href="{{ url_for('post_answer', question_id = question['id']) }}">Add an answer</a>

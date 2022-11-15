@@ -9,21 +9,29 @@ app = Flask(__name__)
 def home_page():
     all_questions = get_all_questions()
     all_questions = sorted(all_questions, key=lambda d: d['submission_time'])
-
     return render_template('home_page.html', all_questions=all_questions)
+
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        id = write_question(request.form)
-        return redirect('/question/' + str(id))
+        print(request.files)
+        if 'image' in request.files:
+            file = request.files['image']
+            filename = file.filename
+            save_image(file, filename)
+        else:
+            filename = ''
+        id = write_question(request.form, filename)
+        return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
+
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
     question = get_one_question(question_id)
-    answers = get_answers(question_id)
-    answers = sorted(answers, key=lambda d: d['vote_number'])
+    answers = get_answers_to_question(question_id)
+    answers = sorted(answers, key=lambda d: d['vote_number'], reverse=True)
     return render_template('display-question.html', question=question, answers=answers)
 
 

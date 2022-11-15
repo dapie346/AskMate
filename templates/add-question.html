@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Add a Question</h1>
     <br>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <label>Title:</label>
         <br>
         <input type="text" name="title" size="100">
@@ -11,6 +11,10 @@
         <label>Message:</label>
         <br>
         <textarea name="message" rows="10" cols="100"></textarea>
+        <br><br>
+        <label for="img">Select image:</label>
+        <br>
+        <input type="file" name="image" accept="image/*">
         <br><br>
         <button type="submit">Submit</button>
     </form>
