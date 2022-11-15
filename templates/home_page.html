@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}
+    HOME PAGE
+{% endblock %}
+{% block content %}
+    <header>
+    <h1>
+        ASK MATE!
+    </h1>
+    </header>
+    <a href="/q">add question</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+{#                <th>submission_time</th>#}
+                <th>views</th>
+                <th>votes</th>
+                <th>title</th>
+                <th>message</th>
+{#                <th>image</th>#}
+            </tr>
+        </thead>
+        <tbody>
+        {% for x in all_questions %}
+        <tr>
+{#            <td><a href="{{ url_for('dynamic_route',id=x.id)}}">{{x.id}}</a></td>#}
+            <td><a href="/">{{x.id}}</a></td>
+{#            <td>{{x.submission_time}}</td>#}
+            <td>{{x.view_number}}</td>
+            <td>{{x.vote_number}}</td>
+            <td>{{x.title}}</td>
+            <td>{{x.message}}</td>
+{#            <td>{{x.image}}</td>#}
+
+        </tr>
+    {% endfor %}
+
+    </tbody>
+    </table>
+
+
+
+
+
+{% endblock %}
