@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Add Question{% endblock %}
+{% block content %}
+    <h1>Add a Question</h1>
+    <br>
+    <form method="post">
+        <label>Title:</label>
+        <br>
+        <input type="text" name="title" size="100">
+        <br><br>
+        <label>Message:</label>
+        <br>
+        <textarea name="message" rows="10" cols="100"></textarea>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
