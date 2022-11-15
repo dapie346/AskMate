@@ -1,3 +1,4 @@
+import os
 from csv import DictReader
 import csv
 import time
@@ -7,6 +8,7 @@ QUESTIONS_DATA = 'sample_data/question.csv'
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWERS_DATA = 'sample_data/answer.csv'
 
+IMAGE_FOLDER = 'images'
 
 def get_all_questions():
     with open('sample_data/question.csv', 'r') as f:
@@ -22,7 +24,10 @@ def generate_id(csv_data):
         if not any(id == record['id'] for record in csv_data):
             return id
 
-def write_question(question):
+def save_image(file, filename):
+    file.save(os.path.join(IMAGE_FOLDER, filename))
+
+def write_question(question, filename):
     id = generate_id(get_all_questions())
     record = {
         'id': id,
@@ -31,7 +36,7 @@ def write_question(question):
         'vote_number': 0,
         'title': question['title'],
         'message': question['message'],
-        'image': '', # add image here
+        'image': filename,
     }
     with open(QUESTIONS_DATA, "a") as file:
         csv_writer = csv.writer(file)

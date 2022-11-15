@@ -15,7 +15,14 @@ def home_page():
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        id = write_question(request.form)
+        print(request.files)
+        if 'image' in request.files:
+            file = request.files['image']
+            filename = file.filename
+            save_image(file, filename)
+        else:
+            filename = ''
+        id = write_question(request.form, filename)
         return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
 
