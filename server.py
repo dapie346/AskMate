@@ -59,9 +59,7 @@ def post_answer(question_id):
 @app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
 def delete_question(question_id):
     if request.method == 'POST':
-        all_questions = get_all_questions()
-        find_id(all_questions, question_id)
-        save_all(all_questions)
+        question.delete_question(question_id)
     return redirect('/')
 
 @app.route("/answer/<answer_id>/vote-up")

@@ -23,6 +23,13 @@ def add_question(question, files):
 
     return id
 
+def delete_question(question_id):
+    questions = data_handler.get_all_questions()
+    for i, question in enumerate(questions):
+        if question['id'] == question_id:
+            questions.pop(i)
+
+    data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
 def question_vote(question_id, vote):
     questions = data_handler.get_all_questions()
     for i, question in enumerate(questions):

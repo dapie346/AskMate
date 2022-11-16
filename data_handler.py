@@ -46,7 +46,6 @@ def get_one_question(question_id):
             if row['id'] == question_id:
                 return row
 
-
 def get_answers_to_question(question_id):
     answers = []
     with open(ANSWERS_DATA) as file:
@@ -56,13 +55,11 @@ def get_answers_to_question(question_id):
                 answers.append(row)
     return answers
 
-
 def get_all_answers():
     with open(ANSWERS_DATA) as f:
         dict_reader = csv.DictReader(f)
         list_of_dict = list(dict_reader)
     return list_of_dict
-
 
 def write_answer(message, question_id):
     id = generate_id(get_all_answers())
@@ -100,14 +97,6 @@ def save_all(all_questions):
         writer = csv.DictWriter(csvfile, fieldnames=QUESTION_HEADER)
         writer.writeheader()
         writer.writerows(all_questions)
-
-
-def find_id(all_questions, question_id):
-    for i, x in enumerate(all_questions):
-        for y in x:
-            if x.get(y) == question_id:
-                del all_questions[i]
-
 
 def count_views(question_id):
     questions = get_all_questions()
