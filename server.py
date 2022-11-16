@@ -32,6 +32,7 @@ def add_question():
 def show_question(question_id):
     question = get_one_question(question_id)
     answers = get_answers_to_question(question_id)
+    count_views(question_id)
     answers = sorted(answers, key=lambda d: d['vote_number'], reverse=True)
     return render_template('display-question.html', question=question, answers=answers)
 
