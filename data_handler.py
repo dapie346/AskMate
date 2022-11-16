@@ -107,12 +107,12 @@ def save_answers(all_answers):
         writer.writeheader()
         writer.writerows(all_answers)
 
+def delete_answer(answer_id):
+    answers = get_all_answers()
+    for i, answer in enumerate(answers):
+        if answer['id'] == answer_id:
+            if answer['image'] != '':
+                delete_image(answer['image'])
+            answers.pop(i)
 
-def count_views(question_id):
-    questions = get_all_questions()
-    updated_list = []
-    for row in questions:
-        if row['id'] == question_id:
-            row['view_number'] = int(row['view_number']) + 1
-        updated_list.append(row)
-    save_all(updated_list)
+    overwrite_csv(answers, ANSWER_HEADER, ANSWERS_DATA)
