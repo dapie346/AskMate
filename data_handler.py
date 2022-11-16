@@ -10,13 +10,11 @@ ANSWERS_DATA = 'sample_data/answer.csv'
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 IMAGE_FOLDER = 'static/images'
-
-def get_all_questions():
-    with open('sample_data/question.csv', 'r') as f:
-        dict_reader = csv.DictReader(f)
+def get_records(filepath):
+    with open(filepath, 'r') as file:
+        dict_reader = csv.DictReader(file)
         list_of_dict = list(dict_reader)
     return list_of_dict
-
 
 def generate_id(csv_data):
     while True:
