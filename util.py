@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def sort_records(records, order_by, order_direction='desc'):
+def sort_records(records, order_by, order_direction):
     for record in records:
         for k,v in record.items():
             if k == 'submission_time':

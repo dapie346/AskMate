@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th><a href="{{ url_for('home_page', order_by='submission_time') }}">submission time</a></th>
+                <th><a href="{{ url_for('home_page', order_by='submission_time', order_direction=order_direction) }}">submission time</a></th>
                 <th><a href="{{ url_for('home_page', order_by='view_number') }}">views</a></th>
                 <th><a href="{{ url_for('home_page', order_by='vote_number') }}">votes</a></th>
                 <th>vote up/down</th>
@@ -43,7 +43,20 @@
 
     </tbody>
     </table>
-
-
+    <form action="{{ url_for('home_page') }}" method="GET">
+        <p><label for="order_by">Sort by:</label></p>
+            <select id="order_by" name="order_by">
+                <option value="submission_time" selected>Submission time</option>
+                <option value="view_number">View number</option>
+                <option value="vote_number">Vote number</option>
+                <option value="title">Title</option>
+            </select>
+        <p>Order: </p>
+            <input type="radio" id="desc" name="order_direction" value="desc" checked>
+            <label for="desc">DESC</label>
+            <input type="radio" id="asc" name="order_direction" value="asc">
+            <label for="asc">ASC</label>
+        <p><button type="submit">SORT</button></p>
+    </form>
 
 {% endblock %}

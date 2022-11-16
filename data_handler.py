@@ -101,6 +101,13 @@ def save_all(all_questions):
         writer.writeheader()
         writer.writerows(all_questions)
 
+def save_answers(all_answers):
+    with open(ANSWERS_DATA, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=ANSWER_HEADER)
+        writer.writeheader()
+        writer.writerows(all_answers)
+
+
 def count_views(question_id):
     questions = get_all_questions()
     updated_list = []
