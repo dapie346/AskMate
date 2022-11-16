@@ -27,7 +27,7 @@ def generate_id(csv_data):
 def save_image(file, filename):
     file.save(os.path.join(IMAGE_FOLDER, filename))
 
-def write_question(question, filename):
+def write_question(question, files):
     id = generate_id(get_all_questions())
     record = {
         'id': id,
@@ -36,8 +36,11 @@ def write_question(question, filename):
         'vote_number': 0,
         'title': question['title'],
         'message': question['message'],
-        'image': filename,
+        'image': '',
     }
+    if files['image'].filename != '':
+        record['image'] = f'question_{id}.png'
+        save_image(files['image'], f'question_{id}.png')
     with open(QUESTIONS_DATA, "a") as file:
         csv_writer = csv.writer(file)
         csv_writer.writerow(record.values())
