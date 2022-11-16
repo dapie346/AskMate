@@ -5,8 +5,8 @@ from util import *
 app = Flask(__name__)
 
 
-@app.route("/", methods=['GET', 'POST'])
-@app.route("/list", methods=['GET', 'POST'])
+@app.route("/")
+@app.route("/list")
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     all_questions = sort_records(get_all_questions(), order_by)
