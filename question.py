@@ -32,3 +32,12 @@ def question_vote(question_id, vote):
             questions[i]['vote_number'] = vote_number
 
     data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
+
+def update_question(question_id, title, message):
+    questions = data_handler.get_all_questions()
+    for i, question in enumerate(questions):
+        if question['id'] == question_id:
+            questions[i]['title'] = title
+            questions[i]['message'] = message
+
+    data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)

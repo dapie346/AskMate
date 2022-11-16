@@ -25,7 +25,7 @@ def add_question():
 def edit_question(question_id):
     question = get_one_question(question_id)
     if request.method == 'POST':
-        update_question(question_id,request.form['title'],request.form['message'])
+        question.update_question(question_id, request.form['title'], request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('edit-question.html', title=question['title'], message=question['message'])
 

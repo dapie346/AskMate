@@ -39,20 +39,6 @@ def overwrite_csv(data, headers, filepath):
         for record in data:
             csv_writer.writerow(record.values())
 
-def update_question(question_id, title, message):
-    questions = get_all_questions()
-    for i, question in enumerate(questions):
-        if question['id'] == question_id:
-            questions[i]['title'] = title
-            questions[i]['message'] = message
-
-    with open(QUESTIONS_DATA, 'w') as file:
-        csv_writer = csv.writer(file)
-        csv_writer.writerow(QUESTION_HEADER)
-        for question in questions:
-            csv_writer.writerow(question.values())
-
-
 def get_one_question(question_id):
     with open(QUESTIONS_DATA) as file:
         csv_file = csv.DictReader(file)
