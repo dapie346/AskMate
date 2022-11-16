@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from data_handler import *
 from util import *
 import question_controller
+import answer_controller
 import data_handler
 
 app = Flask(__name__)
@@ -53,7 +54,7 @@ def question_downvote(question_id):
 def post_answer(question_id):
     if request.method == 'POST':
         message = request.form['message']
-        write_answer(message, question_id)
+        answer_controller.add_answer(message, question_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('post_answer.html')
 

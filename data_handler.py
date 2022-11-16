@@ -64,20 +64,6 @@ def get_all_answers():
         list_of_dict = list(dict_reader)
     return list_of_dict
 
-def write_answer(message, question_id):
-    id = generate_id(get_all_answers())
-    record = {
-        'id': id,
-        'submission_time': int(time.time()),
-        'vote_number': 0,
-        'question_id': question_id,
-        'message': message,
-        'image': '',  # add image here
-    }
-    with open(ANSWERS_DATA, "a") as file:
-        csv_writer = csv.writer(file)
-        csv_writer.writerow(record.values())
-
 def answer_vote(answer_id, vote):
     answers = get_all_answers()
     for i, answer in enumerate(answers):
