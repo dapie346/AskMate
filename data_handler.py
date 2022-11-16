@@ -107,3 +107,13 @@ def find_id(all_questions, question_id):
         for y in x:
             if x.get(y) == question_id:
                 del all_questions[i]
+
+
+def count_views(question_id):
+    questions = get_all_questions()
+    updated_list = []
+    for row in questions:
+        if row['id'] == question_id:
+            row['view_number'] = int(row['view_number']) + 1
+        updated_list.append(row)
+    save_all(updated_list)
