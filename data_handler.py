@@ -22,14 +22,6 @@ def get_records(filepath):
                     record[k] = int(record[k])
     return list_of_dict
 
-
-def generate_id(csv_data):
-    while True:
-        id = random.randint(1000, 9999)
-        if not any(id == record['id'] for record in csv_data):
-            return id
-
-
 def save_image(file, filename):
     file.save(os.path.join(IMAGE_FOLDER, filename))
 
@@ -51,14 +43,11 @@ def overwrite_csv(data, headers, filepath):
         for record in data:
             csv_writer.writerow(record.values())
 
-
-def get_one_question(question_id):
-    with open(QUESTIONS_DATA) as file:
-        csv_file = csv.DictReader(file)
-        for row in csv_file:
-            if row['id'] == question_id:
-                return row
-
+def generate_id(csv_data):
+    while True:
+        id = random.randint(1000, 9999)
+        if not any(id == record['id'] for record in csv_data):
+            return id
 
 def get_answers_to_question(question_id):
     answers = []

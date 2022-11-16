@@ -8,6 +8,11 @@ QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title
 def get_questions():
     return data_handler.get_records(QUESTIONS_DATA)
 
+def get_question(question_id):
+    questions = get_questions()
+    for question in questions:
+        if question['id'] == question_id:
+            return question
 
 def add_question(question, files):
     id = data_handler.generate_id(get_questions())

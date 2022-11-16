@@ -25,7 +25,7 @@ def add_question():
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
 def edit_question(question_id):
-    question = get_one_question(question_id)
+    question = question_controller.get_question(question_id)
     if request.method == 'POST':
         question_controller.update_question(question_id, request.form['title'], request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
@@ -34,7 +34,7 @@ def edit_question(question_id):
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    question = get_one_question(question_id)
+    question = question_controller.get_question(question_id)
     answers = util.sort_records(get_answers_to_question(question_id), 'vote_number', 'desc')
     question_controller.count_views(question_id)
     return render_template('display-question.html', question=question, answers=answers)
