@@ -3,11 +3,13 @@
 {% block content %}
     <h1>{{ question['title'] }}</h1>
     <h4>{{ question['message'] }}</h4>
-
     {% for answer in answers %}
-        <hr>
-        <h3>{{ answer['vote_number'] }}    {{ answer['message'] }}</h3>
+        <h3>{{ answer['vote_number'] }}    {{ answer['message'] }}  </h3>
+            <form action="{{ url_for('delete_answer', answer_id = answer['id'])}}" method="post">
+                <button type="submit" name="open" value="{{ answer['question_id'] }}"> DELETE ANSWER ID: {{ answer['id'] }} </button>
+            </form>
     {% endfor %}
+
     <br>
     <a href="{{ url_for('post_answer', question_id = question['id']) }}">Add an answer</a>
 

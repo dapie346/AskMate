@@ -7,6 +7,7 @@ import random
 QUESTIONS_DATA = 'sample_data/question.csv'
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWERS_DATA = 'sample_data/answer.csv'
+ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 IMAGE_FOLDER = 'images'
 
@@ -97,3 +98,10 @@ def find_id(all_questions, question_id):
         for y in x:
             if x.get(y) == question_id:
                 del all_questions[i]
+
+
+def save_answers(all_answers):
+    with open(ANSWERS_DATA, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=ANSWER_HEADER)
+        writer.writeheader()
+        writer.writerows(all_answers)
