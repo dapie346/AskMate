@@ -77,9 +77,7 @@ def answer_downvote(answer_id):
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
     if request.method == 'POST':
-        all_answers = get_all_answers()
-        find_id(all_answers, answer_id)
-        save_answers(all_answers)
+        delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=request.form.get("open")))
 
 
