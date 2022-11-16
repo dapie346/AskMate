@@ -8,10 +8,11 @@
     {% for answer in answers %}
         <hr>
         <h3>{{ answer['vote_number'] }}    {{ answer['message'] }}</h3>
+        <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">Upvote</a>
+        <a href="{{ url_for('answer_downvote', answer_id = answer['id']) }}">Downvote</a>
     {% endfor %}
     <br>
     <a href="{{ url_for('post_answer', question_id = question['id']) }}">Add an answer</a>
-
     <br>
     <a href="{{ url_for('home_page') }}">Back to Main</a>
     <form action="{{ url_for('delete_question', question_id = question['id'])}}" method="post">

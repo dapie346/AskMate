@@ -7,6 +7,7 @@ import random
 QUESTIONS_DATA = 'sample_data/question.csv'
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWERS_DATA = 'sample_data/answer.csv'
+ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 IMAGE_FOLDER = 'images'
 
@@ -111,6 +112,22 @@ def write_answer(message, question_id):
         csv_writer = csv.writer(file)
         csv_writer.writerow(record.values())
 
+def answer_vote(answer_id, vote):
+    answers = get_all_answers()
+    for i, answer in enumerate(answers):
+        if answer['id'] == answer_id:
+            question_id = answer['question_id']
+            vote_number = int(answers[i]['vote_number'])
+            vote_number += vote
+            answers[i]['vote_number'] = vote_number
+
+    with open(ANSWERS_DATA, 'w') as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(ANSWER_HEADER)
+        for answer in answers:
+            csv_writer.writerow(answer.values())
+
+    return question_id
 
 def save_all(all_questions):
     with open(QUESTIONS_DATA, 'w', newline='') as csvfile:

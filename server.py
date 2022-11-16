@@ -16,7 +16,7 @@ def home_page():
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        if 'image' in request.files:
+        if request.files['image'].filename != '':
             file = request.files['image']
             filename = file.filename
             save_image(file, filename)
@@ -68,6 +68,15 @@ def delete_question(question_id):
         save_all(all_questions)
     return redirect('/')
 
+@app.route("/answer/<answer_id>/vote-up")
+def answer_upvote(answer_id):
+    question_id = answer_vote(answer_id, 1)
+    return redirect(url_for('show_question', question_id=question_id))
+
+@app.route("/answer/<answer_id>/vote-down")
+def answer_downvote(answer_id):
+    question_id = answer_vote(answer_id, -1)
+    return redirect(url_for('show_question', question_id=question_id))
 
 if __name__ == "__main__":
     app.run(debug=True)
