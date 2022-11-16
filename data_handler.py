@@ -27,24 +27,17 @@ def generate_id(csv_data):
 def save_image(file, filename):
     file.save(os.path.join(IMAGE_FOLDER, filename))
 
-def write_question(question, filename):
-    id = generate_id(get_all_questions())
-    record = {
-        'id': id,
-        'submission_time': int(time.time()),
-        'view_number': 0,
-        'vote_number': 0,
-        'title': question['title'],
-        'message': question['message'],
-        'image': filename,
-    }
-    with open(QUESTIONS_DATA, "a") as file:
+def append_to_csv(row, filepath):
+    with open(filepath, "a") as file:
         csv_writer = csv.writer(file)
-        csv_writer.writerow(record.values())
-        file.close()
+        csv_writer.writerow(row.values())
 
-    return id
-
+def overwrite_csv(data, headers, filepath):
+    with open(filepath, 'w') as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(headers)
+        for record in data:
+            csv_writer.writerow(record.values())
 
 def get_one_question(question_id):
     with open(QUESTIONS_DATA) as file:
@@ -85,6 +78,22 @@ def write_answer(message, question_id):
         csv_writer = csv.writer(file)
         csv_writer.writerow(record.values())
 
+def answer_vote(answer_id, vote):
+    answers = get_all_answers()
+    for i, answer in enumerate(answers):
+        if answer['id'] == answer_id:
+            question_id = answer['question_id']
+            vote_number = int(answers[i]['vote_number'])
+            vote_number += vote
+            answers[i]['vote_number'] = vote_number
+
+    with open(ANSWERS_DATA, 'w') as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(ANSWER_HEADER)
+        for answer in answers:
+            csv_writer.writerow(answer.values())
+
+    return question_id
 
 def save_all(all_questions):
     with open(QUESTIONS_DATA, 'w', newline='') as csvfile:
@@ -105,3 +114,13 @@ def save_answers(all_answers):
         writer = csv.DictWriter(csvfile, fieldnames=ANSWER_HEADER)
         writer.writeheader()
         writer.writerows(all_answers)
+
+
+def count_views(question_id):
+    questions = get_all_questions()
+    updated_list = []
+    for row in questions:
+        if row['id'] == question_id:
+            row['view_number'] = int(row['view_number']) + 1
+        updated_list.append(row)
+    save_all(updated_list)

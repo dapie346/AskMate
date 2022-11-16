@@ -2,17 +2,28 @@
 {% block title %}{{ question['title'] }}{% endblock %}
 {% block content %}
     <h1>{{ question['title'] }}</h1>
+    {% if question['image'] != '' %}
+    <img src="{{ url_for('static', filename=('images/' + question['image'])) }}">
+    {% endif %}
     <h4>{{ question['message'] }}</h4>
-    {% for answer in answers %}
+
+{% for answer in answers %}
         <h3>{{ answer['vote_number'] }}    {{ answer['message'] }}  </h3>
             <form action="{{ url_for('delete_answer', answer_id = answer['id'])}}" method="post">
                 <button type="submit" name="open" value="{{ answer['question_id'] }}"> DELETE ANSWER ID: {{ answer['id'] }} </button>
             </form>
+
+    <br>
+    <a href="{{ url_for('edit_question', question_id = question['id']) }}">Edit</a>
+    {% for answer in answers %}
+        <hr>
+        <h3>{{ answer['vote_number'] }}    {{ answer['message'] }}</h3>
+        <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">Upvote</a>
+        <a href="{{ url_for('answer_downvote', answer_id = answer['id']) }}">Downvote</a>
     {% endfor %}
 
     <br>
     <a href="{{ url_for('post_answer', question_id = question['id']) }}">Add an answer</a>
-
     <br>
     <a href="{{ url_for('home_page') }}">Back to Main</a>
     <form action="{{ url_for('delete_question', question_id = question['id'])}}" method="post">
