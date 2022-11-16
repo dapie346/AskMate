@@ -41,6 +41,15 @@ def show_question(question_id):
     answers = sorted(answers, key=lambda d: d['vote_number'], reverse=True)
     return render_template('display-question.html', question=question, answers=answers)
 
+@app.route("/question/<question_id>/vote-up")
+def question_upvote(question_id):
+    question_vote(question_id, 1)
+    return redirect(url_for('home_page'))
+
+@app.route("/question/<question_id>/vote-down")
+def question_downvote(question_id):
+    question_vote(question_id, -1)
+    return redirect(url_for('home_page'))
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):

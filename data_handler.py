@@ -44,6 +44,20 @@ def write_question(question, filename):
 
     return id
 
+def question_vote(question_id, vote):
+    questions = get_all_questions()
+    for i, question in enumerate(questions):
+        if question['id'] == question_id:
+            vote_number = int(questions[i]['vote_number'])
+            vote_number += vote
+            questions[i]['vote_number'] = vote_number
+
+    with open(QUESTIONS_DATA, 'w') as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(QUESTION_HEADER)
+        for question in questions:
+            csv_writer.writerow(question.values())
+
 def update_question(question_id, title, message):
     questions = get_all_questions()
     for i, question in enumerate(questions):
