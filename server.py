@@ -38,12 +38,12 @@ def show_question(question_id):
 
 @app.route("/question/<question_id>/vote-up")
 def question_upvote(question_id):
-    question_vote(question_id, 1)
+    question.question_vote(question_id, 1)
     return redirect(url_for('home_page'))
 
 @app.route("/question/<question_id>/vote-down")
 def question_downvote(question_id):
-    question_vote(question_id, -1)
+    question.question_vote(question_id, -1)
     return redirect(url_for('home_page'))
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])

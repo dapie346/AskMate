@@ -32,19 +32,12 @@ def append_to_csv(row, filepath):
         csv_writer = csv.writer(file)
         csv_writer.writerow(row.values())
 
-def question_vote(question_id, vote):
-    questions = get_all_questions()
-    for i, question in enumerate(questions):
-        if question['id'] == question_id:
-            vote_number = int(questions[i]['vote_number'])
-            vote_number += vote
-            questions[i]['vote_number'] = vote_number
-
-    with open(QUESTIONS_DATA, 'w') as file:
+def overwrite_csv(data, headers, filepath):
+    with open(filepath, 'w') as file:
         csv_writer = csv.writer(file)
-        csv_writer.writerow(QUESTION_HEADER)
-        for question in questions:
-            csv_writer.writerow(question.values())
+        csv_writer.writerow(headers)
+        for record in data:
+            csv_writer.writerow(record.values())
 
 def update_question(question_id, title, message):
     questions = get_all_questions()

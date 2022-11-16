@@ -22,3 +22,13 @@ def add_question(question, files):
     data_handler.append_to_csv(record, QUESTIONS_DATA)
 
     return id
+
+def question_vote(question_id, vote):
+    questions = data_handler.get_all_questions()
+    for i, question in enumerate(questions):
+        if question['id'] == question_id:
+            vote_number = int(questions[i]['vote_number'])
+            vote_number += vote
+            questions[i]['vote_number'] = vote_number
+
+    data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
