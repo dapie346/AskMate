@@ -32,8 +32,12 @@
                 <td>{{ x.view_number }}</td>
                 <td>{{ x.vote_number }}</td>
                 <td>
-                    <a href="{{ url_for('question_upvote', question_id = x.id) }} "style="color:green;">&#x2713</a>
-                    <a href="{{ url_for('question_downvote', question_id = x.id) }}">&#10007</a>
+                    <a href="{{ url_for('question_upvote', question_id = x.id) }}">
+                        <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}">
+                    </a>
+                    <a href="{{ url_for('question_downvote', question_id = x.id) }}">
+                        <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}">
+                    </a>
                 </td>
                 <td>{{x.title}}</td>
                 {# <td>{{x.message}}</td> #}
