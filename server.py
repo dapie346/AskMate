@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from data_handler import *
 from util import *
+import question
 
 app = Flask(__name__)
 
@@ -16,7 +17,7 @@ def home_page():
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        id = write_question(request.form, request.files)
+        id = question.add_question(request.form, request.files)
         return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
 
