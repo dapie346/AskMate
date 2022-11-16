@@ -24,24 +24,22 @@
             </tr>
         </thead>
         <tbody>
-        {% for x in all_questions %}
-        <tr>
-{#            <td><a href="{{ url_for('dynamic_route',id=x.id)}}">{{x.id}}</a></td>#}
-            <td><a href="{{ url_for('show_question', question_id = x.id) }}">{{x.id}}</a></td>
-            <td>{{ x.submission_time }}</td>
-            <td>{{ x.view_number }}</td>
-            <td>{{ x.vote_number }}</td>
-            <td>
-                <a href="{{ url_for('question_upvote', question_id = x.id) }}">Upvote</a>
-                <a href="{{ url_for('question_downvote', question_id = x.id) }}">Downvote</a>
-            </td>
-            <td>{{x.title}}</td>
-{#            <td>{{x.message}}</td>#}
-
-        </tr>
-    {% endfor %}
-
-    </tbody>
+            {% for x in all_questions %}
+            <tr>
+                {# <td><a href="{{ url_for('dynamic_route',id=x.id)}}">{{x.id}}</a></td> #}
+                <td><a href="{{ url_for('show_question', question_id = x.id) }}">{{x.id}}</a></td>
+                <td>{{ x.submission_time }}</td>
+                <td>{{ x.view_number }}</td>
+                <td>{{ x.vote_number }}</td>
+                <td>
+                    <a href="{{ url_for('question_upvote', question_id = x.id) }}">Upvote</a>
+                    <a href="{{ url_for('question_downvote', question_id = x.id) }}">Downvote</a>
+                </td>
+                <td>{{x.title}}</td>
+                {# <td>{{x.message}}</td> #}
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
     <form action="{{ url_for('home_page') }}" method="GET">
         <p><label for="order_by">Sort by:</label></p>

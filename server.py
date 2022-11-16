@@ -11,7 +11,6 @@ app = Flask(__name__)
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
-    print(order_by, order_direction)
     all_questions = sort_records(get_all_questions(), order_by, order_direction)
     return render_template('home_page.html', all_questions=all_questions)
 
