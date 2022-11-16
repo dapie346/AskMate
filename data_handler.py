@@ -96,3 +96,17 @@ def write_answer(message, question_id):
     with open(ANSWERS_DATA, "a") as file:
         csv_writer = csv.writer(file)
         csv_writer.writerow(record.values())
+
+
+def save_all(all_questions):
+    with open(QUESTIONS_DATA, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=QUESTION_HEADER)
+        writer.writeheader()
+        writer.writerows(all_questions)
+
+
+def find_id(all_questions, question_id):
+    for i, x in enumerate(all_questions):
+        for y in x:
+            if x.get(y) == question_id:
+                del all_questions[i]

@@ -9,13 +9,14 @@
     </h1>
     </header>
     <a href="{{ url_for('add_question') }}">add question</a>
+
     <table>
         <thead>
             <tr>
                 <th>Id</th>
 {#                <th>submission_time</th>#}
-                <th>views</th>
-                <th>votes</th>
+                <th><a href="{{ url_for('home_page', order_by='view_number') }}">views</a></th>
+                <th><a href="{{ url_for('home_page', order_by='vote_number') }}">votes</a></th>
                 <th>title</th>
                 <th>message</th>
 {#                <th>image</th>#}
@@ -38,8 +39,6 @@
 
     </tbody>
     </table>
-
-
 
 
 
