@@ -4,8 +4,11 @@ import time
 ANSWERS_DATA = 'sample_data/answer.csv'
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
+
 def get_answers():
     return data_handler.get_records(ANSWERS_DATA)
+
+
 def add_answer(answer, question_id):
     id = data_handler.generate_id(get_answers())
     record = {
@@ -19,6 +22,7 @@ def add_answer(answer, question_id):
 
     data_handler.append_to_csv(record, ANSWERS_DATA)
 
+
 def delete_answer(answer_id):
     answers = get_answers()
     for i, answer in enumerate(answers):
@@ -29,14 +33,20 @@ def delete_answer(answer_id):
 
     data_handler.overwrite_csv(answers, ANSWER_HEADER, ANSWERS_DATA)
 
+
+def delete_answers_with_question(question_id):
+    deleted_answers = data_handler.get_answers_to_question(question_id)
+
+    for answer in deleted_answers:
+        delete_answer(answer['id'])
+
+
 def answer_vote(answer_id, vote):
     answers = get_answers()
     for i, answer in enumerate(answers):
         if answer['id'] == answer_id:
             question_id = answer['question_id']
-            vote_number = int(answers[i]['vote_number'])
-            vote_number += vote
-            answers[i]['vote_number'] = vote_number
+            answers[i]['vote_number'] += vote
 
     data_handler.overwrite_csv(answers, ANSWER_HEADER, ANSWERS_DATA)
 
