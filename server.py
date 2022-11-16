@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from data_handler import *
 from util import *
 import question_controller
-import data_handler
+import answer_controller
 
 app = Flask(__name__)
 
@@ -12,7 +12,7 @@ app = Flask(__name__)
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
-    all_questions = sort_records(get_all_questions(), order_by, order_direction)
+    all_questions = sort_records(question_controller.get_questions(), order_by, order_direction)
     return render_template('home_page.html', all_questions=all_questions)
 
 
@@ -52,8 +52,7 @@ def question_downvote(question_id):
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
     if request.method == 'POST':
-        message = request.form['message']
-        write_answer(message, question_id)
+        answer_controller.add_answer(request.form, question_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('post_answer.html')
 
@@ -65,18 +64,18 @@ def delete_question(question_id):
 
 @app.route("/answer/<answer_id>/vote-up")
 def answer_upvote(answer_id):
-    question_id = answer_vote(answer_id, 1)
+    question_id = answer_controller.answer_vote(answer_id, 1)
     return redirect(url_for('show_question', question_id=question_id))
 
 @app.route("/answer/<answer_id>/vote-down")
 def answer_downvote(answer_id):
-    question_id = answer_vote(answer_id, -1)
+    question_id = answer_controller.answer_vote(answer_id, -1)
     return redirect(url_for('show_question', question_id=question_id))
 
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
     if request.method == 'POST':
-        data_handler.delete_answer(answer_id)
+        answer_controller.delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=request.form.get("open")))
 
 
