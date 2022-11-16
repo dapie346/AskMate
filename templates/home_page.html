@@ -17,6 +17,7 @@
                 <th><a href="{{ url_for('home_page', order_by='submission_time') }}">submission time</a></th>
                 <th><a href="{{ url_for('home_page', order_by='view_number') }}">views</a></th>
                 <th><a href="{{ url_for('home_page', order_by='vote_number') }}">votes</a></th>
+                <th>vote up/down</th>
                 <th><a href="{{ url_for('home_page', order_by='title') }}">title</a></th>
 {#                <th>message</th>#}
 {#                <th>image</th>#}
@@ -30,6 +31,10 @@
             <td>{{ x.submission_time }}</td>
             <td>{{x.view_number}}</td>
             <td>{{x.vote_number}}</td>
+            <td>
+                <a href="{{ url_for('question_upvote', question_id = x.id) }}">Upvote</a>
+                <a href="{{ url_for('question_downvote', question_id = x.id) }}">Downvote</a>
+            </td>
             <td>{{x.title}}</td>
 {#            <td>{{x.message}}</td>#}
 

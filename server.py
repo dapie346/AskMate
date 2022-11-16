@@ -16,7 +16,6 @@ def home_page():
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        print(request.files)
         if request.files['image'].filename != '':
             file = request.files['image']
             filename = file.filename
@@ -27,6 +26,13 @@ def add_question():
         return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
 
+@app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
+def edit_question(question_id):
+    question = get_one_question(question_id)
+    if request.method == 'POST':
+        update_question(question_id,request.form['title'],request.form['message'])
+        return redirect(url_for('show_question', question_id=question_id))
+    return render_template('edit-question.html', title=question['title'], message=question['message'])
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
@@ -35,6 +41,15 @@ def show_question(question_id):
     answers = sorted(answers, key=lambda d: d['vote_number'], reverse=True)
     return render_template('display-question.html', question=question, answers=answers)
 
+@app.route("/question/<question_id>/vote-up")
+def question_upvote(question_id):
+    question_vote(question_id, 1)
+    return redirect(url_for('home_page'))
+
+@app.route("/question/<question_id>/vote-down")
+def question_downvote(question_id):
+    question_vote(question_id, -1)
+    return redirect(url_for('home_page'))
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
@@ -53,6 +68,15 @@ def delete_question(question_id):
         save_all(all_questions)
     return redirect('/')
 
+@app.route("/answer/<answer_id>/vote-up")
+def answer_upvote(answer_id):
+    question_id = answer_vote(answer_id, 1)
+    return redirect(url_for('show_question', question_id=question_id))
+
+@app.route("/answer/<answer_id>/vote-down")
+def answer_downvote(answer_id):
+    question_id = answer_vote(answer_id, -1)
+    return redirect(url_for('show_question', question_id=question_id))
 
 if __name__ == "__main__":
     app.run(debug=True)
