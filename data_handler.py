@@ -22,22 +22,27 @@ def get_records(filepath):
                     record[k] = int(record[k])
     return list_of_dict
 
+
 def generate_id(csv_data):
     while True:
-        id = random.randint(1,9999)
+        id = random.randint(1000, 9999)
         if not any(id == record['id'] for record in csv_data):
             return id
+
 
 def save_image(file, filename):
     file.save(os.path.join(IMAGE_FOLDER, filename))
 
+
 def delete_image(filename):
     os.remove(os.path.join(IMAGE_FOLDER, filename))
+
 
 def append_to_csv(row, filepath):
     with open(filepath, "a") as file:
         csv_writer = csv.writer(file)
         csv_writer.writerow(row.values())
+
 
 def overwrite_csv(data, headers, filepath):
     with open(filepath, 'w') as file:

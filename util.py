@@ -3,9 +3,8 @@ from datetime import datetime
 
 def sort_records(records, order_by, order_direction):
     for record in records:
-        for k,v in record.items():
-            if k == 'submission_time':
-                record[k] = unix_date_to_readable_date(record[k])
+        if 'submission_time' in record:
+            record['submission_time'] = unix_date_to_readable_date(record['submission_time'])
     return sorted(records, key=lambda d: d[order_by], reverse=True if order_direction=='desc' else False)
 
 

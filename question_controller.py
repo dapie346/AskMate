@@ -8,6 +8,7 @@ QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title
 def get_questions():
     return data_handler.get_records(QUESTIONS_DATA)
 
+
 def add_question(question, files):
     id = data_handler.generate_id(get_questions())
     record = {
@@ -27,6 +28,7 @@ def add_question(question, files):
 
     return id
 
+
 def delete_question(question_id):
     questions = get_questions()
     for i, question in enumerate(questions):
@@ -36,15 +38,16 @@ def delete_question(question_id):
             questions.pop(i)
 
     data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
+
+
 def question_vote(question_id, vote):
     questions = get_questions()
     for i, question in enumerate(questions):
         if question['id'] == question_id:
-            vote_number = int(questions[i]['vote_number'])
-            vote_number += vote
-            questions[i]['vote_number'] = vote_number
+            questions[i]['vote_number'] += vote
 
     data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
+
 
 def update_question(question_id, title, message):
     questions = get_questions()
@@ -55,10 +58,11 @@ def update_question(question_id, title, message):
 
     data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
 
+
 def count_views(question_id):
     questions = get_questions()
     for i, question in enumerate(questions):
         if question['id'] == question_id:
-            question['view_number'] = int(question['view_number']) + 1
+            question['view_number'] = question['view_number'] + 1
 
     data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
