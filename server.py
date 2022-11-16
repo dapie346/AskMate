@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from data_handler import *
 from util import *
-import question
+import question_controller
 
 app = Flask(__name__)
 
@@ -19,7 +19,7 @@ def home_page():
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        id = question.add_question(request.form, request.files)
+        id = question_controller.add_question(request.form, request.files)
         return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
 
@@ -27,26 +27,26 @@ def add_question():
 def edit_question(question_id):
     question = get_one_question(question_id)
     if request.method == 'POST':
-        question.update_question(question_id, request.form['title'], request.form['message'])
+        question_controller.update_question(question_id, request.form['title'], request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('edit-question.html', title=question['title'], message=question['message'])
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    my_question = get_one_question(question_id)
+    question = get_one_question(question_id)
     answers = get_answers_to_question(question_id)
-    question.count_views(question_id)
+    question_controller.count_views(question_id)
     answers = sorted(answers, key=lambda d: d['vote_number'], reverse=True)
-    return render_template('display-question.html', question=my_question, answers=answers)
+    return render_template('display-question.html', question=question, answers=answers)
 
 @app.route("/question/<question_id>/vote-up")
 def question_upvote(question_id):
-    question.question_vote(question_id, 1)
+    question_controller.question_vote(question_id, 1)
     return redirect(url_for('home_page'))
 
 @app.route("/question/<question_id>/vote-down")
 def question_downvote(question_id):
-    question.question_vote(question_id, -1)
+    question_controller.question_vote(question_id, -1)
     return redirect(url_for('home_page'))
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
@@ -61,7 +61,7 @@ def post_answer(question_id):
 @app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
 def delete_question(question_id):
     if request.method == 'POST':
-        question.delete_question(question_id)
+        question_controller.delete_question(question_id)
     return redirect('/')
 
 @app.route("/answer/<answer_id>/vote-up")
