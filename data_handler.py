@@ -27,51 +27,17 @@ def generate_id(csv_data):
 def save_image(file, filename):
     file.save(os.path.join(IMAGE_FOLDER, filename))
 
-def write_question(question, filename):
-    id = generate_id(get_all_questions())
-    record = {
-        'id': id,
-        'submission_time': int(time.time()),
-        'view_number': 0,
-        'vote_number': 0,
-        'title': question['title'],
-        'message': question['message'],
-        'image': filename,
-    }
-    with open(QUESTIONS_DATA, "a") as file:
+def append_to_csv(row, filepath):
+    with open(filepath, "a") as file:
         csv_writer = csv.writer(file)
-        csv_writer.writerow(record.values())
-        file.close()
+        csv_writer.writerow(row.values())
 
-    return id
-
-def question_vote(question_id, vote):
-    questions = get_all_questions()
-    for i, question in enumerate(questions):
-        if question['id'] == question_id:
-            vote_number = int(questions[i]['vote_number'])
-            vote_number += vote
-            questions[i]['vote_number'] = vote_number
-
-    with open(QUESTIONS_DATA, 'w') as file:
+def overwrite_csv(data, headers, filepath):
+    with open(filepath, 'w') as file:
         csv_writer = csv.writer(file)
-        csv_writer.writerow(QUESTION_HEADER)
-        for question in questions:
-            csv_writer.writerow(question.values())
-
-def update_question(question_id, title, message):
-    questions = get_all_questions()
-    for i, question in enumerate(questions):
-        if question['id'] == question_id:
-            questions[i]['title'] = title
-            questions[i]['message'] = message
-
-    with open(QUESTIONS_DATA, 'w') as file:
-        csv_writer = csv.writer(file)
-        csv_writer.writerow(QUESTION_HEADER)
-        for question in questions:
-            csv_writer.writerow(question.values())
-
+        csv_writer.writerow(headers)
+        for record in data:
+            csv_writer.writerow(record.values())
 
 def get_one_question(question_id):
     with open(QUESTIONS_DATA) as file:
@@ -141,3 +107,13 @@ def find_id(all_questions, question_id):
         for y in x:
             if x.get(y) == question_id:
                 del all_questions[i]
+
+
+def count_views(question_id):
+    questions = get_all_questions()
+    updated_list = []
+    for row in questions:
+        if row['id'] == question_id:
+            row['view_number'] = int(row['view_number']) + 1
+        updated_list.append(row)
+    save_all(updated_list)

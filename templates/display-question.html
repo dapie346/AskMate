@@ -2,6 +2,9 @@
 {% block title %}{{ question['title'] }}{% endblock %}
 {% block content %}
     <h1>{{ question['title'] }}</h1>
+    {% if question['image'] != '' %}
+    <img src="{{ url_for('static', filename=('images/' + question['image'])) }}">
+    {% endif %}
     <h4>{{ question['message'] }}</h4>
     <br>
     <a href="{{ url_for('edit_question', question_id = question['id']) }}">Edit</a>

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from data_handler import *
 from util import *
+import question
 
 app = Flask(__name__)
 
@@ -18,13 +19,7 @@ def home_page():
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        if request.files['image'].filename != '':
-            file = request.files['image']
-            filename = file.filename
-            save_image(file, filename)
-        else:
-            filename = ''
-        id = write_question(request.form, filename)
+        id = question.add_question(request.form, request.files)
         return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
 
@@ -32,7 +27,7 @@ def add_question():
 def edit_question(question_id):
     question = get_one_question(question_id)
     if request.method == 'POST':
-        update_question(question_id,request.form['title'],request.form['message'])
+        question.update_question(question_id, request.form['title'], request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('edit-question.html', title=question['title'], message=question['message'])
 
@@ -40,17 +35,18 @@ def edit_question(question_id):
 def show_question(question_id):
     question = get_one_question(question_id)
     answers = get_answers_to_question(question_id)
+    count_views(question_id)
     answers = sorted(answers, key=lambda d: d['vote_number'], reverse=True)
     return render_template('display-question.html', question=question, answers=answers)
 
 @app.route("/question/<question_id>/vote-up")
 def question_upvote(question_id):
-    question_vote(question_id, 1)
+    question.question_vote(question_id, 1)
     return redirect(url_for('home_page'))
 
 @app.route("/question/<question_id>/vote-down")
 def question_downvote(question_id):
-    question_vote(question_id, -1)
+    question.question_vote(question_id, -1)
     return redirect(url_for('home_page'))
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
