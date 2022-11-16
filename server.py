@@ -33,11 +33,11 @@ def edit_question(question_id):
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    question = get_one_question(question_id)
+    my_question = get_one_question(question_id)
     answers = get_answers_to_question(question_id)
-    count_views(question_id)
+    question.count_views(question_id)
     answers = sorted(answers, key=lambda d: d['vote_number'], reverse=True)
-    return render_template('display-question.html', question=question, answers=answers)
+    return render_template('display-question.html', question=my_question, answers=answers)
 
 @app.route("/question/<question_id>/vote-up")
 def question_upvote(question_id):

@@ -50,3 +50,11 @@ def update_question(question_id, title, message):
             questions[i]['message'] = message
 
     data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
+
+def count_views(question_id):
+    questions = data_handler.get_all_questions()
+    for i, question in enumerate(questions):
+        if question['id'] == question_id:
+            question['view_number'] = int(question['view_number']) + 1
+
+    data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
