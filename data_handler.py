@@ -64,23 +64,6 @@ def get_all_answers():
         list_of_dict = list(dict_reader)
     return list_of_dict
 
-def answer_vote(answer_id, vote):
-    answers = get_all_answers()
-    for i, answer in enumerate(answers):
-        if answer['id'] == answer_id:
-            question_id = answer['question_id']
-            vote_number = int(answers[i]['vote_number'])
-            vote_number += vote
-            answers[i]['vote_number'] = vote_number
-
-    with open(ANSWERS_DATA, 'w') as file:
-        csv_writer = csv.writer(file)
-        csv_writer.writerow(ANSWER_HEADER)
-        for answer in answers:
-            csv_writer.writerow(answer.values())
-
-    return question_id
-
 def save_all(all_questions):
     with open(QUESTIONS_DATA, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=QUESTION_HEADER)

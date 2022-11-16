@@ -67,12 +67,12 @@ def delete_question(question_id):
 
 @app.route("/answer/<answer_id>/vote-up")
 def answer_upvote(answer_id):
-    question_id = answer_vote(answer_id, 1)
+    question_id = answer_controller.answer_vote(answer_id, 1)
     return redirect(url_for('show_question', question_id=question_id))
 
 @app.route("/answer/<answer_id>/vote-down")
 def answer_downvote(answer_id):
-    question_id = answer_vote(answer_id, -1)
+    question_id = answer_controller.answer_vote(answer_id, -1)
     return redirect(url_for('show_question', question_id=question_id))
 
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])

@@ -16,3 +16,16 @@ def add_answer(message, question_id):
     }
 
     data_handler.append_to_csv(record, ANSWERS_DATA)
+
+def answer_vote(answer_id, vote):
+    answers = data_handler.get_all_answers()
+    for i, answer in enumerate(answers):
+        if answer['id'] == answer_id:
+            question_id = answer['question_id']
+            vote_number = int(answers[i]['vote_number'])
+            vote_number += vote
+            answers[i]['vote_number'] = vote_number
+
+    data_handler.overwrite_csv(answers, ANSWER_HEADER, ANSWERS_DATA)
+
+    return question_id
