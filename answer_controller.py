@@ -8,6 +8,9 @@ ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message
 def get_answers():
     return data_handler.get_records(ANSWERS_DATA)
 
+def get_answers_to_question(question_id):
+    answers = get_answers()
+    return [answer for answer in answers if answer['question_id'] == question_id]
 
 def add_answer(answer, question_id):
     id = data_handler.generate_id(get_answers())
@@ -35,7 +38,7 @@ def delete_answer(answer_id):
 
 
 def delete_answers_with_question(question_id):
-    deleted_answers = data_handler.get_answers_to_question(question_id)
+    deleted_answers = get_answers_to_question(question_id)
 
     for answer in deleted_answers:
         delete_answer(answer['id'])
