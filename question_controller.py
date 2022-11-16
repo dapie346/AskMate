@@ -4,6 +4,7 @@ import time
 QUESTIONS_DATA = 'sample_data/question.csv'
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
+
 def get_questions():
     return data_handler.get_records(QUESTIONS_DATA)
 
