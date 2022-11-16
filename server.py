@@ -3,7 +3,6 @@ from data_handler import *
 from util import *
 import question_controller
 import answer_controller
-import data_handler
 
 app = Flask(__name__)
 
@@ -78,7 +77,7 @@ def answer_downvote(answer_id):
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
     if request.method == 'POST':
-        data_handler.delete_answer(answer_id)
+        answer_controller.delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=request.form.get("open")))
 
 

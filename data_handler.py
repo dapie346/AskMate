@@ -75,13 +75,3 @@ def save_answers(all_answers):
         writer = csv.DictWriter(csvfile, fieldnames=ANSWER_HEADER)
         writer.writeheader()
         writer.writerows(all_answers)
-
-def delete_answer(answer_id):
-    answers = get_all_answers()
-    for i, answer in enumerate(answers):
-        if answer['id'] == answer_id:
-            if answer['image'] != '':
-                delete_image(answer['image'])
-            answers.pop(i)
-
-    overwrite_csv(answers, ANSWER_HEADER, ANSWERS_DATA)

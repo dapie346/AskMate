@@ -17,6 +17,16 @@ def add_answer(message, question_id):
 
     data_handler.append_to_csv(record, ANSWERS_DATA)
 
+def delete_answer(answer_id):
+    answers = data_handler.get_all_answers()
+    for i, answer in enumerate(answers):
+        if answer['id'] == answer_id:
+            if answer['image'] != '':
+                data_handler.delete_image(answer['image'])
+            answers.pop(i)
+
+    data_handler.overwrite_csv(answers, ANSWER_HEADER, ANSWERS_DATA)
+
 def answer_vote(answer_id, vote):
     answers = data_handler.get_all_answers()
     for i, answer in enumerate(answers):
