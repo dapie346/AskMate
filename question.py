@@ -27,6 +27,8 @@ def delete_question(question_id):
     questions = data_handler.get_all_questions()
     for i, question in enumerate(questions):
         if question['id'] == question_id:
+            if question['image'] != '':
+                data_handler.delete_image(question['image'])
             questions.pop(i)
 
     data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)

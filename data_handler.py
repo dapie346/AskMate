@@ -9,7 +9,7 @@ QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title
 ANSWERS_DATA = 'sample_data/answer.csv'
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
-IMAGE_FOLDER = 'images'
+IMAGE_FOLDER = 'static/images'
 
 def get_all_questions():
     with open('sample_data/question.csv', 'r') as f:
@@ -26,6 +26,9 @@ def generate_id(csv_data):
 
 def save_image(file, filename):
     file.save(os.path.join(IMAGE_FOLDER, filename))
+
+def delete_image(filename):
+    os.remove(os.path.join(IMAGE_FOLDER, filename))
 
 def append_to_csv(row, filepath):
     with open(filepath, "a") as file:
