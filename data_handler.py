@@ -55,15 +55,3 @@ def get_answers_to_question(question_id):
             if row['question_id'] == question_id:
                 answers.append(row)
     return answers
-
-def save_all(all_questions):
-    with open(QUESTIONS_DATA, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=QUESTION_HEADER)
-        writer.writeheader()
-        writer.writerows(all_questions)
-
-def save_answers(all_answers):
-    with open(ANSWERS_DATA, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=ANSWER_HEADER)
-        writer.writeheader()
-        writer.writerows(all_answers)
