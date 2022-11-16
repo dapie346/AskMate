@@ -60,9 +60,7 @@ def post_answer(question_id):
 @app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
 def delete_question(question_id):
     if request.method == 'POST':
-        all_questions = get_all_questions()
-        find_id(all_questions, question_id)
-        save_all(all_questions)
+        question.delete_question(question_id)
     return redirect('/')
 
 @app.route("/answer/<answer_id>/vote-up")
@@ -74,6 +72,15 @@ def answer_upvote(answer_id):
 def answer_downvote(answer_id):
     question_id = answer_vote(answer_id, -1)
     return redirect(url_for('show_question', question_id=question_id))
+
+@app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
+def delete_answer(answer_id):
+    if request.method == 'POST':
+        all_answers = get_all_answers()
+        find_id(all_answers, answer_id)
+        save_answers(all_answers)
+    return redirect(url_for('show_question', question_id=request.form.get("open")))
+
 
 if __name__ == "__main__":
     app.run(debug=True)

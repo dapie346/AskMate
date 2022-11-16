@@ -9,7 +9,7 @@ QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title
 ANSWERS_DATA = 'sample_data/answer.csv'
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
-IMAGE_FOLDER = 'images'
+IMAGE_FOLDER = 'static/images'
 
 def get_all_questions():
     with open('sample_data/question.csv', 'r') as f:
@@ -26,6 +26,9 @@ def generate_id(csv_data):
 
 def save_image(file, filename):
     file.save(os.path.join(IMAGE_FOLDER, filename))
+
+def delete_image(filename):
+    os.remove(os.path.join(IMAGE_FOLDER, filename))
 
 def append_to_csv(row, filepath):
     with open(filepath, "a") as file:
@@ -46,7 +49,6 @@ def get_one_question(question_id):
             if row['id'] == question_id:
                 return row
 
-
 def get_answers_to_question(question_id):
     answers = []
     with open(ANSWERS_DATA) as file:
@@ -56,13 +58,11 @@ def get_answers_to_question(question_id):
                 answers.append(row)
     return answers
 
-
 def get_all_answers():
     with open(ANSWERS_DATA) as f:
         dict_reader = csv.DictReader(f)
         list_of_dict = list(dict_reader)
     return list_of_dict
-
 
 def write_answer(message, question_id):
     id = generate_id(get_all_answers())
@@ -101,12 +101,11 @@ def save_all(all_questions):
         writer.writeheader()
         writer.writerows(all_questions)
 
-
-def find_id(all_questions, question_id):
-    for i, x in enumerate(all_questions):
-        for y in x:
-            if x.get(y) == question_id:
-                del all_questions[i]
+def save_answers(all_answers):
+    with open(ANSWERS_DATA, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=ANSWER_HEADER)
+        writer.writeheader()
+        writer.writerows(all_answers)
 
 
 def count_views(question_id):
