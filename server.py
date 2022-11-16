@@ -5,8 +5,8 @@ from util import *
 app = Flask(__name__)
 
 
-@app.route("/", methods=['GET', 'POST'])
-@app.route("/list", methods=['GET', 'POST'])
+@app.route("/")
+@app.route("/list")
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     all_questions = sort_records(get_all_questions(), order_by)
@@ -17,7 +17,7 @@ def home_page():
 def add_question():
     if request.method == 'POST':
         print(request.files)
-        if 'image' in request.files:
+        if request.files['image'].filename != '':
             file = request.files['image']
             filename = file.filename
             save_image(file, filename)
