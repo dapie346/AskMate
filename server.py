@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from data_handler import *
 from util import *
 import question_controller
+import data_handler
 
 app = Flask(__name__)
 
@@ -76,7 +77,7 @@ def answer_downvote(answer_id):
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
     if request.method == 'POST':
-        delete_answer(answer_id)
+        data_handler.delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=request.form.get("open")))
 
 
