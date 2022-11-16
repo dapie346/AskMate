@@ -7,6 +7,7 @@ import random
 QUESTIONS_DATA = 'sample_data/question.csv'
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWERS_DATA = 'sample_data/answer.csv'
+ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 IMAGE_FOLDER = 'images'
 
@@ -43,6 +44,33 @@ def write_question(question, filename):
         file.close()
 
     return id
+
+def question_vote(question_id, vote):
+    questions = get_all_questions()
+    for i, question in enumerate(questions):
+        if question['id'] == question_id:
+            vote_number = int(questions[i]['vote_number'])
+            vote_number += vote
+            questions[i]['vote_number'] = vote_number
+
+    with open(QUESTIONS_DATA, 'w') as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(QUESTION_HEADER)
+        for question in questions:
+            csv_writer.writerow(question.values())
+
+def update_question(question_id, title, message):
+    questions = get_all_questions()
+    for i, question in enumerate(questions):
+        if question['id'] == question_id:
+            questions[i]['title'] = title
+            questions[i]['message'] = message
+
+    with open(QUESTIONS_DATA, 'w') as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(QUESTION_HEADER)
+        for question in questions:
+            csv_writer.writerow(question.values())
 
 
 def get_one_question(question_id):
@@ -84,6 +112,22 @@ def write_answer(message, question_id):
         csv_writer = csv.writer(file)
         csv_writer.writerow(record.values())
 
+def answer_vote(answer_id, vote):
+    answers = get_all_answers()
+    for i, answer in enumerate(answers):
+        if answer['id'] == answer_id:
+            question_id = answer['question_id']
+            vote_number = int(answers[i]['vote_number'])
+            vote_number += vote
+            answers[i]['vote_number'] = vote_number
+
+    with open(ANSWERS_DATA, 'w') as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(ANSWER_HEADER)
+        for answer in answers:
+            csv_writer.writerow(answer.values())
+
+    return question_id
 
 def save_all(all_questions):
     with open(QUESTIONS_DATA, 'w', newline='') as csvfile:
