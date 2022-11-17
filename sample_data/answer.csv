@@ -1,16 +1,9 @@
-id,submission_time,vote_number,question_id,user,message,image
-
-1,1493398154,4,1,Mary Mother of Jesus,You need to use brackets: my_list = [],
-
-2,1493088154,35,1,Dracula,Look it up in the Python docs,
-
-1821,1668513595,0,1398,Sigma_Male,Yes,
-
-2526,1668604005,12,99,Janusz,"Bylo, zamykam temat. Daje ostrzezenie, a na przyszlosc uzywaj funkcji szukaj, bo bedzie ban",
-
-4690,1668604035,9,99,Lucifer,Wygugluj se typie,
-
-5731,1668604056,2,99,Your Mom,"lol, noob z elektroda.pl nie ogarnia podstaw",
-
-4608,1668629822,-9,1,Elon Musk,"Delete folders you don't need, like System32. Trust me, I'm a genius!",
-
+id,submission_time,vote_number,question_id,user,message,image
+1,1493398154,4,1,Mary Mother of Jesus,You need to use brackets: my_list = [],
+2,1493088154,35,1,Dracula,Look it up in the Python docs,
+1821,1668513595,0,1398,Sigma_Male,Yes,
+2526,1668604005,12,99,Janusz,"Bylo, zamykam temat. Daje ostrzezenie, a na przyszlosc uzywaj funkcji szukaj, bo bedzie ban",
+5731,1668604056,3,99,Your Mom,"lol, noob z elektroda.pl nie ogarnia podstaw",
+4608,1668629822,-9,1,Elon Musk,"Delete folders you don't need. Trust me, I'm a genius!",
+4367,1668674831,0,99,"Grognak the Destroyer, Attorney at Law","Fixed it, don't worry",
+9717,1668675066,0,1,"Grognak the Destroyer, Attorney at Law",Answer,
