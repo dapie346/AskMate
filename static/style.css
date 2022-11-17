@@ -104,3 +104,8 @@ header {
     border-radius: 5px 10px 5px 10px;
     width:75%;
 }
+
+.time-views {
+    font-size: 9px;
+    text-indent: 40px;
+}
