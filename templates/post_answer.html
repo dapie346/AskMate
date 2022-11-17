@@ -3,10 +3,14 @@
 {% block content %}
     <h1>Add an Answer</h1>
     <br>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <label>Answer:</label>
         <br>
         <textarea name="message" rows="10" cols="100" required></textarea>
+        <br><br>
+        <label for="img">Select image:</label>
+        <br>
+        <input type="file" name="image" accept="image/*">
         <br><br>
         <button type="submit">Submit</button>
     </form>

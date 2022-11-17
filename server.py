@@ -52,7 +52,7 @@ def question_downvote(question_id):
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
     if request.method == 'POST':
-        answer_controller.add_answer(request.form, question_id)
+        answer_controller.add_answer(request.form, request.files, question_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('post_answer.html')
 

@@ -14,6 +14,9 @@
         <hr>
         <p><a href="{{ url_for('answer_upvote', answer_id = answer['id']) }} "style="color:green">&#x2713</a>{{ answer['vote_number'] }}
         <a href="{{ url_for('answer_downvote', answer_id = answer['id']) }} "style="text-align:right">&#10007</a>    {{ answer['message'] }}</p>
+        {% if answer['image'] != '' %}
+            <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}">
+        {% endif %}
         <form action="{{ url_for('delete_answer', answer_id = answer['id'])}}" method="post">
                 <button type="submit" name="open" value="{{ answer['question_id'] }}"> DELETE ANSWER </button>
             </form>
