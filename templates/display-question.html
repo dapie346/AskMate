@@ -8,7 +8,7 @@
     <div class="question">
     <h3>{{ question['message'] }}</h3>
     {% if question['image'] != '' %}
-    <img src="{{ url_for('static', filename=('images/' + question['image'])) }}">
+    <img src="{{ url_for('static', filename=('images/' + question['image'])) }}" class="image">
     {% endif %}
     </div>
     <div class="edit_and_delete">
@@ -32,7 +32,7 @@
             {{ answer['message'] }}
         </p>
         {% if answer['image'] != '' %}
-            <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}">
+            <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}" class="image">
         {% endif %}
     <small><time> {{ answer['submission_time'] }}</time></small>
         <form action="{{ url_for('delete_answer', answer_id = answer['id'])}}" method="post">

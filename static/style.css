@@ -57,7 +57,8 @@ td {
     font-size: 0.75rem;
 }
 
-img{
+.image {
+    display: block;
     max-height:500px;
     max-width:500px;
     height:auto;
