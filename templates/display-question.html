@@ -34,13 +34,8 @@
         {% if answer['image'] != '' %}
             <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}" class="image">
         {% endif %}
-    <small><time> {{ answer['submission_time'] }}</time></small>
-        <form action="{{ url_for('delete_answer', answer_id = answer['id'])}}" method="post">
-                <button type="submit" name="open" value="{{ answer['question_id'] }}"> DELETE ANSWER </button>
-        </form>
-
-
         </div>
+        <a href="{{ url_for('delete_answer', answer_id = answer['id'])}}"style="font-size: 10px;"> DELETE ANSWER</a>
         <br><br>
     {% endfor %}
 
