@@ -37,6 +37,7 @@ def show_question(question_id):
     question = question_controller.get_question(question_id)
     answers = util.sort_records(answer_controller.get_answers_to_question(question_id), 'vote_number', 'desc')
     question_controller.count_views(question_id)
+    question['submission_time'] = util.unix_date_to_readable_date(question['submission_time'])
     return render_template('display-question.html', question=question, answers=answers)
 
 
