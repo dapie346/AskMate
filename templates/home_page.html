@@ -47,6 +47,7 @@
                 <tr>
                     {# <td><a href="{{ url_for('dynamic_route',id=x.id)}}">{{x.id}}</a></td> #}
                     <td><a href="{{ url_for('show_question', question_id = x.id) }}">{{x.id}}</a></td>
+                    <td><a href="{{ url_for('show_question', question_id = x.id) }}" class="title-td">{{x.title}}</a></td>
                     <td>{{ x.submission_time }}</td>
                     <td>{{ x.view_number }}</td>
                     <td>{{ x.vote_number }}</td>
@@ -58,7 +59,7 @@
                             <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}">
                         </a>
                     </td>
-                    <td class="title-td">{{x.title}}</td>
+
                     {# <td>{{x.message}}</td> #}
                 </tr>
                 {% endfor %}

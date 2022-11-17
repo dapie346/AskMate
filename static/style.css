@@ -53,6 +53,7 @@ td,th {
 
 .title-td {
     max-width: 500px;
+    color: black;
 }
 
 #author-tag {
@@ -77,6 +78,7 @@ td,th {
 .header-text {
     float: right;
     padding-top: 25px;
+    color: #497174
 }
 
 header {
