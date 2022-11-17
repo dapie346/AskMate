@@ -4,9 +4,12 @@
     <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
     <br>
     <h1>{{ question['title'] }}</h1>
-    <small>Views: {{ question['view_number'] }}</small>
     <div class="question">
     <h3>{{ question['message'] }}</h3>
+        <small>views: {{ question['view_number'] }}</small>
+        <br>
+        <small>added: {{ question['submission_time'] }}</small>
+
     {% if question['image'] != '' %}
     <img src="{{ url_for('static', filename=('images/' + question['image'])) }}" class="image">
     {% endif %}
