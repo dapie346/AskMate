@@ -19,6 +19,7 @@ a {
 h1 {
     margin: 1px;
 }
+
 a:hover  {
     color: mediumvioletred;
 
@@ -35,8 +36,28 @@ tbody {
     background-color: #F1DB75FF;
 
 }
+
 td {
     margin: 5px;
     padding: 3px;
     text-align: center;
+}
+
+.question {
+    border-left: 5px;
+    border-left-style: solid;
+}
+
+.edit_and_delete {
+    font-size: 10px;
+}
+
+.vote {
+    vertical-align: middle;
+}
+
+.answer {
+    border: 2px solid;
+    border-radius: 5px 10px 5px 10px;
+    width:75%;
 }
