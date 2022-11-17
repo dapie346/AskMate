@@ -6,14 +6,12 @@
     <h1>{{ question['title'] }}</h1>
     <div class="question">
     <h3>{{ question['message'] }}</h3>
-        <small>views: {{ question['view_number'] }}</small>
-        <br>
-        <small>added: {{ question['submission_time'] }}</small>
-
     {% if question['image'] != '' %}
     <img src="{{ url_for('static', filename=('images/' + question['image'])) }}" class="image">
     {% endif %}
     </div>
+    <span class="time-views">views: {{ question['view_number'] }} </span>
+    <span class="time-views">added: {{ question['submission_time'] }}</span>
     <div class="edit_and_delete">
         <a href="{{ url_for('edit_question', question_id = question['id']) }}">EDIT</a>
         <a href="{{ url_for('delete_question', question_id = question['id'])}}">DELETE QUESTION</a>
@@ -37,9 +35,8 @@
         {% if answer['image'] != '' %}
             <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}" class="image">
         {% endif %}
-            <small><time> {{ answer['submission_time'] }}</time></small>
-
         </div>
+        <small><time> {{ answer['submission_time'] }}</time></small>
         <a href="{{ url_for('delete_answer', answer_id = answer['id'])}}"style="font-size: 10px;"> DELETE ANSWER</a>
         <br><br>
     {% endfor %}

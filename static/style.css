@@ -78,12 +78,14 @@ td,th {
 .header-text {
     float: right;
     padding-top: 25px;
-    color: #497174
+    color: #497174;
+    font-family: 'Stardos Stencil', cursive;
+    font-size: xxx-large;
 }
 
 header {
     width: 25%;
-    margin-left: 40px;
+    margin-left: 50px;
 }
 
 .question {
@@ -103,4 +105,9 @@ header {
     border: 2px solid;
     border-radius: 5px 10px 5px 10px;
     width:75%;
+}
+
+.time-views {
+    font-size: 9px;
+    text-indent: 40px;
 }
