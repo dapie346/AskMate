@@ -6,6 +6,17 @@
 
 body {
     background-color: #EFF5F5;
+    margin: 0;
+}
+
+.top-div {
+    min-height: 700px;
+}
+
+.bottom-div {
+    text-align: center;
+    background-color: #497174;
+    padding: 40px 0 20px;
 }
 
 a {
@@ -39,6 +50,11 @@ td {
     margin: 5px;
     padding: 3px;
     text-align: center;
+}
+
+#author-tag {
+    color: #D6E4E5;
+    font-size: 0.75rem;
 }
 
 img{
