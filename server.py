@@ -22,6 +22,7 @@ def add_question():
         return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
 
+
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
 def edit_question(question_id):
     question = question_controller.get_question(question_id)
@@ -44,15 +45,17 @@ def question_upvote(question_id):
     question_controller.question_vote(question_id, 1)
     return redirect(url_for('home_page'))
 
+
 @app.route("/question/<question_id>/vote-down")
 def question_downvote(question_id):
     question_controller.question_vote(question_id, -1)
     return redirect(url_for('home_page'))
 
+
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
     if request.method == 'POST':
-        answer_controller.add_answer(request.form, request.files, question_id)
+        answer_controller.add_answer(request.form, question_id, request.files)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('post_answer.html')
 
@@ -69,16 +72,18 @@ def answer_upvote(answer_id):
     question_id = answer_controller.answer_vote(answer_id, 1)
     return redirect(url_for('show_question', question_id=question_id))
 
+
 @app.route("/answer/<answer_id>/vote-down")
 def answer_downvote(answer_id):
     question_id = answer_controller.answer_vote(answer_id, -1)
     return redirect(url_for('show_question', question_id=question_id))
 
+
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
-    if request.method == 'POST':
-        answer_controller.delete_answer(answer_id)
-    return redirect(url_for('show_question', question_id=request.form.get("open")))
+    question_id = answer_controller.answer_vote(answer_id, -1)
+    answer_controller.delete_answer(answer_id)
+    return redirect(url_for('show_question', question_id=question_id))
 
 
 if __name__ == "__main__":

@@ -3,8 +3,12 @@
 {% block content %}
     <h1>Add an Answer</h1>
     <br>
-    <form method="post" enctype="multipart/form-data">
-        <label>Answer:</label>
+        <form method="post" enctype="multipart/form-data">
+        <label>Username:</label>
+        <br>
+        <input type="text" name="user" size="20">
+        <br><br>
+        <label>Your answer:</label>
         <br>
         <textarea name="message" rows="10" cols="100" required></textarea>
         <br><br>

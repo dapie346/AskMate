@@ -4,6 +4,7 @@ import random
 
 IMAGE_FOLDER = 'static/images'
 
+
 def get_records(filepath):
     with open(filepath, 'r') as file:
         dict_reader = csv.DictReader(file)
@@ -15,6 +16,7 @@ def get_records(filepath):
                 elif k == 'vote_number':
                     record[k] = int(record[k])
     return list_of_dict
+
 
 def save_image(file, filename):
     file.save(os.path.join(IMAGE_FOLDER, filename))
@@ -36,6 +38,7 @@ def overwrite_csv(data, headers, filepath):
         csv_writer.writerow(headers)
         for record in data:
             csv_writer.writerow(record.values())
+
 
 def generate_id(csv_data):
     while True:
