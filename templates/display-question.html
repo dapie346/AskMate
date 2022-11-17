@@ -1,25 +1,33 @@
 {% extends 'base.html' %}
 {% block title %}{{ question['title'] }}{% endblock %}
 {% block content %}
+    <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
+    <br>
     <h1>{{ question['title'] }}</h1>
     <small>Views: {{ question['view_number'] }}</small>
+    <div class="question">
+    <h3>{{ question['message'] }}</h3>
     {% if question['image'] != '' %}
     <img src="{{ url_for('static', filename=('images/' + question['image'])) }}">
     {% endif %}
-    <h3>{{ question['message'] }}</h3>
-    <a href="{{ url_for('edit_question', question_id = question['id']) }}">Edit question</a>
-    <a href="{{ url_for('delete_question', question_id = question['id'])}}">Delete question</a>
-    <br><br>
-
+    </div>
+    <div class="edit_and_delete">
+        <a href="{{ url_for('edit_question', question_id = question['id']) }}">EDIT</a>
+        <a href="{{ url_for('delete_question', question_id = question['id'])}}">DELETE QUESTION</a>
+    </div>
+    <br>
+    <h2>Comments:</h2>
+    </form>
     {% for answer in answers %}
-        <hr>
+        <h4>{{ answer['user'] }}</h4>
+        <div class="answer">
         <p>
             <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">
-                <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}" style="vertical-align: middle">
+                <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}" class="vote">
             </a>
             {{ answer['vote_number'] }}
             <a href="{{ url_for('answer_downvote', answer_id = answer['id']) }}">
-                <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}" style="vertical-align: middle">
+                <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}" class="vote">
             </a>
             {{ answer['message'] }}
         </p>
@@ -32,10 +40,15 @@
         </form>
 
 
+        </div>
+        <a href="{{ url_for('delete_answer', answer_id = answer['id'])}}"class="edit_and_delete"> DELETE ANSWER</a>
+        <br><br>
     {% endfor %}
 
+    <form action="{{ url_for('post_answer', question_id = question['id']) }}" method="get">
+        <p><button type="submit">ADD NEW ANSWER</button></p>
+    </form>
+
     <br>
-    <a href="{{ url_for('post_answer', question_id = question['id']) }}">Add an answer</a>
-    <br><br>
-    <a href="{{ url_for('home_page') }}">Back to Main</a>
+
 {% endblock %}
