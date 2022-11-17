@@ -20,10 +20,18 @@
     {% for answer in answers %}
         <h4>{{ answer['user'] }}</h4>
         <div style="border: 2px solid; border-radius: 5px 10px 5px 10px; width:75%">
-        <p><a href="{{ url_for('answer_upvote', answer_id = answer['id']) }} "style="color:green">&#x2713</a>{{ answer['vote_number'] }}
-        <a href="{{ url_for('answer_downvote', answer_id = answer['id']) }} "style="text-align:right">&#10007</a>    {{ answer['message'] }}</p>
+        <p>
+            <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">
+                <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}" style="vertical-align: middle">
+            </a>
+            {{ answer['vote_number'] }}
+            <a href="{{ url_for('answer_downvote', answer_id = answer['id']) }}">
+                <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}" style="vertical-align: middle">
+            </a>
+            {{ answer['message'] }}
+        </p>
         {% if answer['image'] != '' %}
-        <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}">
+            <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}">
         {% endif %}
         </div>
         <a href="{{ url_for('delete_answer', answer_id = answer['id'])}}"style="font-size: 10px;"> DELETE ANSWER</a>
