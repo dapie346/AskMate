@@ -6,14 +6,12 @@
 
 body {
     background-color: lemonchiffon;
-
 }
 
 a {
     text-decoration: none;
     color: red;
     font-weight: bold;
-
 }
 
 h1 {
@@ -35,8 +33,16 @@ tbody {
     background-color: #F1DB75FF;
 
 }
+
 td {
     margin: 5px;
     padding: 3px;
     text-align: center;
+}
+
+img{
+    max-height:500px;
+    max-width:500px;
+    height:auto;
+    width:auto;
 }
