@@ -1,34 +1,39 @@
 {% extends 'base.html' %}
 {% block title %}{{ question['title'] }}{% endblock %}
 {% block content %}
+    <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
+    <br>
     <h1>{{ question['title'] }}</h1>
+    <div style="border-left: 5px solid;">
+    <h3>{{ question['message'] }}</h3>
     {% if question['image'] != '' %}
     <img src="{{ url_for('static', filename=('images/' + question['image'])) }}">
     {% endif %}
-    <h3>{{ question['message'] }}</h3>
-    <a href="{{ url_for('edit_question', question_id = question['id']) }}">Edit question</a>
-    <a href="{{ url_for('delete_question', question_id = question['id'])}}">Delete question</a>
-    <br><br>
-
+    </div>
+    <div style="font-size: 10px;">
+        <a href="{{ url_for('edit_question', question_id = question['id']) }}">EDIT</a>
+        <a href="{{ url_for('delete_question', question_id = question['id'])}}">DELETE QUESTION</a>
+    </div>
+    <br>
+    <h2>Comments:</h2>
+    </form>
     {% for answer in answers %}
-        <hr>
-        <p>
-            <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">
-                <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}" style="vertical-align: middle">
-            </a>
-            {{ answer['vote_number'] }}
-            <a href="{{ url_for('answer_downvote', answer_id = answer['id']) }}">
-                <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}" style="vertical-align: middle">
-            </a>
-            {{ answer['message'] }}
-        </p>
-        <form action="{{ url_for('delete_answer', answer_id = answer['id'])}}" method="post">
-                <button type="submit" name="open" value="{{ answer['question_id'] }}"> DELETE ANSWER </button>
-        </form>
+        <h4>{{ answer['user'] }}</h4>
+        <div style="border: 2px solid; border-radius: 5px 10px 5px 10px; width:75%">
+        <p><a href="{{ url_for('answer_upvote', answer_id = answer['id']) }} "style="color:green">&#x2713</a>{{ answer['vote_number'] }}
+        <a href="{{ url_for('answer_downvote', answer_id = answer['id']) }} "style="text-align:right">&#10007</a>    {{ answer['message'] }}</p>
+        {% if answer['image'] != '' %}
+        <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}">
+        {% endif %}
+        </div>
+        <a href="{{ url_for('delete_answer', answer_id = answer['id'])}}"style="font-size: 10px;"> DELETE ANSWER</a>
+        <br><br>
     {% endfor %}
 
+    <form action="{{ url_for('post_answer', question_id = question['id']) }}" method="get">
+        <p><button type="submit">ADD NEW ANSWER</button></p>
+    </form>
+
     <br>
-    <a href="{{ url_for('post_answer', question_id = question['id']) }}">Add an answer</a>
-    <br><br>
-    <a href="{{ url_for('home_page') }}">Back to Main</a>
+
 {% endblock %}
