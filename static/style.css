@@ -68,6 +68,22 @@ td,th {
     width:auto;
 }
 
+.img-logo {
+    float: left;
+    max-height:100px;
+    max-width:100px;
+}
+
+.header-text {
+    float: right;
+    padding-top: 25px;
+}
+
+header {
+    width: 25%;
+    margin-left: 40px;
+}
+
 .question {
     border-left: 5px;
     border-left-style: solid;
