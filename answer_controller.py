@@ -12,7 +12,7 @@ def get_answers_to_question(question_id):
     answers = get_answers()
     return [answer for answer in answers if answer['question_id'] == question_id]
 
-def add_answer(answer, question_id):
+def add_answer(answer, files, question_id):
     id = data_handler.generate_id(get_answers())
     record = {
         'id': id,
@@ -22,6 +22,9 @@ def add_answer(answer, question_id):
         'message': answer['message'],
         'image': ''
     }
+    if files['image'].filename != '':
+        record['image'] = f'answer_{id}.png'
+        data_handler.save_image(files['image'], f'answer_{id}.png')
 
     data_handler.append_to_csv(record, ANSWERS_DATA)
 
