@@ -43,13 +43,16 @@ thead {
 
 tbody {
     background-color: #D6E4E5;
-
 }
 
-td {
+td,th {
     margin: 5px;
-    padding: 3px;
+    padding: 5px;
     text-align: center;
+}
+
+.title-td {
+    max-width: 500px;
 }
 
 #author-tag {
