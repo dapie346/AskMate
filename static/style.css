@@ -93,8 +93,8 @@ header {
     border-left-style: solid;
 }
 
-.edit_and_delete {
-    font-size: 10px;
+.edit-delete {
+    font-size: 11px;
 }
 
 .vote {
@@ -108,6 +108,5 @@ header {
 }
 
 .time-views {
-    font-size: 9px;
-    text-indent: 40px;
+    font-size: 10px;
 }
