@@ -1,4 +1,4 @@
 id,submission_time,view_number,vote_number,title,message,image
 1,1493368154,130,5,How to make lists in Python?,"I am totally new to this, any hints?",
 2,1503068124,6,2,Wordpress loading multiple jQuery Versions,I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();,
-3,1513388154,150,-4,How do you create list in Python?,Could you help me?,
+3,1513388154,156,-4,How do you create list in Python?,Could you help me?,
