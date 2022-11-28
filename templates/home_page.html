@@ -32,7 +32,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>title</th>
                     <th>views</th>
                     <th>votes</th>
@@ -43,7 +42,6 @@
             <tbody>
                 {% for x in all_questions %}
                 <tr>
-                    <td><a href="{{ url_for('show_question', question_id = x.id) }}">{{x.id}}</a></td>
                     <td><a href="{{ url_for('show_question', question_id = x.id) }}" class="title-td">{{x.title}}</a></td>
                     <td>{{ x.view_number }}</td>
                     <td>{{ x.vote_number }}</td>
