@@ -1,0 +1,112 @@
+* {
+    margin: 5px;
+    box-sizing: border-box;
+    padding: 2px;
+}
+
+body {
+    background-color: #EFF5F5;
+    margin: 0;
+}
+
+.top-div {
+    min-height: 700px;
+}
+
+.bottom-div {
+    text-align: center;
+    background-color: #497174;
+    padding: 40px 0 20px;
+}
+
+a {
+    text-decoration: none;
+    color: #EB6440;
+    font-weight: bold;
+}
+
+h1 {
+    margin: 1px;
+}
+
+a:hover  {
+    color: mediumvioletred;
+
+}
+thead {
+    background-color: #497174;
+    color: white;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tbody {
+    background-color: #D6E4E5;
+}
+
+td,th {
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+}
+
+.title-td {
+    max-width: 500px;
+    color: black;
+}
+
+#author-tag {
+    color: #D6E4E5;
+    font-size: 0.75rem;
+}
+
+.image {
+    display: block;
+    max-height:500px;
+    max-width:500px;
+    height:auto;
+    width:auto;
+}
+
+.img-logo {
+    float: left;
+    max-height:100px;
+    max-width:100px;
+}
+
+.header-text {
+    float: right;
+    padding-top: 25px;
+    color: #497174;
+    font-family: 'Stardos Stencil', cursive;
+    font-size: xxx-large;
+}
+
+header {
+    width: 25%;
+    margin-left: 50px;
+}
+
+.question {
+    border-left: 5px;
+    border-left-style: solid;
+}
+
+.edit-delete {
+    font-size: 11px;
+}
+
+.vote {
+    vertical-align: middle;
+}
+
+.answer {
+    border: 2px solid;
+    border-radius: 5px 10px 5px 10px;
+    width:75%;
+}
+
+.time-views {
+    font-size: 10px;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Stardos+Stencil&display=swap" rel="stylesheet">
+    <title>
+        {% block title %}{% endblock %} | Ask Mate!
+    </title>
+    <link rel="icon" href="/static/images/favicon-32x32.png" type="image/x-icon">
+
+</head>
+<body>
+    <div class="top-div">
+    {% block content %}
+    {% endblock %}
+    </div>
+    <div class="bottom-div">
+        <a class="footer-link" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/">LinkedIn</a>
+        <a class="footer-link" target="_blank" rel="noopener noreferrer" href="https://twitter.com/">Twitter</a>
+        <a class="footer-link" target="_blank" rel="noopener noreferrer" href="mailto:office@devteam1.com">Email</a>
+        <p id="author-tag">© 2022 Team Development 1</p>
+    </div>
+</body>
+</html>
