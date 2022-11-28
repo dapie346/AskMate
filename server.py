@@ -1,22 +1,10 @@
-
 from flask import Flask, render_template, request, redirect, url_for
 import util
 import question_controller
 import answer_controller
->>>>>>> previous-sprint/development
 
 app = Flask(__name__)
 
-
-@app.route("/")
-<<<<<<< HEAD
-def hello():
-    return "Hello World!"
-
-
-if __name__ == "__main__":
-    app.run()
-=======
 @app.route("/list")
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
