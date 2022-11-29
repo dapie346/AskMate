@@ -9,8 +9,8 @@
             ASK MATE!
         </h1>
     </header>
-    <div style="width: 100%; overflow: hidden;">
-        <div style="width: 15%; float: left;">
+    <div class="home-page-content">
+        <div class="search-block">
         <form action="{{ url_for('home_page') }}" method="GET">
             <p><label for="order_by">Sort by:</label></p>
                 <select id="order_by" name="order_by">
@@ -27,12 +27,11 @@
             <p><button type="submit">SORT</button></p>
         </form>
         </div>
-        <div style="width: 85%; flaot: right;">
+        <div class="questions-list">
         <a href="{{ url_for('add_question') }}">Add Question</a>
         <table>
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>title</th>
                     <th>views</th>
                     <th>votes</th>
@@ -43,7 +42,6 @@
             <tbody>
                 {% for x in all_questions %}
                 <tr>
-                    <td><a href="{{ url_for('show_question', question_id = x.id) }}">{{x.id}}</a></td>
                     <td><a href="{{ url_for('show_question', question_id = x.id) }}" class="title-td">{{x.title}}</a></td>
                     <td>{{ x.view_number }}</td>
                     <td>{{ x.vote_number }}</td>

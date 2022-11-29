@@ -110,3 +110,17 @@ header {
 .time-views {
     font-size: 10px;
 }
+
+.home-page-content {
+    width: 100%;
+    overflow: hidden;
+}
+
+.search-block {
+    width: 15%;
+    float: left;
+}
+
+.questions-list {
+    width: 85%
+}
