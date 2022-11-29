@@ -1,12 +1,12 @@
 import data_handler
 import time
 
-ANSWERS_DATA = 'sample_data/answer.csv'
+ANSWERS_DATA = 'answer'
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'user', 'message', 'image']
 
 
 def get_answers():
-    return data_handler.get_records(ANSWERS_DATA)
+    return data_handler.read_from_table(ANSWERS_DATA)
 
 
 def get_answers_to_question(question_id):

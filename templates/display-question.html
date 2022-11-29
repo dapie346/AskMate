@@ -6,7 +6,7 @@
     <h1>{{ question['title'] }}</h1>
     <div class="question">
         <h3>{{ question['message'] }}</h3>
-        {% if question['image'] != '' %}
+        {% if question['image'] != None %}
             <img src="{{ url_for('static', filename=('images/' + question['image'])) }}" class="image">
         {% endif %}
     </div>

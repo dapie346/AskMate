@@ -6,17 +6,12 @@ IMAGE_FOLDER = 'static/images'
 import database_common
 
 @database_common.connection_handler
-def get_records(filepath):
-    with open(filepath, 'r') as file:
-        dict_reader = csv.DictReader(file)
-        list_of_dict = list(dict_reader)
-        for record in list_of_dict:
-            for k, v in record.items():
-                if k == 'view_number':
-                    record[k] = int(record[k])
-                elif k == 'vote_number':
-                    record[k] = int(record[k])
-    return list_of_dict
+def read_from_table(cursor, table):
+    query = f"""
+            SELECT *
+            FROM {table}"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
 def save_image(file, filename):

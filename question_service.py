@@ -1,19 +1,27 @@
 import data_handler
 import time
 
-QUESTIONS_DATA = 'sample_data/question.csv'
+import database_common
+
+QUESTIONS_DATA = 'question'
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
+@database_common.connection_handler
+def get_questions(cursor):
+    query = f"""
+            SELECT *
+            FROM question"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
-def get_questions():
-    return data_handler.get_records(QUESTIONS_DATA)
-
-
-def get_question(question_id):
-    questions = get_questions()
-    for question in questions:
-        if question['id'] == question_id:
-            return question
+@database_common.connection_handler
+def get_question(cursor, question_id):
+    query = f"""
+                SELECT *
+                FROM question
+                WHERE id = %(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
 
 
 def add_question(question, files):
