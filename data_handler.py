@@ -3,8 +3,9 @@ import csv
 import random
 
 IMAGE_FOLDER = 'static/images'
+import database_common
 
-
+@database_common.connection_handler
 def get_records(filepath):
     with open(filepath, 'r') as file:
         dict_reader = csv.DictReader(file)
