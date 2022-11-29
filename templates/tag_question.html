@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Tag question{% endblock %}
+{% block content %}
+    <div class="tag-container">
+        <div class="select-tag">
+            <h1>Select a tag:</h1>
+            <form method="POST">
+                <select id="tag" name="tag_id">
+                    {% for tag in tags %}
+                        <option value="{{ tag['id'] }}" {% if tag['name'] in question_tags %} disabled {% endif %}>{{ tag['name'] }}</option>
+                    {% endfor %}
+                </select>
+                <p><button name="select_tag" type="submit">Select</button></p>
+            </form>
+        </div>
+        <div class="add-tag">
+            <h1>Add a new tag:</h1>
+            <form method="POST" name="add_tag">
+                <input type="text" name="tag" size="20" required>
+                <p><button name="add_tag" type="submit">Add</button></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -124,3 +124,18 @@ header {
 .questions-list {
     width: 85%
 }
+
+.tag-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.select-tag {
+    width: 49%;
+    float: left;
+}
+
+.add-tag {
+    width: 49%;
+    float: right;
+}

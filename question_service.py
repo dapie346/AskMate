@@ -70,3 +70,10 @@ def count_views(cursor, question_id):
             SET view_number = view_number + 1
             WHERE id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
+
+@database_common.connection_handler
+def tag_question(cursor, question_id, tag_id):
+    query = """
+            INSERT INTO question_tag (question_id, tag_id)
+            VALUES (%(question_id)s, %(tag_id)s)"""
+    cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})

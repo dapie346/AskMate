@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
+
+import tag_service
 import util
 import question_service
 import answer_service
@@ -38,7 +40,8 @@ def show_question(question_id):
     question_service.count_views(question_id)
     question = question_service.get_question(question_id)
     answers = answer_service.get_answers_to_question(question_id)
-    return render_template('display-question.html', question=question, answers=answers)
+    tags = tag_service.get_question_tags(question_id)
+    return render_template('display-question.html', question=question, answers=answers, tags=tags)
 
 
 @app.route("/question/<question_id>/vote-up")
@@ -67,6 +70,18 @@ def delete_question(question_id):
     # answer_service.delete_answers_with_question(question_id)
     return redirect(url_for('home_page'))
 
+@app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
+def tag_question(question_id):
+    tags = tag_service.get_tags()
+    question_tags = tag_service.get_question_tags(question_id)
+    if request.method == 'POST':
+        if 'select_tag' in request.form:
+            tag_id = request.form['tag_id']
+        elif 'add_tag' in request.form:
+            tag_id = tag_service.add_tag(request.form['tag'])
+        question_service.tag_question(question_id, tag_id)
+        return redirect(url_for('show_question', question_id=question_id))
+    return render_template('tag_question.html', tags=tags, question_tags=question_tags)
 
 @app.route("/answer/<answer_id>/vote-up")
 def answer_upvote(answer_id):
