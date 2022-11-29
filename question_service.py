@@ -4,6 +4,7 @@ import database_common
 
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
+
 @database_common.connection_handler
 def get_questions(cursor):
     query = f"""
@@ -11,6 +12,7 @@ def get_questions(cursor):
             FROM question"""
     cursor.execute(query)
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_question(cursor, question_id):
@@ -20,6 +22,7 @@ def get_question(cursor, question_id):
                 WHERE id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchone()
+
 
 @database_common.connection_handler
 def add_question(cursor, question, files):
@@ -32,6 +35,7 @@ def add_question(cursor, question, files):
     if image_filename != '':
         data_handler.save_image(files['image'], image_filename)
     return cursor.fetchone()['id']
+
 
 @database_common.connection_handler
 def delete_question(cursor, question_id):
@@ -55,6 +59,7 @@ def question_vote(cursor, question_id, vote):
             WHERE id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id, 'vote': vote})
 
+
 @database_common.connection_handler
 def update_question(cursor, question_id, title, message):
     query = """
@@ -62,6 +67,7 @@ def update_question(cursor, question_id, title, message):
                 SET title = %(title)s, message = %(message)s
                 WHERE id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
+
 
 @database_common.connection_handler
 def count_views(cursor, question_id):

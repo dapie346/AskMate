@@ -38,7 +38,8 @@ def show_question(question_id):
     question_service.count_views(question_id)
     question = question_service.get_question(question_id)
     answers = answer_service.get_answers_to_question(question_id)
-    return render_template('display-question.html', question=question, answers=answers)
+    comments = comment_service.get_comments_to_question(question_id)
+    return render_template('display-question.html', question=question, answers=answers, comments=comments)
 
 
 @app.route("/question/<question_id>/vote-up")
@@ -89,18 +90,33 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_question(question_id):
     if request.method == 'POST':
-        comment_service.add_comment()
+        comment_service.add_to_question(request.form['message'], question_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('new-comment.html')
 
 
-@app.route("/question/<answer_id>/new-comment", methods=['GET', 'POST'])
-def new_comment_to_answer(answer_id):
-    question_id = answer_service.answer_vote(answer_id, -1)
+@app.route("/question/<question_id>/<answer_id>/new-comment", methods=['GET', 'POST'])
+def new_comment_to_answer(answer_id, question_id):
     if request.method == 'POST':
-        comment_service.add_comment()
+        comment_service.add_to_answer(request.form['message'], question_id, answer_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('new-comment.html')
+
+
+@app.route("/comments/<comment_id>/delete", methods=['GET', 'POST'])
+def delete_comment(comment_id):
+    comment = comment_service.get_comment(comment_id)
+    comment_service.delete_comment(comment)
+    return redirect(url_for('show_question', question_id=comment['question_id']))
+
+
+@app.route("/comments/<comment_id>/edit", methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    comment = comment_service.get_comment(comment_id)
+    if request.method == 'POST':
+        comment_service.edit_comment(comment, request.form['message'])
+        return redirect(url_for('show_question', question_id=comment['question_id']))
+    return render_template('edit-comment.html', message=comment['message'])
 
 
 if __name__ == "__main__":

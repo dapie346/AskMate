@@ -127,5 +127,22 @@ header {
 
 .add-comment {
     font-size: 12px;
-    color: #D6E4E5;
+    color: slategray;
+}
+
+.comment-section {
+    color: black;
+    margin-left: 5%;
+    width: 40%;
+}
+
+.comment {
+    border-bottom: 1px;
+    border-bottom-style: dotted;
+    font-size: smaller;
+}
+
+.edit-delete-comment a {
+    font-size: 12px;
+    color: slategray;
 }
