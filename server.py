@@ -34,9 +34,9 @@ def edit_question(question_id):
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
+    question_service.count_views(question_id)
     question = question_service.get_question(question_id)
     answers = util.sort_records(answer_service.get_answers_to_question(question_id), 'vote_number', 'desc')
-    question_service.count_views(question_id)
     return render_template('display-question.html', question=question, answers=answers)
 
 

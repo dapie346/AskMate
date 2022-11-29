@@ -1,9 +1,7 @@
 import data_handler
-import time
 
 import database_common
 
-QUESTIONS_DATA = 'question'
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 @database_common.connection_handler
@@ -23,63 +21,52 @@ def get_question(cursor, question_id):
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchone()
 
-
-def add_question(question, files):
-    id = data_handler.generate_id(get_questions())
-    record = {
-        'id': id,
-        'submission_time': int(time.time()),
-        'view_number': 0,
-        'vote_number': 0,
-        'title': question['title'],
-        'message': question['message'],
-        'image': '',
-    }
-    if files['image'].filename != '':
-        record['image'] = f'question_{id}.png'
-        data_handler.save_image(files['image'], f'question_{id}.png')
-
-    data_handler.append_to_csv(record, QUESTIONS_DATA)
-
-    return id
+@database_common.connection_handler
+def add_question(cursor, question, files):
+    image_filename = files['image'].filename
+    query = """
+                INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+                VALUES (NOW(), 0, 0, %(title)s, %(message)s, %(image)s)
+                RETURNING id"""
+    cursor.execute(query, {'title': question['title'], 'message': question['message'], 'image': image_filename if image_filename != '' else None})
+    if image_filename != '':
+        data_handler.save_image(files['image'], image_filename)
+    return cursor.fetchone()['id']
 
 @database_common.connection_handler
 def delete_question(cursor, question_id):
-    query = f"""
+    query = """
                 DELETE FROM question
-                WHERE id = %(question_id)s"""
+                WHERE id = %(question_id)s
+                RETURNING image"""
     cursor.execute(query, {'question_id': question_id})
-    try:
-        data_handler.delete_image(f'question_{question_id}.png')
-    except FileNotFoundError:
-        pass
+    image = cursor.fetchone()['image']
+    if image is not None:
+        try:
+            data_handler.delete_image(image)
+        except FileNotFoundError:
+            pass
 
+@database_common.connection_handler
+def question_vote(cursor, question_id, vote):
+    query = """
+            UPDATE question
+            SET vote_number = vote_number + %(vote)s
+            WHERE id = %(question_id)s"""
+    cursor.execute(query, {'question_id': question_id, 'vote': vote})
 
+@database_common.connection_handler
+def update_question(cursor, question_id, title, message):
+    query = """
+                UPDATE question
+                SET title = %(title)s, message = %(message)s
+                WHERE id = %(question_id)s"""
+    cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
 
-
-def question_vote(question_id, vote):
-    questions = get_questions()
-    for i, question in enumerate(questions):
-        if question['id'] == question_id:
-            questions[i]['vote_number'] += vote
-
-    data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
-
-
-def update_question(question_id, title, message):
-    questions = get_questions()
-    for i, question in enumerate(questions):
-        if question['id'] == question_id:
-            questions[i]['title'] = title
-            questions[i]['message'] = message
-
-    data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
-
-
-def count_views(question_id):
-    questions = get_questions()
-    for i, question in enumerate(questions):
-        if question['id'] == question_id:
-            question['view_number'] = question['view_number'] + 1
-
-    data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
+@database_common.connection_handler
+def count_views(cursor, question_id):
+    query = """
+            UPDATE question
+            SET view_number = view_number + 1
+            WHERE id = %(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
