@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
+
+import tag_service
 import util
 import question_service
 import answer_service
 import comment_service
-
+import data_handler
+from data_handler import *
 app = Flask(__name__)
 
 
@@ -40,6 +43,8 @@ def show_question(question_id):
     answers = answer_service.get_answers_to_question(question_id)
     comments = comment_service.get_comments_to_question(question_id)
     return render_template('display-question.html', question=question, answers=answers, comments=comments)
+    tags = tag_service.get_question_tags(question_id)
+    return render_template('display-question.html', question=question, answers=answers, tags=tags)
 
 
 @app.route("/question/<question_id>/vote-up")
@@ -68,6 +73,18 @@ def delete_question(question_id):
     # answer_service.delete_answers_with_question(question_id)
     return redirect(url_for('home_page'))
 
+@app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
+def tag_question(question_id):
+    tags = tag_service.get_tags()
+    question_tags = tag_service.get_question_tags(question_id)
+    if request.method == 'POST':
+        if 'select_tag' in request.form:
+            tag_id = request.form['tag_id']
+        elif 'add_tag' in request.form:
+            tag_id = tag_service.add_tag(request.form['tag'])
+        question_service.tag_question(question_id, tag_id)
+        return redirect(url_for('show_question', question_id=question_id))
+    return render_template('tag_question.html', tags=tags, question_tags=question_tags)
 
 @app.route("/answer/<answer_id>/vote-up")
 def answer_upvote(answer_id):
@@ -117,6 +134,23 @@ def edit_comment(comment_id):
         comment_service.edit_comment(comment, request.form['message'])
         return redirect(url_for('show_question', question_id=comment['question_id']))
     return render_template('edit-comment.html', message=comment['message'])
+
+@app.route("/answer/<answer_id>/edit", methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    answer = answer_service.get_answer(answer_id)
+    if request.method == 'POST':
+        question_id = answer_service.update_answer(answer_id, request.form['message'])
+        return redirect(url_for('show_question', question_id=question_id))
+    return render_template('edit_answer.html', message=answer['message'])
+
+@app.route("/search", methods=['POST'])
+def basic_search():
+    search_phrase = request.form.get('search')
+    if request.method == 'POST':
+        search_data = search_for(search_phrase)
+        answer_data = search_for_answer(search_phrase)
+        all_questions = read_from_table('question')
+        return render_template('extended_home_page.html', search_data=search_data, all_questions=all_questions)
 
 
 if __name__ == "__main__":

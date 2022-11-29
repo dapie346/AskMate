@@ -10,12 +10,16 @@
             <img src="{{ url_for('static', filename=('images/' + question['image'])) }}" class="image">
         {% endif %}
     </div>
+    <div class="question-tags">
+        <span>Tags: {% for tag in tags %}{{ tag }}, {% endfor %}</span>
+    </div>
     <div class="time-views">
         <span class="time-views">views: {{ question['view_number'] }} </span>
         <span class="time-views">added: {{ question['submission_time'] }}</span>
     </div>
     <div class="edit-delete">
         <a href="{{ url_for('edit_question', question_id = question['id']) }}">EDIT</a>
+        <a href="{{ url_for('tag_question', question_id = question['id']) }}">ADD TAG</a>
         <a href="{{ url_for('delete_question', question_id = question['id'])}}">DELETE QUESTION</a>
     </div>
     <div class="comment-section">

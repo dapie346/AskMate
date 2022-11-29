@@ -41,3 +41,27 @@ def generate_id(csv_data):
         id = random.randint(1000, 9999)
         if not any(id == record['id'] for record in csv_data):
             return id
+
+
+@database_common.connection_handler
+def search_for(cursor, value):
+    cursor.execute(
+    """
+    SELECT id,message,title,view_number,vote_number,submission_time
+    FROM question
+    WHERE title LIKE '%%' || %s || '%%' OR  message LIKE '%%' || %s || '%%' 
+    """, [value, value]
+    )
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def search_for_answer(cursor, value):
+    cursor.execute(
+    """
+    SELECT id,message,question_id
+    FROM answer
+    WHERE message LIKE '%%' || %s || '%%' 
+    """, [value]
+    )
+    return cursor.fetchall()
