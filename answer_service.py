@@ -19,9 +19,10 @@ def get_answers_to_question(cursor, question_id):
     query = f"""
         SELECT *
         FROM answer
-        WHERE question_id = %(q_id)s"""
+        WHERE question_id = %(q_id)s
+        ORDER BY vote_number DESC"""
     cursor.execute(query, {'q_id': question_id})
-    return cursor.fetchone()
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
@@ -51,8 +52,10 @@ def add_answer(cursor, answer, question_id, files):
 def delete_answer(cursor, answer_id):
     query = """
         DELETE FROM answer
-        WHERE id = %{id}s"""
+        WHERE id = %(id)s
+        RETURNING question_id"""
     cursor.execute(query, {'id': answer_id})
+    return cursor.fetchone()['question_id']
 
 
 @database_common.connection_handler
@@ -63,4 +66,4 @@ def answer_vote(cursor, answer_id, vote):
         WHERE id = %(id)s
         RETURNING question_id"""
     cursor.execute(query, {'vn': vote, 'id': answer_id})
-    return cursor.fetchone()
+    return cursor.fetchone()['question_id']
