@@ -13,6 +13,14 @@ def get_answers(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_answer(cursor, answer_id):
+    query = f"""
+                SELECT *
+                FROM answer
+                WHERE id = %(answer_id)s"""
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
 
 @database_common.connection_handler
 def get_answers_to_question(cursor, question_id):
@@ -27,12 +35,7 @@ def get_answers_to_question(cursor, question_id):
 
 @database_common.connection_handler
 def add_answer(cursor, answer, question_id, files):
-    if files['image'].filename != '':
-        image = f'answer_{id}.png'
-        data_handler.save_image(files['image'], f'answer_{id}.png')
-    else:
-        image = ''
-
+    image_filename = files['image'].filename
     query = """
         INSERT INTO answer (submission_time, vote_number, question_id, username, message, image)
         VALUES (NOW(), %(vn)s, %(q_id)s, %(un)s, %(msg)s, %(img)s)"""
@@ -43,9 +46,11 @@ def add_answer(cursor, answer, question_id, files):
             'q_id': question_id,
             'un': answer['user'],
             'msg': answer['message'],
-            'img': image
+            'img': image_filename if image_filename != '' else None
         }
     )
+    if image_filename != '':
+        data_handler.save_image(files['image'], image_filename)
 
 
 @database_common.connection_handler
@@ -66,4 +71,14 @@ def answer_vote(cursor, answer_id, vote):
         WHERE id = %(id)s
         RETURNING question_id"""
     cursor.execute(query, {'vn': vote, 'id': answer_id})
+    return cursor.fetchone()['question_id']
+
+@database_common.connection_handler
+def update_answer(cursor, answer_id, message):
+    query = """
+                UPDATE answer
+                SET message = %(message)s
+                WHERE id = %(answer_id)s
+                RETURNING question_id"""
+    cursor.execute(query, {'answer_id': answer_id, 'message': message})
     return cursor.fetchone()['question_id']

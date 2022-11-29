@@ -84,6 +84,13 @@ def delete_answer(answer_id):
     question_id = answer_service.delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=question_id))
 
+@app.route("/answer/<answer_id>/edit", methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    answer = answer_service.get_answer(answer_id)
+    if request.method == 'POST':
+        question_id = answer_service.update_answer(answer_id, request.form['message'])
+        return redirect(url_for('show_question', question_id=question_id))
+    return render_template('edit_answer.html', message=answer['message'])
 
 if __name__ == "__main__":
     app.run(debug=True)
