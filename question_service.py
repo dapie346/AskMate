@@ -43,16 +43,18 @@ def add_question(question, files):
 
     return id
 
+@database_common.connection_handler
+def delete_question(cursor, question_id):
+    query = f"""
+                DELETE FROM question
+                WHERE id = %(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+    try:
+        data_handler.delete_image(f'question_{question_id}.png')
+    except FileNotFoundError:
+        pass
 
-def delete_question(question_id):
-    questions = get_questions()
-    for i, question in enumerate(questions):
-        if question['id'] == question_id:
-            if question['image'] != '':
-                data_handler.delete_image(question['image'])
-            questions.pop(i)
 
-    data_handler.overwrite_csv(questions, QUESTION_HEADER, QUESTIONS_DATA)
 
 
 def question_vote(question_id, vote):
