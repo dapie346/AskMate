@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import util
 import question_service
 import answer_service
+import comment_service
 
 app = Flask(__name__)
 
@@ -90,13 +91,19 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_question(question_id):
-    return redirect(url_for('show_question', question_id=question_id))
+    if request.method == 'POST':
+        comment_service.add_comment()
+        return redirect(url_for('show_question', question_id=question_id))
+    return render_template('new-comment.html')
 
 
 @app.route("/question/<answer_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_answer(answer_id):
     question_id = answer_service.answer_vote(answer_id, -1)
-    return redirect(url_for('show_question', question_id=question_id))
+    if request.method == 'POST':
+        comment_service.add_comment()
+        return redirect(url_for('show_question', question_id=question_id))
+    return render_template('new-comment.html')
 
 
 if __name__ == "__main__":
