@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask, render_template, request, redirect, url_for
 import util
 import question_service
@@ -37,9 +35,9 @@ def edit_question(question_id):
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    question = question_service.get_question(question_id)
-    answers = util.sort_records(answer_service.get_answers_to_question(question_id), 'vote_number', 'desc')
     question_service.count_views(question_id)
+    question = question_service.get_question(question_id)
+    answers = answer_service.get_answers_to_question(question_id)
     return render_template('display-question.html', question=question, answers=answers)
 
 
@@ -66,7 +64,7 @@ def post_answer(question_id):
 @app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
 def delete_question(question_id):
     question_service.delete_question(question_id)
-    answer_service.delete_answers_with_question(question_id)
+    # answer_service.delete_answers_with_question(question_id)
     return redirect(url_for('home_page'))
 
 
@@ -84,8 +82,7 @@ def answer_downvote(answer_id):
 
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
-    question_id = answer_service.answer_vote(answer_id, -1)
-    answer_service.delete_answer(answer_id)
+    question_id = answer_service.delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=question_id))
 
 

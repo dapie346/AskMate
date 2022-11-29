@@ -1,63 +1,69 @@
 import data_handler
-import time
+import database_common
 
 ANSWERS_DATA = 'answer'
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'user', 'message', 'image']
 
 
-def get_answers():
-    return data_handler.read_from_table(ANSWERS_DATA)
+@database_common.connection_handler
+def get_answers(cursor):
+    query = f"""
+        SELECT *
+        FROM answer"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
-def get_answers_to_question(question_id):
-    answers = get_answers()
-    return [answer for answer in answers if answer['question_id'] == question_id]
+@database_common.connection_handler
+def get_answers_to_question(cursor, question_id):
+    query = f"""
+        SELECT *
+        FROM answer
+        WHERE question_id = %(q_id)s
+        ORDER BY vote_number DESC"""
+    cursor.execute(query, {'q_id': question_id})
+    return cursor.fetchall()
 
 
-def add_answer(answer, question_id, files):
-    id = data_handler.generate_id(get_answers())
-    record = {
-        'id': id,
-        'submission_time': int(time.time()),
-        'vote_number': 0,
-        'question_id': question_id,
-        'user': answer['user'],
-        'message': answer['message'],
-        'image': ''
-    }
-
+@database_common.connection_handler
+def add_answer(cursor, answer, question_id, files):
     if files['image'].filename != '':
-        record['image'] = f'answer_{id}.png'
+        image = f'answer_{id}.png'
         data_handler.save_image(files['image'], f'answer_{id}.png')
+    else:
+        image = ''
 
-    data_handler.append_to_csv(record, ANSWERS_DATA)
-
-
-def delete_answer(answer_id):
-    answers = get_answers()
-    for i, answer in enumerate(answers):
-        if answer['id'] == answer_id:
-            if answer['image'] != '':
-                data_handler.delete_image(answer['image'])
-            answers.pop(i)
-
-    data_handler.overwrite_csv(answers, ANSWER_HEADER, ANSWERS_DATA)
-
-
-def delete_answers_with_question(question_id):
-    deleted_answers = get_answers_to_question(question_id)
-
-    for answer in deleted_answers:
-        delete_answer(answer['id'])
+    query = """
+        INSERT INTO answer (submission_time, vote_number, question_id, username, message, image)
+        VALUES (NOW(), %(vn)s, %(q_id)s, %(un)s, %(msg)s, %(img)s)"""
+    cursor.execute(
+        query,
+        {
+            'vn': 0,
+            'q_id': question_id,
+            'un': answer['user'],
+            'msg': answer['message'],
+            'img': image
+        }
+    )
 
 
-def answer_vote(answer_id, vote):
-    answers = get_answers()
-    for i, answer in enumerate(answers):
-        if answer['id'] == answer_id:
-            question_id = answer['question_id']
-            answers[i]['vote_number'] += vote
+@database_common.connection_handler
+def delete_answer(cursor, answer_id):
+    query = """
+        DELETE FROM answer
+        WHERE id = %(id)s
+        RETURNING question_id"""
+    cursor.execute(query, {'id': answer_id})
+    return cursor.fetchone()['question_id']
 
-    data_handler.overwrite_csv(answers, ANSWER_HEADER, ANSWERS_DATA)
 
-    return question_id
+@database_common.connection_handler
+def answer_vote(cursor, answer_id, vote):
+    query = """
+        UPDATE answer
+        SET vote_number = vote_number+%(vn)s
+        WHERE id = %(id)s
+        RETURNING question_id"""
+    cursor.execute(query, {'vn': vote, 'id': answer_id})
+    return cursor.fetchone()['question_id']
