@@ -42,9 +42,8 @@ def show_question(question_id):
     question = question_service.get_question(question_id)
     answers = answer_service.get_answers_to_question(question_id)
     comments = comment_service.get_comments_to_question(question_id)
-    return render_template('display-question.html', question=question, answers=answers, comments=comments)
     tags = tag_service.get_question_tags(question_id)
-    return render_template('display-question.html', question=question, answers=answers, tags=tags)
+    return render_template('display-question.html', question=question, answers=answers, tags=tags, comments=comments)
 
 
 @app.route("/question/<question_id>/vote-up")
