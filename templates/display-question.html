@@ -14,6 +14,7 @@
         <span class="time-views">views: {{ question['view_number'] }} </span>
         <span class="time-views">added: {{ question['submission_time'] }}</span>
     </div>
+    <a href="{{ url_for('new_comment_to_question', question_id = question['id']) }}"class="add-comment"> Add a comment</a>
     <div class="edit-delete">
         <a href="{{ url_for('edit_question', question_id = question['id']) }}">EDIT</a>
         <a href="{{ url_for('delete_question', question_id = question['id'])}}">DELETE QUESTION</a>
@@ -42,6 +43,8 @@
         <a href="{{ url_for('delete_answer', answer_id = answer['id'])}}"class="edit-delete"> DELETE ANSWER</a>
         <br><br>
     {% endfor %}
+
+
 
     <form action="{{ url_for('post_answer', question_id = question['id']) }}" method="get">
         <p><button type="submit">ADD NEW ANSWER</button></p>
