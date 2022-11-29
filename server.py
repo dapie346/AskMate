@@ -4,7 +4,8 @@ from flask import Flask, render_template, request, redirect, url_for
 import util
 import question_service
 import answer_service
-
+import data_handler
+from data_handler import *
 app = Flask(__name__)
 
 
@@ -86,6 +87,16 @@ def delete_answer(answer_id):
     question_id = answer_service.answer_vote(answer_id, -1)
     answer_service.delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=question_id))
+
+
+@app.route("/search", methods=['POST'])
+def basic_search():
+    search_phrase = request.form.get('search')
+    if request.method == 'POST':
+        search_data = search_for(search_phrase)
+        answer_data = search_for_answer(search_phrase)
+        all_questions = read_from_table('question')
+        return render_template('extended_home_page.html', search_data=search_data, all_questions=all_questions)
 
 
 if __name__ == "__main__":
