@@ -59,4 +59,3 @@ def get_comments_to_question(cursor, question_id):
         """
     cursor.execute(query, {'q_id': question_id})
     return cursor.fetchall()
-

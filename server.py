@@ -5,7 +5,6 @@ import util
 import question_service
 import answer_service
 import comment_service
-import data_handler
 from data_handler import *
 app = Flask(__name__)
 
@@ -72,6 +71,7 @@ def delete_question(question_id):
     # answer_service.delete_answers_with_question(question_id)
     return redirect(url_for('home_page'))
 
+
 @app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
 def tag_question(question_id):
     tags = tag_service.get_tags()
@@ -84,6 +84,7 @@ def tag_question(question_id):
         question_service.tag_question(question_id, tag_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('tag_question.html', tags=tags, question_tags=question_tags)
+
 
 @app.route("/answer/<answer_id>/vote-up")
 def answer_upvote(answer_id):
@@ -134,6 +135,7 @@ def edit_comment(comment_id):
         return redirect(url_for('show_question', question_id=comment['question_id']))
     return render_template('edit-comment.html', message=comment['message'])
 
+
 @app.route("/answer/<answer_id>/edit", methods=['GET', 'POST'])
 def edit_answer(answer_id):
     answer = answer_service.get_answer(answer_id)
@@ -141,6 +143,7 @@ def edit_answer(answer_id):
         question_id = answer_service.update_answer(answer_id, request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('edit_answer.html', message=answer['message'])
+
 
 @app.route("/search", methods=['POST'])
 def basic_search():

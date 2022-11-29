@@ -13,6 +13,7 @@ def get_answers(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_answer(cursor, answer_id):
     query = f"""
@@ -21,6 +22,7 @@ def get_answer(cursor, answer_id):
                 WHERE id = %(answer_id)s"""
     cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchone()
+
 
 @database_common.connection_handler
 def get_answers_to_question(cursor, question_id):
@@ -72,6 +74,7 @@ def answer_vote(cursor, answer_id, vote):
         RETURNING question_id"""
     cursor.execute(query, {'vn': vote, 'id': answer_id})
     return cursor.fetchone()['question_id']
+
 
 @database_common.connection_handler
 def update_answer(cursor, answer_id, message):

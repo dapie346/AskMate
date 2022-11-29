@@ -51,6 +51,7 @@ def delete_question(cursor, question_id):
         except FileNotFoundError:
             pass
 
+
 @database_common.connection_handler
 def question_vote(cursor, question_id, vote):
     query = """
@@ -76,6 +77,7 @@ def count_views(cursor, question_id):
             SET view_number = view_number + 1
             WHERE id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
+
 
 @database_common.connection_handler
 def tag_question(cursor, question_id, tag_id):

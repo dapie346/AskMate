@@ -1,5 +1,6 @@
 import database_common
 
+
 @database_common.connection_handler
 def get_tags(cursor):
     query = f"""
@@ -7,6 +8,7 @@ def get_tags(cursor):
             FROM tag"""
     cursor.execute(query)
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def add_tag(cursor, tag):
@@ -16,6 +18,7 @@ def add_tag(cursor, tag):
             RETURNING id"""
     cursor.execute(query, {'name': tag})
     return cursor.fetchone()['id']
+
 
 @database_common.connection_handler
 def get_question_tags(cursor, question_id):

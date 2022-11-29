@@ -1,9 +1,9 @@
 import os
 import csv
 import random
-
-IMAGE_FOLDER = 'static/images'
 import database_common
+IMAGE_FOLDER = 'static/images'
+
 
 @database_common.connection_handler
 def read_from_table(cursor, table):
@@ -45,11 +45,10 @@ def generate_id(csv_data):
 
 @database_common.connection_handler
 def search_for(cursor, value):
-    cursor.execute(
-    """
-    SELECT id,message,title,view_number,vote_number,submission_time
-    FROM question
-    WHERE title LIKE '%%' || %s || '%%' OR  message LIKE '%%' || %s || '%%' 
+    cursor.execute("""
+        SELECT id,message,title,view_number,vote_number,submission_time
+        FROM question
+        WHERE title LIKE '%%' || %s || '%%' OR  message LIKE '%%' || %s || '%%' 
     """, [value, value]
     )
     return cursor.fetchall()
@@ -57,11 +56,10 @@ def search_for(cursor, value):
 
 @database_common.connection_handler
 def search_for_answer(cursor, value):
-    cursor.execute(
-    """
-    SELECT id,message,question_id
-    FROM answer
-    WHERE message LIKE '%%' || %s || '%%' 
+    cursor.execute("""
+        SELECT id,message,question_id
+        FROM answer
+        WHERE message LIKE '%%' || %s || '%%' 
     """, [value]
     )
     return cursor.fetchall()

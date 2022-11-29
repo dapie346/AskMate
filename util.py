@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 def sort_records(records, order_by, order_direction):
-    return sorted(records, key=lambda d: d[order_by], reverse=True if order_direction=='desc' else False)
+    return sorted(records, key=lambda d: d[order_by], reverse=True if order_direction == 'desc' else False)
 
 
 def unix_date_to_readable_date(unix_date):
