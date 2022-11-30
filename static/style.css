@@ -123,9 +123,18 @@ header {
     overflow: hidden;
 }
 
+.filter-header {
+    padding: 0;
+    background-color: #497174;
+    color: whitesmoke;
+}
+
 .search-block {
     width: 15%;
     float: left;
+    background-color: #D6E4E5;
+    border: #497174 2px solid;
+    border-radius: 5px;
 }
 
 .questions-list {
