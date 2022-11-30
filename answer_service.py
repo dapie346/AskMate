@@ -17,9 +17,9 @@ def get_answers(cursor):
 @database_common.connection_handler
 def get_answer(cursor, answer_id):
     query = f"""
-                SELECT *
-                FROM answer
-                WHERE id = %(answer_id)s"""
+        SELECT *
+        FROM answer
+        WHERE id = %(answer_id)s"""
     cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchone()
 
@@ -79,9 +79,9 @@ def answer_vote(cursor, answer_id, vote):
 @database_common.connection_handler
 def update_answer(cursor, answer_id, message):
     query = """
-                UPDATE answer
-                SET message = %(message)s
-                WHERE id = %(answer_id)s
-                RETURNING question_id"""
+        UPDATE answer
+        SET message = %(message)s
+        WHERE id = %(answer_id)s
+        RETURNING question_id"""
     cursor.execute(query, {'answer_id': answer_id, 'message': message})
     return cursor.fetchone()['question_id']

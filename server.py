@@ -1,21 +1,28 @@
 from flask import Flask, render_template, request, redirect, url_for
 
 import tag_service
-
 import question_service
 import answer_service
 import comment_service
 from data_handler import *
+
 app = Flask(__name__)
 
 
 @app.route("/")
-@app.route("/list")
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
+    all_questions = question_service.get_questions(order_by, order_direction+' limit 5')
+    return render_template('home_page.html', all_questions=all_questions, page='home_page')
+
+
+@app.route("/list")
+def home_page_list():
+    order_by = request.args.get('order_by', default='submission_time')
+    order_direction = request.args.get('order_direction', default='desc')
     all_questions = question_service.get_questions(order_by, order_direction)
-    return render_template('home_page.html', all_questions=all_questions)
+    return render_template('home_page.html', all_questions=all_questions, page='home_page_list')
 
 
 @app.route("/add-question", methods=['GET', 'POST'])

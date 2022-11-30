@@ -11,59 +11,60 @@
     </header>
     <div class="home-page-content">
         <div class="search-block">
-        <form action="{{ url_for('home_page') }}" method="GET">
-            <p><label for="order_by">Sort by:</label></p>
-                <select id="order_by" name="order_by">
-                    <option value="submission_time" selected>Submission time</option>
-                    <option value="view_number">Views</option>
-                    <option value="vote_number">Votes</option>
-                    <option value="title">Title</option>
-                </select>
-            <p>Order: </p>
-                <input type="radio" id="desc" name="order_direction" value="desc" checked>
-                <label for="desc">DESC</label>
-                <input type="radio" id="asc" name="order_direction" value="asc">
-                <label for="asc">ASC</label>
-            <p><button type="submit">SORT</button></p>
-        </form>
+            <form action="{{ url_for('home_page_list') }}" method="GET">
+                <p><label for="order_by">Sort by:</label></p>
+                    <select id="order_by" name="order_by">
+                        <option value="submission_time" selected>Submission time</option>
+                        <option value="view_number">Views</option>
+                        <option value="vote_number">Votes</option>
+                        <option value="title">Title</option>
+                    </select>
+                <p>Order: </p>
+                    <input type="radio" id="desc" name="order_direction" value="desc" checked>
+                    <label for="desc">DESC</label>
+                    <input type="radio" id="asc" name="order_direction" value="asc">
+                    <label for="asc">ASC</label>
+                <p><button type="submit">SORT</button></p>
+            </form>
+            <form action="{{ url_for('basic_search') }}" method="post">
+                <input type="text" name="search">
+                <button type="submit">B</button>
+            </form>
         </div>
         <div class="questions-list">
-        <a href="{{ url_for('add_question') }}">Add Question</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>title</th>
-                    <th>views</th>
-                    <th>votes</th>
-                    <th>vote up/down</th>
-                    <th>submission time</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for x in all_questions %}
-                <tr>
-                    <td><a href="{{ url_for('show_question', question_id = x.id) }}" class="title-td">{{x.title}}</a></td>
-                    <td>{{ x.view_number }}</td>
-                    <td>{{ x.vote_number }}</td>
-                    <td>
-                        <a href="{{ url_for('question_upvote', question_id = x.id) }}">
-                            <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}">
-                        </a>
-                        <a href="{{ url_for('question_downvote', question_id = x.id) }}">
-                            <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}">
-                        </a>
-                    </td>
-                    <td>{{ x.submission_time }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            <a href="{{ url_for('add_question') }}">Add Question</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>title</th>
+                        <th>views</th>
+                        <th>votes</th>
+                        <th>vote up/down</th>
+                        <th>submission time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in all_questions %}
+                    <tr>
+                        <td><a href="{{ url_for('show_question', question_id = x.id) }}" class="title-td">{{x.title}}</a></td>
+                        <td>{{ x.view_number }}</td>
+                        <td>{{ x.vote_number }}</td>
+                        <td>
+                            <a href="{{ url_for('question_upvote', question_id = x.id) }}">
+                                <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}">
+                            </a>
+                            <a href="{{ url_for('question_downvote', question_id = x.id) }}">
+                                <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}">
+                            </a>
+                        </td>
+                        <td>{{ x.submission_time }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if page == 'home_page' %}
+                <a href="{{ url_for('home_page_list') }}">See All Questions</a>
+            {% endif %}
         </div>
     </div>
-
-    <form action="{{ url_for('basic_search') }}" method="post">
-        <input type="text" name="search">
-        <button type="submit">B</button>
-    </form>
-
 {% endblock %}
