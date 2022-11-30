@@ -26,10 +26,12 @@
                     <label for="asc">ASC</label>
                 <p><button type="submit">SORT</button></p>
             </form>
-            <form action="{{ url_for('basic_search') }}" method="post">
-                <input type="text" name="search">
+
+            <form action="{{ url_for('basic_search', word = "a")}}" method="post">
+                <input type="text" name="search" >
                 <button type="submit">B</button>
             </form>
+
         </div>
         <div class="questions-list">
             <a href="{{ url_for('add_question') }}">Add Question</a>
@@ -67,4 +69,24 @@
             {% endif %}
         </div>
     </div>
+        <table>
+        <thead>
+            <tr>
+                <th>title</th>
+                <th>views</th>
+                <th>votes</th>
+                <th>submission time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in search_data %}
+            <tr>
+                <td>{{ question.title }}</td>
+                <td>{{ question.view_number }}</td>
+                <td>{{ question.vote_number }}</td>
+                <td>{{ question.submission_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
