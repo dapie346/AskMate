@@ -36,7 +36,7 @@
             <div class="comment">
                 <p>{{ comment['message'] }}
                     <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
-                        <img src="{{ url_for('static', filename='delete-icon.png') }}">
+                        <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
                     </a>
                 </p>
                 <span class="time-views">added: {{ comment['submission_time'] }} </span>

@@ -89,8 +89,10 @@ header {
 }
 
 .question {
+    background-color: #D6E4E5;
     border-left: 5px;
     border-left-style: solid;
+    border-color: #497174;
 }
 
 .edit-delete {
@@ -106,6 +108,7 @@ header {
 }
 
 .answer {
+    background-color: #D6E4E5;
     border: 2px solid;
     border-radius: 5px 10px 5px 10px;
     width:75%;
@@ -161,6 +164,9 @@ header {
     color: black;
     margin-left: 2.5%;
     width: 40%;
+    border-left: 5px;
+    border-left-style: solid;
+    border-color: #497174;
 }
 
 .comment {
