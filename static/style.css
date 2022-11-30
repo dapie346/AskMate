@@ -140,6 +140,14 @@ header {
     float: right;
 }
 
+.tag {
+    padding: 5px;
+    background-color: #D6E4E5;
+    border: 1px solid #497174;
+    border-radius: 5px;
+    text-align: center;
+}
+
 .add-comment {
     font-size: 12px;
     color: slategray;
