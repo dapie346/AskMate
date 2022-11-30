@@ -126,10 +126,11 @@ header {
 .filter-header {
     padding: 0;
     background-color: #497174;
+    border-radius: 5px;
     color: whitesmoke;
 }
 
-.search-block {
+.filter-container {
     width: 15%;
     float: left;
     background-color: #D6E4E5;
@@ -138,7 +139,8 @@ header {
 }
 
 .questions-list {
-    width: 85%
+    width: 80%;
+    float: left;
 }
 
 .tag-container {

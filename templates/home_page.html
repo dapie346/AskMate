@@ -10,7 +10,7 @@
         </h1>
     </header>
     <div class="home-page-content">
-        <div class="search-block">
+        <div class="filter-container">
             <div class="filter-header">
                 <h3>Filter</h3>
             </div>
@@ -29,16 +29,14 @@
                     <label for="asc">ASC</label>
                 <p><button type="submit">SORT</button></p>
             </form>
-
+        </div>
+        <div class="questions-list">
             <form action="{{ url_for('reroute') }}" method="post">
-                <input type="text" name="search" placeholder="Search">
+                <input type="text" name="search" placeholder="Search" size="50">
                 <button type="submit">
                     <img src="{{ url_for('static', filename='images/magnifying-glass.png') }}" class="search-button">
                 </button>
             </form>
-
-        </div>
-        <div class="questions-list">
             <a href="{{ url_for('add_question') }}">Add Question</a>
             <table>
                 <thead>
