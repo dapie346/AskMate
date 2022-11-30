@@ -23,9 +23,18 @@ def add_tag(cursor, tag):
 @database_common.connection_handler
 def get_question_tags(cursor, question_id):
     query = f"""
-            SELECT tag.name
+            SELECT tag.name, tag.id
             FROM question_tag INNER JOIN tag ON question_tag.tag_id = tag.id
             WHERE question_id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
-    tags = cursor.fetchall()
-    return [tag['name'] for tag in tags]
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def remove_tag(cursor, question_id, tag_id):
+    query = """
+            DELETE FROM question_tag
+            WHERE question_id = %(question_id)s AND tag_id = %(tag_id)s"""
+    cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})
+
+def get_tag_names_from_list(tag_list):
+    return [tag['name'] for tag in tag_list]
