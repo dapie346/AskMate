@@ -1,8 +1,6 @@
 import data_handler
 import database_common
 
-QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-
 
 @database_common.connection_handler
 def get_questions(cursor, order_by, additions):

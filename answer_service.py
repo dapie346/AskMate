@@ -1,9 +1,6 @@
 import data_handler
 import database_common
 
-ANSWERS_DATA = 'answer'
-ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'user', 'message', 'image']
-
 
 @database_common.connection_handler
 def get_answers(cursor):
