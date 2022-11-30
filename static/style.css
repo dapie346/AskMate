@@ -156,6 +156,7 @@ header {
 }
 
 .add-comment {
+    margin-left: 2.5%;
     font-size: 12px;
     color: slategray;
 }
@@ -178,4 +179,8 @@ header {
 .edit-delete-comment a {
     font-size: 12px;
     color: slategray;
+}
+
+.comment .time-views {
+        margin-left: 20px;
 }
