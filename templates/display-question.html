@@ -16,7 +16,7 @@
             <span class="tag">
                 {{ tag['name'] }}
                 <a href="{{ url_for('remove_tag', question_id = question['id'], tag_id = tag['id']) }}">
-                    remove
+                    <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
                 </a>
             </span>
         {% endfor %}

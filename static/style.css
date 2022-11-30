@@ -101,6 +101,10 @@ header {
     vertical-align: middle;
 }
 
+.delete-icon {
+    vertical-align: middle;
+}
+
 .answer {
     border: 2px solid;
     border-radius: 5px 10px 5px 10px;
