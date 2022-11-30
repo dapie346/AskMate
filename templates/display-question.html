@@ -34,15 +34,14 @@
     {% for comment in comments %}
         {% if not comment['answer_id'] %}
             <div class="comment">
-                <p>{{ comment['message'] }}
-                    <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
-                        <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
-                    </a>
-                </p>
+                <p>{{ comment['message'] }}</p>
                 <span class="time-views">added: {{ comment['submission_time'] }} </span>
                 {% if comment['edited_count'] %}
-                <span class="time-views">edited: {{ comment['edited_count'] }} times</span>
+                    <span class="time-views">edited: {{ comment['edited_count'] }} times</span>
                 {% endif %}
+                <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
+                    <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
+                </a>
                 <div class="edit-delete-comment">
                     <a href="{{ url_for('edit_comment', comment_id = comment['id'], question_id = question['id'], message = comment['message']) }}">EDIT</a>
                 </div>
