@@ -29,7 +29,7 @@ def add_question(cursor, question, files):
     image_filename = files['image'].filename
     query = """
                 INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                VALUES (NOW(), 0, 0, %(title)s, %(message)s, %(image)s)
+                VALUES (NOW()::TIMESTAMP(0), 0, 0, %(title)s, %(message)s, %(image)s)
                 RETURNING id"""
     cursor.execute(query, {'title': question['title'], 'message': question['message'], 'image': image_filename if image_filename != '' else None})
     if image_filename != '':

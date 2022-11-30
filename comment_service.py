@@ -6,7 +6,7 @@ def add_to_question(cursor, message, question_id):
     query = """
         INSERT INTO comment 
         (question_id, message, submission_time, edited_count)
-        VALUES (%(q_id)s, %(msg)s, NOW(), %(ed_count)s)
+        VALUES (%(q_id)s, %(msg)s, NOW()::TIMESTAMP(0), %(ed_count)s)
         """
     cursor.execute(query, {'q_id': question_id, 'msg': message, 'ed_count': 0})
 
@@ -16,7 +16,7 @@ def add_to_answer(cursor, message, question_id, answer_id):
     query = f"""
         INSERT INTO comment 
         (question_id, answer_id, message, submission_time, edited_count)
-        VALUES (%(q_id)s, %(a_id)s, %(msg)s, NOW(), %(ed_count)s)
+        VALUES (%(q_id)s, %(a_id)s, %(msg)s, NOW()::TIMESTAMP(0), %(ed_count)s)
         """
     cursor.execute(query, {'q_id': question_id, 'a_id': answer_id, 'msg': message, 'ed_count': 0})
 

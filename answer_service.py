@@ -40,7 +40,7 @@ def add_answer(cursor, answer, question_id, files):
     image_filename = files['image'].filename
     query = """
         INSERT INTO answer (submission_time, vote_number, question_id, username, message, image)
-        VALUES (NOW(), %(vn)s, %(q_id)s, %(un)s, %(msg)s, %(img)s)"""
+        VALUES (NOW()::TIMESTAMP(0), %(vn)s, %(q_id)s, %(un)s, %(msg)s, %(img)s)"""
     cursor.execute(
         query,
         {
