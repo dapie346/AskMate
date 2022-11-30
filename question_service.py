@@ -3,7 +3,7 @@ import database_common
 
 
 @database_common.connection_handler
-def get_questions(cursor, order_by, additions):
+def get_questions(cursor, order_by='submission_time', additions=''):
     query = f"""
         SELECT *
         FROM question

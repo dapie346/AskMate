@@ -4,7 +4,7 @@ import tag_service
 import question_service
 import answer_service
 import comment_service
-from data_handler import *
+import data_handler
 
 app = Flask(__name__)
 
@@ -168,10 +168,10 @@ def duplicate_handler_for_search(q_list, a_list):
 def basic_search(word):
     search_phrase = request.form.get('search')
     if request.method == 'POST':
-        search_data = search_for(search_phrase)
-        answer_data = search_for_answer(search_phrase)
+        search_data = data_handler.search_for(search_phrase)
+        answer_data = data_handler.search_for_answer(search_phrase)
         results = duplicate_handler_for_search(search_data, answer_data)
-        all_questions = read_from_table('question')
+        all_questions = question_service.get_questions()
         return render_template('home_page.html', search_data=results, all_questions=all_questions,search_phrase=search_phrase)
 
 
