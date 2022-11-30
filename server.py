@@ -4,7 +4,7 @@ import tag_service
 import question_service
 import answer_service
 import comment_service
-from data_handler import *
+import data_handler
 
 app = Flask(__name__)
 
@@ -178,6 +178,7 @@ def reroute():
     search_phrase = request.form.get('search')
     if request.method == 'POST':
         return redirect(url_for('basic_search',word=search_phrase))
+
 
 
 if __name__ == "__main__":

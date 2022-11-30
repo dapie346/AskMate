@@ -3,7 +3,7 @@ import database_common
 
 
 @database_common.connection_handler
-def get_questions(cursor, order_by, additions):
+def get_questions(cursor, order_by='submission_time', additions=''):
     query = f"""
         SELECT *
         FROM question
@@ -24,15 +24,20 @@ def get_question(cursor, question_id):
 
 @database_common.connection_handler
 def add_question(cursor, question, files):
-    image_filename = files['image'].filename
     query = """
-                INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                VALUES (NOW()::TIMESTAMP(0), 0, 0, %(title)s, %(message)s, %(image)s)
+                INSERT INTO question (submission_time, view_number, vote_number, title, message)
+                VALUES (NOW()::TIMESTAMP(0), 0, 0, %(title)s, %(message)s)
                 RETURNING id"""
-    cursor.execute(query, {'title': question['title'], 'message': question['message'], 'image': image_filename if image_filename != '' else None})
-    if image_filename != '':
-        data_handler.save_image(files['image'], image_filename)
-    return cursor.fetchone()['id']
+    cursor.execute(query, {'title': question['title'], 'message': question['message']})
+    id = cursor.fetchone()['id']
+    if files['image'].filename != '':
+        data_handler.save_image(files['image'], f'question_{id}.png')
+        query = """
+                        UPDATE question
+                        SET image = %(image)s
+                        WHERE id = %(question_id)s"""
+        cursor.execute(query, {'question_id': id, 'image': f'question_{id}.png'})
+    return id
 
 
 @database_common.connection_handler

@@ -35,7 +35,7 @@ def edit_comment(cursor, comment, message):
     query = """
         UPDATE comment
         SET message = %(message)s,
-        submission_time = NOW(),
+        submission_time = NOW()::TIMESTAMP(0),
         edited_count = edited_count+1
         WHERE id = %(comment_id)s"""
     cursor.execute(query, {'comment_id': comment['id'], 'message': message})
