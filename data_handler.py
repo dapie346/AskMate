@@ -14,9 +14,9 @@ def delete_image(filename):
 
 
 @database_common.connection_handler
-def search_for(cursor, value):
+def search_through_questions(cursor, value):
     cursor.execute("""
-        SELECT id,message,title,view_number,vote_number,submission_time
+        SELECT *
         FROM question
         WHERE title ILIKE '%%' || %s || '%%' OR  message LIKE '%%' || %s || '%%' 
     """, [value, value]
@@ -25,7 +25,7 @@ def search_for(cursor, value):
 
 
 @database_common.connection_handler
-def search_for_answer(cursor, value):
+def search_through_answers(cursor, value):
     cursor.execute("""
         SELECT question_id
         FROM answer

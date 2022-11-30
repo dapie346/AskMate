@@ -28,9 +28,10 @@
             </form>
 
             <form action="{{ url_for('reroute') }}" method="post">
-                <input type="text" name="search" >
-                <button type="submit">B</button>
-
+                <input type="text" name="search">
+                <button type="submit">
+                    <img src="{{ url_for('static', filename='images/magnifying-glass.png') }}" class="search-button">
+                </button>
             </form>
 
         </div>

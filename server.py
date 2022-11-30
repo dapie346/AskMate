@@ -166,9 +166,9 @@ def duplicate_handler_for_search(q_list, a_list):
 
 @app.route("/search/<word>", methods=['POST','GET'])
 def basic_search(word):
-    search_data = data_handler.search_for(word)
-    answer_data = data_handler.search_for_answer(word)
-    results = duplicate_handler_for_search(search_data, answer_data)
+    question_data = data_handler.search_through_questions(word)
+    answer_data = data_handler.search_through_answers(word)
+    results = duplicate_handler_for_search(question_data, answer_data)
     all_questions = question_service.get_questions()
     return render_template('search_page.html',search_data=results, all_questions=all_questions,search_phrase=word)
 
@@ -178,7 +178,6 @@ def reroute():
     search_phrase = request.form.get('search')
     if request.method == 'POST':
         return redirect(url_for('basic_search',word=search_phrase))
-
 
 
 if __name__ == "__main__":
