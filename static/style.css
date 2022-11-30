@@ -181,6 +181,12 @@ header {
     color: slategray;
 }
 
+
 .comment .time-views {
         margin-left: 20px;
+}
+
+.search-button {
+    padding: 0;
+    margin: 2px;
 }
