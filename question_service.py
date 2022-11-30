@@ -1,15 +1,23 @@
-import data_handler
+from psycopg2 import sql
 
+import data_handler
 import database_common
 
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 
 @database_common.connection_handler
-def get_questions(cursor):
-    query = f"""
+def get_questions(cursor, order_by, order_direction):
+    if order_direction == 'desc':
+        query = sql.SQL("""
             SELECT *
-            FROM question"""
+            FROM question
+            ORDER BY {ob} DESC""").format(ob=sql.Identifier(order_by))
+    else:
+        query = sql.SQL("""
+            SELECT *
+            FROM question
+            ORDER BY {ob} ASC""").format(ob=sql.Identifier(order_by))
     cursor.execute(query)
     return cursor.fetchall()
 

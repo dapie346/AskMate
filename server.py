@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 
 import tag_service
-import util
+
 import question_service
 import answer_service
 import comment_service
@@ -14,7 +14,7 @@ app = Flask(__name__)
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
-    all_questions = util.sort_records(question_service.get_questions(), order_by, order_direction)
+    all_questions = question_service.get_questions(order_by, order_direction)
     return render_template('home_page.html', all_questions=all_questions)
 
 
@@ -98,7 +98,7 @@ def answer_downvote(answer_id):
     return redirect(url_for('show_question', question_id=question_id))
 
 
-@app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
+@app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
     question_id = answer_service.delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=question_id))
