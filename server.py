@@ -157,14 +157,22 @@ def edit_answer(answer_id):
     return render_template('edit_answer.html', message=answer['message'])
 
 
-@app.route("/search", methods=['POST'])
-def basic_search():
+def duplicate_handler_for_search(q_list, a_list):
+    for i in a_list:
+        if i not in q_list:
+            q_list.append(i)
+    return q_list
+
+
+@app.route("/search/<word>", methods=['POST'])
+def basic_search(word):
     search_phrase = request.form.get('search')
     if request.method == 'POST':
         search_data = search_for(search_phrase)
         answer_data = search_for_answer(search_phrase)
+        results = duplicate_handler_for_search(search_data, answer_data)
         all_questions = read_from_table('question')
-        return render_template('extended_home_page.html', search_data=search_data, all_questions=all_questions)
+        return render_template('home_page.html', search_data=results, all_questions=all_questions,search_phrase=search_phrase)
 
 
 if __name__ == "__main__":

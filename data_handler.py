@@ -1,6 +1,6 @@
 import os
 import database_common
-
+import question_service
 IMAGE_FOLDER = 'static/images'
 
 
@@ -35,9 +35,13 @@ def search_for(cursor, value):
 @database_common.connection_handler
 def search_for_answer(cursor, value):
     cursor.execute("""
-        SELECT id,message,question_id
+        SELECT question_id
         FROM answer
-        WHERE message LIKE '%%' || %s || '%%' 
+        WHERE message ILIKE '%%' || %s || '%%' 
     """, [value]
     )
-    return cursor.fetchall()
+    answers = cursor.fetchall()
+    questions = []
+    for i in answers:
+        questions.append(question_service.get_question(i['question_id']))
+    return questions
