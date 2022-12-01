@@ -31,8 +31,8 @@
             </form>
         </div>
         <div class="questions-list">
-            <form action="{{ url_for('reroute') }}" method="post">
-                <input type="text" name="search" placeholder="Search" size="50">
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" name="q" placeholder="Search" size="50">
                 <button type="submit">
                     <img src="{{ url_for('static', filename='images/magnifying-glass.png') }}" class="search-button">
                 </button>
@@ -72,24 +72,4 @@
             {% endif %}
         </div>
     </div>
-        <table>
-        <thead>
-            <tr>
-                <th>title</th>
-                <th>views</th>
-                <th>votes</th>
-                <th>submission time</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for question in search_data %}
-            <tr>
-                <td>{{ question.title | safe }}</td>
-                <td>{{ question.view_number }}</td>
-                <td>{{ question.vote_number }}</td>
-                <td>{{ question.submission_time }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 {% endblock %}
