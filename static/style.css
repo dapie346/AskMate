@@ -200,3 +200,17 @@ header {
     margin: 2px;
 }
 
+.result-answer-container {
+    color: black;
+    margin-left: 2.5%;
+    width: 40%;
+    border-left: 5px;
+    border-left-style: solid;
+    border-color: #497174;
+}
+
+.result-answer {
+    background-color: #D6E4E5;
+    border-bottom: 1px;
+    border-bottom-style: solid;
+}

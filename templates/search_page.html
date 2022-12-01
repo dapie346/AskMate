@@ -2,36 +2,37 @@
 {% block content %}
     <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
     <br>
-    <table>
-        <thead>
-            <tr>
-                <th>title</th>
-                <th>views</th>
-                <th>votes</th>
-                <th>submission time</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for question in search_data %}
-                <tr>
-                    <td>{{ question.title | safe}}</td>
-                    <td>{{ question.view_number }}</td>
-                    <td>{{ question.vote_number }}</td>
-                    <td>{{ question.submission_time }}</td>
-                    <td>{{ question.id }}</td>
-                </tr>
-
-            {% for answer in answers %}
-                <tr>
-                    {% if answer.question_id == question.id %}
-                        <td>{{ answer.message | safe}}</td>
-                        <td>{{ answer.question_id | safe}}</td>
-
-                </tr>
-                    {% endif %}
-            {% endfor %}
-
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="results-container">
+        {% for question in search_data %}
+            <div class="result">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>title</th>
+                            <th>views</th>
+                            <th>votes</th>
+                            <th>submission time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="{{ url_for('show_question', question_id = question.id) }}" class="title-td">{{ question.title | safe}}</a></td>
+                            <td>{{ question.view_number }}</td>
+                            <td>{{ question.vote_number }}</td>
+                            <td>{{ question.submission_time }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% if answers %}
+                    <div class="result-answer-container">
+                        {% for answer in answers %}
+                            <div class="result-answer">
+                                {{ answer.message | safe }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
