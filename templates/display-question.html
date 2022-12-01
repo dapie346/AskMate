@@ -53,6 +53,7 @@
     {% endif %}
     <p><a href="{{ url_for('new_comment_to_question', question_id = question['id']) }}" class="add-comment"> Add a comment</a></p>
     <br><br>
+    {% if answers %}
     <h2>Answers:</h2>
     <div class="answer-container">
         {% for answer in answers %}
@@ -100,8 +101,8 @@
             <p><a href="{{ url_for('new_comment_to_answer', question_id = question['id'], answer_id = answer['id']) }}" class="add-comment"> Add a comment</a></p>
             <br>
         {% endfor %}
-        <br>
-        <a href="{{ url_for('post_answer', question_id = question['id']) }}" class="add-answer">ADD NEW ANSWER</a>
+    {% endif %}
+    <button type="submit"><a href="{{ url_for('post_answer', question_id = question['id']) }}" class="add-answer">ADD NEW ANSWER</a></button>
     </div>
     <br>
 {% endblock %}
