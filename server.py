@@ -173,11 +173,12 @@ def search():
     answer_data = data_handler.search_through_answers(search_phrase)
 
     results = duplicate_handler_for_search(question_data, answer_data)
-
     for question in results:
         question['title'] = question['title'].replace(search_phrase, '<mark>' + search_phrase + '</mark>')
-
-    return render_template('search_page.html', search_data=results)
+    answers = data_handler.answers_for_question(search_phrase)
+    print(answers)
+    print(results)
+    return render_template('search_page.html', search_data=results, answers=answers)
 
 
 if __name__ == "__main__":

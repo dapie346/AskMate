@@ -27,13 +27,13 @@ def search_through_questions(cursor, value):
 @database_common.connection_handler
 def search_through_answers(cursor, value):
     cursor.execute("""
-        SELECT question_id
+        SELECT question_id,message
         FROM answer
         WHERE message ILIKE '%%' || %s || '%%' 
     """, [value]
     )
     answers = cursor.fetchall()
-
+    print(answers)
     questions = []
     for i in answers:
         questions.append(question_service.get_question(i['question_id']))
@@ -45,3 +45,14 @@ def duplicate_handler_for_search(q_list, a_list):
         if i not in q_list:
             q_list.append(i)
     return q_list
+
+@database_common.connection_handler
+def answers_for_question(cursor, value):
+    cursor.execute("""
+        SELECT question_id,message
+        FROM answer
+        WHERE message ILIKE '%%' || %s || '%%' 
+    """, [value]
+    )
+    answers = cursor.fetchall()
+    return answers
