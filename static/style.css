@@ -185,6 +185,7 @@ header {
     border-bottom: 1px;
     border-bottom-style: dotted;
     font-size: smaller;
+    margin-left: 20px;
 }
 
 .edit-delete-comment a {
@@ -193,11 +194,9 @@ header {
 }
 
 
-.comment .time-views {
-        margin-left: 20px;
-}
 
 .search-button {
     padding: 0;
     margin: 2px;
 }
+
