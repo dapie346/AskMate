@@ -21,10 +21,11 @@
                 </tr>
             {% for answer in answers %}
                 <tr>
-                    <td>{{ answer.message }}</td>
+                    <td>{{ answer.message | safe}}</td>
                 </tr>
             {% endfor %}
             {% endfor %}
+
         </tbody>
     </table>
 {% endblock %}

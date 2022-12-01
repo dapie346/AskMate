@@ -176,8 +176,10 @@ def search():
     for question in results:
         question['title'] = question['title'].replace(search_phrase, '<mark>' + search_phrase + '</mark>')
     answers = data_handler.answers_for_question(search_phrase)
+    for answer in answers:
+        answer['message'] = answer['message'].replace(search_phrase, '<mark>' + search_phrase + '</mark>')
+
     print(answers)
-    print(results)
     return render_template('search_page.html', search_data=results, answers=answers)
 
 
