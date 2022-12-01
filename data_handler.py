@@ -6,11 +6,11 @@ IMAGE_FOLDER = 'static/images'
 
 
 def save_image(file, filename):
-    file.save(os.path.join(IMAGE_FOLDER, filename))
+    file.save(os.path.join(os.path.abspath(IMAGE_FOLDER), filename))
 
 
 def delete_image(filename):
-    os.remove(os.path.join(IMAGE_FOLDER, filename))
+    os.remove(os.path.join(os.path.abspath(IMAGE_FOLDER), filename))
 
 
 @database_common.connection_handler
