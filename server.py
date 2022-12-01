@@ -174,8 +174,6 @@ def basic_search(word):
 
     for i,question in enumerate(results):
         question['title'] = question['title'].replace(word,'<mark>'+word+'</mark>')
-    print(results)
-
     return render_template('search_page.html',search_data=results, all_questions=all_questions,search_phrase=word)
 
 
