@@ -40,12 +40,6 @@ def search_through_answers(cursor, value):
     return questions
 
 
-def duplicate_handler_for_search(q_list, a_list):
-    for i in a_list:
-        if i not in q_list:
-            q_list.append(i)
-    return q_list
-
 @database_common.connection_handler
 def answers_for_question(cursor, value):
     cursor.execute("""

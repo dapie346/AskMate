@@ -23,7 +23,7 @@
                         </tr>
                     </tbody>
                 </table>
-                {% if answers %}
+                {% if answers and question.id in answer_question_ids%}
                     <div class="result-answer-container">
                         {% for answer in answers %}
                             {% if answer.question_id == question.id %}

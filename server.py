@@ -179,8 +179,9 @@ def search():
     for answer in answers:
         answer['message'] = answer['message'].replace(search_phrase, '<mark>' + search_phrase + '</mark>')
 
-    print(answers)
-    return render_template('search_page.html', search_data=results, answers=answers)
+    answer_question_ids = [answer['question_id'] for answer in answers]
+
+    return render_template('search_page.html', search_data=results, answers=answers , answer_question_ids=answer_question_ids)
 
 
 if __name__ == "__main__":
