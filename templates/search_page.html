@@ -26,9 +26,11 @@
                 {% if answers %}
                     <div class="result-answer-container">
                         {% for answer in answers %}
+                            {% if answer.question_id == question.id %}
                             <div class="result-answer">
                                 {{ answer.message | safe }}
                             </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endif %}
