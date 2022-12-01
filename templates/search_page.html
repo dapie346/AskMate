@@ -1,5 +1,25 @@
-{% extends 'home_page.html' %}
-{% block search %}
-
-
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>title</th>
+                <th>views</th>
+                <th>votes</th>
+                <th>submission time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in search_data %}
+                <tr>
+                    <td>{{ question.title | safe}}</td>
+                    <td>{{ question.view_number }}</td>
+                    <td>{{ question.vote_number }}</td>
+                    <td>{{ question.submission_time }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

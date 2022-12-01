@@ -57,6 +57,19 @@ def get_comments_to_question(cursor, question_id):
         SELECT *
         FROM comment
         WHERE question_id = %(q_id)s
+        AND answer_id IS NULL
+        """
+    cursor.execute(query, {'q_id': question_id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_comments_to_answers(cursor, question_id):
+    query = f"""
+        SELECT *
+        FROM comment
+        WHERE question_id = %(q_id)s
+        AND answer_id IS NOT NULL
         """
     cursor.execute(query, {'q_id': question_id})
     return cursor.fetchall()

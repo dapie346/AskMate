@@ -47,9 +47,11 @@ def show_question(question_id):
     question_service.count_views(question_id)
     question = question_service.get_question(question_id)
     answers = answer_service.get_answers_to_question(question_id)
-    comments = comment_service.get_comments_to_question(question_id)
+    question_comments = comment_service.get_comments_to_question(question_id)
+    answers_comments = comment_service.get_comments_to_answers(question_id)
     tags = tag_service.get_question_tags(question_id)
-    return render_template('display-question.html', question=question, answers=answers, tags=tags, comments=comments)
+    return render_template('display-question.html', question=question, answers=answers, tags=tags,
+                           question_comments=question_comments, answers_comments=answers_comments)
 
 
 @app.route("/question/<question_id>/vote-up")
@@ -164,24 +166,18 @@ def duplicate_handler_for_search(q_list, a_list):
     return q_list
 
 
-@app.route("/search/<word>", methods=['POST','GET'])
-def basic_search(word):
-    question_data = data_handler.search_through_questions(word)
-    answer_data = data_handler.search_through_answers(word)
+@app.route("/search")
+def search():
+    search_phrase = request.args.get('q')
+    question_data = data_handler.search_through_questions(search_phrase)
+    answer_data = data_handler.search_through_answers(search_phrase)
 
     results = duplicate_handler_for_search(question_data, answer_data)
-    all_questions = question_service.get_questions()
 
-    for i,question in enumerate(results):
-        question['title'] = question['title'].replace(word,'<mark>'+word+'</mark>')
-    return render_template('search_page.html',search_data=results, all_questions=all_questions,search_phrase=word)
+    for question in results:
+        question['title'] = question['title'].replace(search_phrase, '<mark>' + search_phrase + '</mark>')
 
-
-@app.route("/search", methods=['POST'])
-def reroute():
-    search_phrase = request.form.get('search')
-    if request.method == 'POST':
-        return redirect(url_for('basic_search',word=search_phrase))
+    return render_template('search_page.html', search_data=results)
 
 
 if __name__ == "__main__":
