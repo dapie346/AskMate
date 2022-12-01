@@ -5,6 +5,7 @@ import question_service
 import answer_service
 import comment_service
 import data_handler
+import re
 
 app = Flask(__name__)
 
@@ -173,11 +174,12 @@ def search():
     answer_data = data_handler.search_through_answers(search_phrase)
 
     results = duplicate_handler_for_search(question_data, answer_data)
+    pattern = re.compile(search_phrase, re.IGNORECASE)
     for question in results:
-        question['title'] = question['title'].replace(search_phrase, '<mark>' + search_phrase + '</mark>')
+        question['title'] = pattern.sub('<mark>' + search_phrase + '</mark>', question['title'])
     answers = data_handler.answers_for_question(search_phrase)
     for answer in answers:
-        answer['message'] = answer['message'].replace(search_phrase, '<mark>' + search_phrase + '</mark>')
+        answer['message'] = pattern.sub('<mark>' + search_phrase + '</mark>', answer['message'])
 
     answer_question_ids = [answer['question_id'] for answer in answers]
 

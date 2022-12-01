@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
     <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
-    <br>
+    <form action="{{ url_for('search') }}" method="get">
+        <input type="text" name="q" placeholder="Search" size="50" value="{{ request.args.get('q') }}">
+        <button type="submit">
+            <img src="{{ url_for('static', filename='images/magnifying-glass.png') }}" class="search-button">
+        </button>
+    </form>
+    <h2>Results:</h2>
     <div class="results-container">
         {% for question in search_data %}
             <div class="result">
