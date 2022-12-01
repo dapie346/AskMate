@@ -19,6 +19,11 @@
                     <td>{{ question.vote_number }}</td>
                     <td>{{ question.submission_time }}</td>
                 </tr>
+            {% for answer in answers %}
+                <tr>
+                    <td>{{ answer.message }}</td>
+                </tr>
+            {% endfor %}
             {% endfor %}
         </tbody>
     </table>
