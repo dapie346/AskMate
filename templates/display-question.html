@@ -30,28 +30,28 @@
         <a href="{{ url_for('tag_question', question_id = question['id']) }}">ADD TAG</a>
         <a href="{{ url_for('delete_question', question_id = question['id'])}}">DELETE QUESTION</a>
     </div>
-    <div class="comment-section">
-        {% for comment in comments %}
-            {% if not comment['answer_id'] %}
-                <div class="comment">
-                    <p>
-                        {{ comment['message'] }}
-                    </p>
-                    <span class="time-views">added: {{ comment['submission_time'] }} </span>
-                    <span class="edit-delete-comment">
-                        <a href="{{ url_for('edit_comment', comment_id = comment['id'], question_id = question['id'], message = comment['message']) }}">EDIT</a>
-                        <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
+    {% if question_comments %}
+        <div class="comment-section">
+            {% for comment in question_comments %}
+                    <div class="comment">
+                        <p>
+                            <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
                             <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
                         </a>
-                    </span>
-                    {% if comment['edited_count'] %}
-                        <span class="time-views">Edited {{ comment['edited_count'] }} time(s)</span>
-                    {% endif %}
-                </div>
-            {% endif %}
-        {% endfor %}
-        <p><a href="{{ url_for('new_comment_to_question', question_id = question['id']) }}" class="add-comment"> Add a comment</a></p>
-    </div>
+                        {{ comment['message'] }}
+                        </p>
+                        <span class="time-views">added: {{ comment['submission_time'] }} </span>
+                        <span class="edit-delete-comment">
+                            <a href="{{ url_for('edit_comment', comment_id = comment['id'], question_id = question['id'], message = comment['message']) }}">EDIT</a>
+                        </span>
+                        {% if comment['edited_count'] %}
+                            <span class="time-views">Edited {{ comment['edited_count'] }} time(s)</span>
+                        {% endif %}
+                    </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <p><a href="{{ url_for('new_comment_to_question', question_id = question['id']) }}" class="add-comment"> Add a comment</a></p>
     <br><br>
     <h2>Answers:</h2>
     <div class="answer-container">
@@ -77,19 +77,20 @@
             </div>
             <span class="time-views"><time> {{ answer['submission_time'] }}</time></span>
             <a href="{{ url_for('delete_answer', answer_id = answer['id'])  }}" class="edit-delete"> DELETE ANSWER</a><br>
-            <div class="comment-section">
-                {% for comment in comments %}
+            {% if answers_comments %}
+                <div class="comment-section">
+                {% for comment in answers_comments %}
                     {% if comment['answer_id'] == answer['id'] %}
                     <div class="comment">
                         <p>
+                            <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
+                                <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
+                            </a>
                             {{ comment['message'] }}
                         </p>
                         <span class="time-views">added: {{ comment['submission_time'] }} </span>
                         <span class="edit-delete-comment">
                             <a href="{{ url_for('edit_comment', comment_id = comment['id'], question_id = question['id'], message = comment['message']) }}">EDIT</a>
-                            <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
-                                <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
-                            </a>
                         </span>
                         {% if comment['edited_count'] %}
                         <span class="time-views">Edited {{ comment['edited_count'] }} time(s)</span>
@@ -97,6 +98,8 @@
                     </div>
                     {% endif %}
                 {% endfor %}
+            </div>
+            {% endif %}
                 <p><a href="{{ url_for('new_comment_to_answer', question_id = question['id'], answer_id = answer['id']) }}" class="add-comment"> Add a comment</a></p>
             </div>
             <br>
