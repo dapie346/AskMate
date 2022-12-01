@@ -33,6 +33,7 @@ def search_through_answers(cursor, value):
     """, [value]
     )
     answers = cursor.fetchall()
+
     questions = []
     for i in answers:
         questions.append(question_service.get_question(i['question_id']))
