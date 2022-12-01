@@ -75,16 +75,11 @@ td,th {
 }
 
 .header-text {
-    float: right;
+    float: left;
     padding-top: 25px;
     color: #497174;
     font-family: 'Stardos Stencil', cursive;
     font-size: xxx-large;
-}
-
-header {
-    width: 25%;
-    margin-left: 50px;
 }
 
 .question {
@@ -130,7 +125,9 @@ header {
 }
 
 .filter-container {
+
     width: 15%;
+    min-width: 150px;
     float: left;
     background-color: #D6E4E5;
     border: #497174 2px solid;
