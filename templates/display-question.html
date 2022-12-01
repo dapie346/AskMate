@@ -55,9 +55,6 @@
     <br><br>
     <h2>Answers:</h2>
     <div class="answer-container">
-        <a href="{{ url_for('post_answer', question_id = question['id']) }}" class="add-answer">ADD NEW ANSWER</a>
-        <br>
-        <br>
         {% for answer in answers %}
             <h4>{{ answer['username'] }}</h4>
             <div class="answer">
@@ -103,5 +100,8 @@
             <p><a href="{{ url_for('new_comment_to_answer', question_id = question['id'], answer_id = answer['id']) }}" class="add-comment"> Add a comment</a></p>
             <br>
         {% endfor %}
+        <br>
+        <a href="{{ url_for('post_answer', question_id = question['id']) }}" class="add-answer">ADD NEW ANSWER</a>
     </div>
+    <br>
 {% endblock %}
