@@ -168,8 +168,14 @@ def duplicate_handler_for_search(q_list, a_list):
 def basic_search(word):
     question_data = data_handler.search_through_questions(word)
     answer_data = data_handler.search_through_answers(word)
+
     results = duplicate_handler_for_search(question_data, answer_data)
     all_questions = question_service.get_questions()
+
+    for i,question in enumerate(results):
+        question['title'] = question['title'].replace(word,'<mark>'+word+'</mark>')
+    print(results)
+
     return render_template('search_page.html',search_data=results, all_questions=all_questions,search_phrase=word)
 
 
