@@ -97,10 +97,11 @@
                         {% endif %}
                     </div>
                     {% endif %}
+                </div>
+                <p><a href="{{ url_for('new_comment_to_answer', question_id = question['id'], answer_id = answer['id']) }}" class="add-comment"> Add a comment</a></p>
+                <br>
                 {% endfor %}
-            </div>
-            <p><a href="{{ url_for('new_comment_to_answer', question_id = question['id'], answer_id = answer['id']) }}" class="add-comment"> Add a comment</a></p>
-            <br>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
