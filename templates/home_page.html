@@ -84,7 +84,7 @@
         <tbody>
             {% for question in search_data %}
             <tr>
-                <td>{{ question.title }}</td>
+                <td>{{ question.title | safe }}</td>
                 <td>{{ question.view_number }}</td>
                 <td>{{ question.vote_number }}</td>
                 <td>{{ question.submission_time }}</td>
