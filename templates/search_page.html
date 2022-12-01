@@ -7,7 +7,7 @@
             <img src="{{ url_for('static', filename='images/magnifying-glass.png') }}" class="search-button">
         </button>
     </form>
-    <br>
+    <h2>Results:</h2>
     <div class="results-container">
         {% for question in search_data %}
             <div class="result">
