@@ -18,14 +18,20 @@
                     <td>{{ question.view_number }}</td>
                     <td>{{ question.vote_number }}</td>
                     <td>{{ question.submission_time }}</td>
+                    <td>{{ question.id }}</td>
                 </tr>
+
             {% for answer in answers %}
                 <tr>
-                    <td>{{ answer.message | safe}}</td>
+                    {% if answer.question_id == question.id %}
+                        <td>{{ answer.message | safe}}</td>
+                        <td>{{ answer.question_id | safe}}</td>
+
                 </tr>
-            {% endfor %}
+                    {% endif %}
             {% endfor %}
 
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
