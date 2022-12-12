@@ -62,7 +62,7 @@
                         <tr>
                             <td><a href="{{ url_for('show_question', question_id = x.id) }}" class="title-td">{{x.title}}</a></td>
                             <td>{{ x.view_number }}</td>
-{#                            <td>{{ x.vote_number }}</td>#}
+                            <td>{{ x.vote_number }}</td>
                             <td>
                                 <a href="{{ url_for('question_upvote', question_id = x.id) }}">
                                     <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}">
