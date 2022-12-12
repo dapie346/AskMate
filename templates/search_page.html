@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
+    <form action="{{ url_for('search') }}" method="get">
+        <input type="text" name="q" placeholder="Search" size="50" value="{{ request.args.get('q') }}">
+        <button type="submit">
+            <img src="{{ url_for('static', filename='images/magnifying-glass.png') }}" class="search-button">
+        </button>
+    </form>
+    <h2>Results:</h2>
+    <div class="results-container">
+        {% for question in search_data %}
+            <div class="result">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>title</th>
+                            <th>views</th>
+                            <th>votes</th>
+                            <th>submission time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="{{ url_for('show_question', question_id = question.id) }}" class="title-td">{{ question.title | safe}}</a></td>
+                            <td>{{ question.view_number }}</td>
+                            <td>{{ question.vote_number }}</td>
+                            <td>{{ question.submission_time }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% if answers and question.id in answer_question_ids%}
+                    <div class="result-answer-container">
+                        {% for answer in answers %}
+                            {% if answer.question_id == question.id %}
+                            <div class="result-answer">
+                                {{ answer.message | safe }}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
