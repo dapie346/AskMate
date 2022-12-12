@@ -1,11 +1,7 @@
 from bonus_questions import SAMPLE_QUESTIONS
-from flask import Flask, render_template, request, redirect, url_for, session, make_response
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import os
 import password_handler
-import user_service
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-from werkzeug.security import generate_password_hash, check_password_hash
-
 import tag_service
 import question_service
 import answer_service
@@ -29,7 +25,7 @@ def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
     all_questions = question_service.get_questions(order_by, order_direction+' limit 5')
-    if 'username' in session:
+    if 'user_id' in session and 'username' in session:
         return render_template('home_page.html', all_questions=all_questions,
                                page='home_page', user_logged_in=True, username=session['username'])
     return render_template('home_page.html', all_questions=all_questions, page='home_page')
@@ -55,17 +51,18 @@ def add_question():
 def register_user():
     error = None
     if request.method == 'POST':
-        user_input_email = request.form['email']
-        user_input_password = request.form['password']
-        username_input = request.form['username']
-        hashed_password = password_handler.hash_password(user_input_password)
-        if user_service.check_user_email(user_input_email):
-            error = 'User with this email already exists'
-        elif user_service.check_username(username_input):
+        user_input_email = request.form.get('email')
+        username_input = request.form.get('username')
+        hashed_password = password_handler.hash_password(request.form.get('password'))
+        if user_service.get_user_from_username(username_input):
             error = 'This username already exists'
+        elif user_service.check_user_email(user_input_email):
+            error = 'User with this email already exists'
         else:
-            session['username'] = username_input
             user_service.register_new_user(username_input, user_input_email, hashed_password)
+            user_data = user_service.get_user_from_username(username_input)
+            session['username'] = username_input
+            session['user_id'] = user_data['id']
             return redirect(url_for('home_page', user_logged_in=True, username=session['username']))
     return render_template('register.html', error=error)
 
@@ -225,14 +222,25 @@ def search():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
-        user = user_service.get_user_from_username(request.form.get('username'))
-        if user is not None:
-            if check_password_hash(user['password'], request.form.get('password')):
-                session['user_id'] = user['id']
+        user_data = user_service.get_user_from_username(request.form.get('username'))
+        input_password = request.form.get('password')
+        if user_data is not None:
+            hashed_password = user_data['password']
+            is_matching = password_handler.verify_password(input_password, hashed_password)
+            if is_matching:
+                session['user_id'] = user_data['id']
+                session['username'] = user_data['username']
                 return redirect(url_for('home_page'))
         flash('Invalid login attempt!')
         return redirect(url_for('login'))
     return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    session.pop('user_id', None)
+    return redirect(url_for('home_page'))
 
 
 if __name__ == "__main__":

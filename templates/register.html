@@ -9,11 +9,11 @@
     <br>
         <form action="" method="post">
             <input type="text" placeholder="Username" name="username" value="{{
-            request.form.username }}">
+            request.form.username }}" required>
             <input type="text" placeholder="Email" name="email" value="{{
-            request.form.email }}">
+            request.form.email }}" required>
             <input type="password" placeholder="Password" name="password" value="{{
-            request.form.password }}">
+            request.form.password }}" required>
             <input class="btn btn-default" type="submit" value="Register">
         </form>
         {% if error %}
