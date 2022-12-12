@@ -10,6 +10,11 @@
             ASK MATE!
         </h1>
     </header>
+    {% if not user_logged_in %}
+        <a href="{{ url_for('register_user') }}">Register</a>
+    {% else %}
+        <p>Hello, {{ username }}! You are logged in</p>
+    {% endif %}
         <div class="home-page-content">
             <div class="filter-container">
                 <div class="filter-header">

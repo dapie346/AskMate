@@ -1,6 +1,8 @@
 from bonus_questions import SAMPLE_QUESTIONS
-from flask import Flask, render_template, request, redirect, url_for
-
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
+import os
+import password_handler
+import user_service
 import tag_service
 import question_service
 import answer_service
@@ -9,6 +11,8 @@ import data_handler
 import re
 
 app = Flask(__name__)
+
+app.secret_key = os.environ.get('APP_SECRET_KEY')
 
 
 @app.route("/bonus-questions")
@@ -21,6 +25,9 @@ def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
     all_questions = question_service.get_questions(order_by, order_direction+' limit 5')
+    if 'username' in session:
+        return render_template('home_page.html', all_questions=all_questions,
+                               page='home_page', user_logged_in=True, username=session['username'])
     return render_template('home_page.html', all_questions=all_questions, page='home_page')
 
 
@@ -38,6 +45,25 @@ def add_question():
         id = question_service.add_question(request.form, request.files)
         return redirect(url_for('show_question', question_id=id))
     return render_template('add-question.html')
+
+
+@app.route("/register", methods=['GET', 'POST'])
+def register_user():
+    error = None
+    if request.method == 'POST':
+        user_input_email = request.form['email']
+        user_input_password = request.form['password']
+        username_input = request.form['username']
+        hashed_password = password_handler.hash_password(user_input_password)
+        if user_service.check_user_email(user_input_email):
+            error = 'User with this email already exists'
+        elif user_service.check_username(username_input):
+            error = 'This username already exists'
+        else:
+            session['username'] = username_input
+            user_service.register_new_user(username_input, user_input_email, hashed_password)
+            return redirect(url_for('home_page', user_logged_in=True, username=session['username']))
+    return render_template('register.html', error=error)
 
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
