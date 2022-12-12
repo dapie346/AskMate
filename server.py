@@ -1,6 +1,7 @@
 from bonus_questions import SAMPLE_QUESTIONS
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
+import user_service
 import tag_service
 import question_service
 import answer_service
@@ -31,6 +32,13 @@ def home_page_list():
     all_questions = question_service.get_questions(order_by, order_direction)
     return render_template('home_page.html', all_questions=all_questions, page='home_page_list')
 
+@app.route("/users")
+def list_users():
+    if 'user_id' not in session:
+        pass
+        #return redirect(url_for('home_page'))
+    users = user_service.get_all_users()
+    return render_template('list_users.html', users=users)
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
