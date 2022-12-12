@@ -1,11 +1,13 @@
 from bonus_questions import SAMPLE_QUESTIONS
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import tag_service
 import question_service
 import answer_service
 import comment_service
 import data_handler
+import user_service
 import re
 
 app = Flask(__name__)
@@ -190,6 +192,19 @@ def search():
     answer_question_ids = [answer['question_id'] for answer in answers]
 
     return render_template('search_page.html', search_data=results, answers=answers , answer_question_ids=answer_question_ids)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        user = user_service.get_user_from_username(request.form.get('username'))
+        if user is not None:
+            if check_password_hash(user['password'], request.form.get('password')):
+                session['user_id'] = user['id']
+                return redirect(url_for('home_page'))
+        flash('Invalid login attempt!')
+        return redirect(url_for('login'))
+    return render_template('login.html')
 
 
 if __name__ == "__main__":
