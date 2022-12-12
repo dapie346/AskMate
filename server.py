@@ -38,6 +38,13 @@ def home_page_list():
     all_questions = question_service.get_questions(order_by, order_direction)
     return render_template('home_page.html', all_questions=all_questions, page='home_page_list')
 
+@app.route("/users")
+def list_users():
+    if 'user_id' not in session:
+        pass
+        #return redirect(url_for('home_page'))
+    users = user_service.get_all_users()
+    return render_template('list_users.html', users=users)
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():

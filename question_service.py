@@ -5,8 +5,10 @@ import database_common
 @database_common.connection_handler
 def get_questions(cursor, order_by='submission_time', additions=''):
     query = f"""
-        SELECT *
+        SELECT question.*, COALESCE(SUM(qv.value), 0) as vote_number
         FROM question
+        LEFT JOIN question_vote qv on question.id = qv.question_id
+        GROUP BY question.id
         ORDER BY {order_by} {additions}"""
     cursor.execute(query)
     return cursor.fetchall()
