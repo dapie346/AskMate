@@ -1,3 +1,4 @@
+import data_handler
 import database_common
 
 
@@ -29,3 +30,12 @@ def check_username(cursor, username):
         """
     cursor.execute(query, {'username': username})
     return cursor.fetchone()
+def get_user_from_username(cursor, name):
+    query = f'''
+        SELECT *
+        FROM "user"
+        WHERE username = %{name}s'''
+    cursor.execute(query, {'name': name})
+    return cursor.fetchone()
+
+
