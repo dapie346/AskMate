@@ -58,12 +58,13 @@ def delete_question(cursor, question_id):
 
 
 @database_common.connection_handler
-def question_vote(cursor, question_id, vote):
+def question_vote(cursor, user_id, question_id, vote):
     query = """
-            UPDATE question
-            SET vote_number = vote_number + %(vote)s
-            WHERE id = %(question_id)s"""
-    cursor.execute(query, {'question_id': question_id, 'vote': vote})
+            INSERT INTO question_vote AS qv (user_id, question_id, value) VALUES (%(user_id)s, %(question_id)s, %(vote)s)
+            ON CONFLICT (user_id, question_id) DO 
+            UPDATE SET value = %(vote)s 
+            WHERE qv.user_id = %(user_id)s AND qv.question_id = %(question_id)s"""
+    cursor.execute(query, {'user_id': user_id, 'question_id': question_id, 'vote': vote})
 
 
 @database_common.connection_handler

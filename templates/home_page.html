@@ -66,10 +66,10 @@
                             <td>{{ x.view_number }}</td>
                             <td>{{ x.vote_number }}</td>
                             <td>
-                                <a href="{{ url_for('question_upvote', question_id = x.id) }}">
+                                <a href="{{ url_for('question_upvote', question_id = x.id) }}" {% if 'user_id' not in session %} class="disabled" {% endif %}>
                                     <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}">
                                 </a>
-                                <a href="{{ url_for('question_downvote', question_id = x.id) }}">
+                                <a href="{{ url_for('question_downvote', question_id = x.id) }}" {% if 'user_id' not in session %} class="disabled" {% endif %}>
                                     <img src="{{ url_for('static', filename='images/angle-circle-down.png') }}">
                                 </a>
                             </td>

@@ -49,7 +49,8 @@ DROP TABLE IF EXISTS public.question_vote;
 CREATE TABLE question_vote (
   user_id integer,
   question_id integer,
-  value integer
+  value integer,
+    primary key (user_id, question_id)
 );
 
 DROP TABLE IF EXISTS public.answer;
@@ -67,7 +68,8 @@ DROP TABLE IF EXISTS public.answer_vote;
 CREATE TABLE answer_vote (
   user_id integer,
   answer_id integer,
-  value integer
+  value integer,
+  primary key (user_id, answer_id)
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -149,6 +151,7 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE;
 
 INSERT INTO "user" VALUES(0, 'bob@gmail.com', 'Bob', 'temp', '2022-11-28 08:29:00');
+INSERT INTO "user" VALUES(1, 'oskar@gmail.com', 'Ostin', '$2b$12$dtNhuwoQ0HjmO01zSC49XO4PYJJZ4h.SAoB5tdWFg.tyeEzE3NRIq', '2022-11-28 08:29:00');
 
 INSERT INTO question VALUES (0, '2022-11-28 08:29:00', 29, 0, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, '2022-11-29 09:19:00', 15, 0, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
