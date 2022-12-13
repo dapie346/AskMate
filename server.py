@@ -98,13 +98,13 @@ def show_question(question_id):
 
 @app.route("/question/<question_id>/vote-up")
 def question_upvote(question_id):
-    question_service.question_vote(session['user_id'], question_id, 1)
+    question_service.question_vote(session['user_id'], question_id, 5)
     return redirect(url_for('home_page'))
 
 
 @app.route("/question/<question_id>/vote-down")
 def question_downvote(question_id):
-    question_service.question_vote(session['user_id'], question_id, -1)
+    question_service.question_vote(session['user_id'], question_id, -2)
     return redirect(url_for('home_page'))
 
 

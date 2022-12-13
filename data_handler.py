@@ -16,10 +16,11 @@ def delete_image(filename):
 @database_common.connection_handler
 def search_through_questions(cursor, value):
     cursor.execute("""
-        SELECT *
+        SELECT question.*, COALESCE(SUM(CASE WHEN qv.value IS NULL THEN NULL WHEN qv.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
         FROM question
+        LEFT JOIN question_vote qv on question.id = qv.question_id
         WHERE title ILIKE '%%' || %s || '%%' OR  message LIKE '%%' || %s || '%%' 
-    """, [value, value]
+        GROUP BY question.id""", [value, value]
     )
     return cursor.fetchall()
 

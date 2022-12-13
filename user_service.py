@@ -33,16 +33,25 @@ def get_user_from_username(cursor, username):
 @database_common.connection_handler
 def get_all_users(cursor):
     query = f'''
+        WITH cte_reputation AS (
+        SELECT DISTINCT "user".id, COALESCE(SUM(qv.value), 0) as reputation
+        FROM "user"
+        LEFT JOIN question q on "user".id = q.user_id
+        LEFT JOIN question_vote qv on q.id = qv.question_id
+        GROUP BY "user".id
+        )       
         SELECT "user".username,
        "user".registration_date,
        COUNT(DISTINCT q.id) AS question_count,
        COUNT(DISTINCT a.id) AS answer_count,
        COUNT(DISTINCT c.id) AS comment_count,
-       10 AS reputation
+        cte_reputation.reputation
         FROM "user"
         LEFT JOIN question q on "user".id = q.user_id
         LEFT JOIN answer a on "user".id = a.user_id
         LEFT JOIN comment c on "user".id = c.user_id
-        GROUP BY "user".id;'''
+        LEFT JOIN question_vote qv on q.id = qv.question_id
+        LEFT JOIN cte_reputation on "user".id = cte_reputation.id
+        GROUP BY "user".id, cte_reputation.reputation;'''
     cursor.execute(query)
     return cursor.fetchall()
