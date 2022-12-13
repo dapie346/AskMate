@@ -24,8 +24,10 @@ def get_answer(cursor, answer_id):
 @database_common.connection_handler
 def get_answers_to_question(cursor, question_id):
     query = f"""
-        SELECT *
+        SELECT answer.id AS id, submission_time, vote_number, question_id, message, image, username
         FROM answer
+        JOIN "user"
+            ON answer.user_id = "user".id
         WHERE question_id = %(q_id)s
         ORDER BY vote_number DESC"""
     cursor.execute(query, {'q_id': question_id})
@@ -33,9 +35,9 @@ def get_answers_to_question(cursor, question_id):
 
 
 @database_common.connection_handler
-def add_answer(cursor, answer, question_id, files):
+def add_answer(cursor, answer, question_id, user_id, files):
     query = """
-        INSERT INTO answer (submission_time, vote_number, question_id, username, message)
+        INSERT INTO answer (submission_time, vote_number, question_id, user_id, message)
         VALUES (NOW()::TIMESTAMP(0), %(vn)s, %(q_id)s, %(un)s, %(msg)s)
         RETURNING id"""
     cursor.execute(
@@ -43,7 +45,7 @@ def add_answer(cursor, answer, question_id, files):
         {
             'vn': 0,
             'q_id': question_id,
-            'un': answer['user'],
+            'un': user_id,
             'msg': answer['message']
         }
     )

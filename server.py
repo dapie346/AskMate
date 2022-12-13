@@ -111,7 +111,8 @@ def question_downvote(question_id):
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
     if request.method == 'POST':
-        answer_service.add_answer(request.form, question_id, request.files)
+        user_id = session['user_id']
+        answer_service.add_answer(request.form, question_id, user_id, request.files)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('post_answer.html')
 
