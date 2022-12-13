@@ -16,9 +16,13 @@
             {% for tag in tags %}
                 <span class="tag">
                     {{ tag['name'] }}
-                    <a href="{{ url_for('remove_tag', question_id = question['id'], tag_id = tag['id']) }}">
-                        <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
-                    </a>
+                    {% if 'user_id' in session %}
+                        {% if question['user_id'] == session['user_id']  %}
+                        <a href="{{ url_for('remove_tag', question_id = question['id'], tag_id = tag['id']) }}">
+                            <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
+                        </a>
+                        {% endif %}
+                    {% endif %}
                 </span>
             {% endfor %}
         </div>
@@ -26,11 +30,15 @@
             <span class="time-views">views: {{ question['view_number'] }} </span>
             <span class="time-views">added: {{ question['submission_time'] }}</span>
         </div>
-        <div class="edit-delete">
-            <a href="{{ url_for('edit_question', question_id = question['id']) }}">EDIT</a>
-            <a href="{{ url_for('tag_question', question_id = question['id']) }}">ADD TAG</a>
-            <a href="{{ url_for('delete_question', question_id = question['id'])}}">DELETE QUESTION</a>
-        </div>
+        {% if 'user_id' in session %}
+            {% if question['user_id'] == session['user_id']  %}
+                <div class="edit-delete">
+                    <a href="{{ url_for('edit_question', question_id = question['id']) }}">EDIT</a>
+                    <a href="{{ url_for('tag_question', question_id = question['id']) }}">ADD TAG</a>
+                    <a href="{{ url_for('delete_question', question_id = question['id'])}}">DELETE QUESTION</a>
+                </div>
+            {% endif %}
+        {% endif %}
         {% if question_comments %}
             <div class="comment-section">
                 {% for comment in question_comments %}
@@ -39,15 +47,23 @@
                                 {{ comment['message'] }}
                             </p>
                             <span class="time-views">added: {{ comment['submission_time'] }} </span>
-                            <span class="edit-delete-comment">
-                                <a href="{{ url_for('edit_comment', comment_id = comment['id'], question_id = question['id'], message = comment['message']) }}">EDIT</a>
-                            </span>
+                            {% if 'user_id' in session %}
+                                {% if comment['user_id'] == session['user_id']  %}
+                                <span class="edit-delete-comment">
+                                    <a href="{{ url_for('edit_comment', comment_id = comment['id'], question_id = question['id'], message = comment['message']) }}">EDIT</a>
+                                </span>
+                                {% endif %}
+                            {% endif %}
                             {% if comment['edited_count'] %}
                                 <span class="time-views">Edited {{ comment['edited_count'] }} time(s)</span>
                             {% endif %}
-                            <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
-                                <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
-                            </a>
+                            {% if 'user_id' in session %}
+                                {% if comment['user_id'] == session['user_id']  %}
+                                <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
+                                    <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
+                                </a>
+                                {% endif %}
+                            {% endif %}
                         </div>
                 {% endfor %}
             </div>
@@ -73,9 +89,13 @@
                         {% if answer['image'] != None %}
                             <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}" class="image">
                         {% endif %}
-                    </div>
+                    </div>question_vote
                     <span class="time-views"><time> {{ answer['submission_time'] }}</time></span>
-                    <a href="{{ url_for('delete_answer', answer_id = answer['id'])  }}" class="edit-delete"> DELETE ANSWER</a><br>
+                    {% if 'user_id' in session %}
+                        {% if answer['user_id'] == session['user_id'] %}
+                            <a href="{{ url_for('delete_answer', answer_id = answer['id'])  }}" class="edit-delete"> DELETE ANSWER</a><br>
+                        {% endif %}
+                    {% endif %}
                     {% if answers_comments %}
                         <div class="comment-section">
                         {% for comment in answers_comments %}
@@ -85,15 +105,23 @@
                                     {{ comment['message'] }}
                                 </p>
                                 <span class="time-views">added: {{ comment['submission_time'] }} </span>
+                        {% if 'user_id' in session %}
+                            {% if comment['user_id'] == session['user_id']  %}
                                 <span class="edit-delete-comment">
                                     <a href="{{ url_for('edit_comment', comment_id = comment['id'], question_id = question['id'], message = comment['message']) }}">EDIT</a>
                                 </span>
-                                {% if comment['edited_count'] %}
+                            {% endif %}
+                        {% endif %}
+                            {% if comment['edited_count'] %}
                                 <span class="time-views">Edited {{ comment['edited_count'] }} time(s)</span>
-                                {% endif %}
+                            {% endif %}
+                        {% if 'user_id' in session %}
+                            {% if comment['user_id'] == session['user_id']  %}
                                 <a href="{{ url_for('delete_comment', comment_id = comment['id']) }}">
                                     <img src="{{ url_for('static', filename='images/delete-icon.png') }}" class="delete-icon">
                                 </a>
+                            {% endif %}
+                        {% endif %}
                             </div>
                             {% endif %}
                         {% endfor %}
