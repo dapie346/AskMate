@@ -46,7 +46,7 @@ h1 {
 a:hover  {
     color: mediumvioletred;
 }
-thead {
+thead, .user-header {
     background-color: #497174;
     color: white;
     font-size: 0.875rem;

@@ -19,15 +19,15 @@ app.secret_key = os.environ.get('APP_SECRET_KEY')
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
-    
+
 @app.route("/")
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
-    all_questions = question_service.get_questions(order_by, order_direction+' limit 5')
+    all_questions = question_service.get_questions(order_by, order_direction + ' limit 5')
     if 'user_id' in session and 'username' in session:
-        return render_template('home_page.html', all_questions=all_questions,
-                               page='home_page', user_logged_in=True, username=session['username'])
+        return render_template('home_page.html', all_questions=all_questions, page='home_page',
+                               user_logged_in=True, username=session['username'], user_id=session['user_id'])
     return render_template('home_page.html', all_questions=all_questions, page='home_page')
 
 
@@ -133,7 +133,8 @@ def tag_question(question_id):
             tag_id = tag_service.add_tag(request.form['tag'])
         question_service.tag_question(question_id, tag_id)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('tag_question.html', tags=tags, question_tags=tag_service.get_tag_names_from_list(question_tags))
+    return render_template('tag_question.html', tags=tags,
+                           question_tags=tag_service.get_tag_names_from_list(question_tags))
 
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete")
@@ -224,7 +225,8 @@ def search():
 
     answer_question_ids = [answer['question_id'] for answer in answers]
 
-    return render_template('search_page.html', search_data=results, answers=answers , answer_question_ids=answer_question_ids)
+    return render_template('search_page.html', search_data=results, answers=answers,
+                           answer_question_ids=answer_question_ids)
 
 
 @app.route('/login', methods=['GET', 'POST'])
