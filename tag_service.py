@@ -9,6 +9,16 @@ def get_tags(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_tags_and_counts(cursor):
+    query = """
+        SELECT tag.name, COUNT(qt.question_id) AS tag_count
+        FROM tag
+        JOIN question_tag qt on tag.id = qt.tag_id
+        GROUP BY tag.id
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def add_tag(cursor, tag):
