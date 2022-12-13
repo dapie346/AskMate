@@ -38,7 +38,7 @@ def get_question(cursor, question_id):
 def add_question(cursor, user_id, question, files):
     query = """
                 INSERT INTO question (submission_time, view_number, user_id, title, message)
-                VALUES (NOW()::TIMESTAMP(0), %(user)s, %(title)s, %(message)s)
+                VALUES (NOW()::TIMESTAMP(0), 0, %(user)s, %(title)s, %(message)s)
                 RETURNING id"""
     cursor.execute(query, {'user': user_id, 'title': question['title'], 'message': question['message']})
     id = cursor.fetchone()['id']
