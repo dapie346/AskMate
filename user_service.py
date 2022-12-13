@@ -30,7 +30,7 @@ def get_user_from_username(cursor, username):
     cursor.execute(query, {'username': username})
     return cursor.fetchone()
 
-
+@database_common.connection_handler
 def get_all_users(cursor):
     query = f'''
         SELECT "user".username,
@@ -40,9 +40,9 @@ def get_all_users(cursor):
        COUNT(DISTINCT c.id) AS comment_count,
        10 AS reputation
         FROM "user"
-        JOIN question q on "user".id = q.user_id
-        JOIN answer a on "user".id = a.user_id
-        JOIN comment c on "user".id = c.user_id
+        LEFT JOIN question q on "user".id = q.user_id
+        LEFT JOIN answer a on "user".id = a.user_id
+        LEFT JOIN comment c on "user".id = c.user_id
         GROUP BY "user".id;'''
     cursor.execute(query)
     return cursor.fetchall()
