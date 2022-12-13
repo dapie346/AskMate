@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ user.username }}'s Profile
+{% endblock %}
+{% block content %}
+<div class="main-page-container">
+    <div class="centered-page-container">
+        <table>
+            <tr>
+                <td>User ID</td>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td><a href="{{ url_for('user_profile', user_id=user.id) }}">{{ user.username }}</a></td>
+            </tr>
+            <tr>
+                <td>Registration Date</td>
+                <td>{{ user.registration_date }}</td>
+            </tr>
+            <tr>
+                <td>Asked Questions</td>
+                <td>{{ user.question_count }}</td>
+            </tr>
+            <tr>
+                <td>Answers</td>
+                <td>{{ user.answer_count }}</td>
+            </tr>
+            <tr>
+                <td>Comments</td>
+                <td>{{ user.comment_count }}</td>
+            </tr>
+            <tr>
+                <td>Reputation</td>
+                <td>{{ user.reputation }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}

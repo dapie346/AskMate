@@ -251,5 +251,11 @@ def logout():
     return redirect(url_for('home_page'))
 
 
+@app.route('/user/<user_id>')
+def user_profile(user_id):
+    user_data = user_service.get_user_from_id(user_id)
+    return render_template('user_page.html', user=user_data)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

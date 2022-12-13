@@ -24,6 +24,15 @@ body {
     padding: 40px 0 20px;
 }
 
+.centered-page-container {
+    position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -150px 0 0 -150px;
+	width: 400px;
+	height: 400px;
+}
+
 a {
     text-decoration: none;
     color: #EB6440;
