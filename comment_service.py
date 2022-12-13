@@ -66,8 +66,9 @@ def get_comments_to_question(cursor, question_id):
 @database_common.connection_handler
 def get_comments_to_answers(cursor, question_id):
     query = f"""
-        SELECT *
+        SELECT comment.*, username
         FROM comment
+        JOIN "user" on "user".id = comment.user_id
         WHERE question_id = %(q_id)s
         AND answer_id IS NOT NULL
         """

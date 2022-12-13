@@ -17,11 +17,19 @@ def get_questions(cursor, order_by='submission_time', additions=''):
 @database_common.connection_handler
 def get_question(cursor, question_id):
     query = f"""
-                SELECT question.*, COALESCE(SUM(CASE WHEN qv.value IS NULL THEN NULL WHEN qv.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
+            SELECT question_with_vote.*, username
+            FROM (
+                SELECT question.*, 
+                COALESCE(SUM(CASE WHEN qv.value IS NULL THEN NULL WHEN qv.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
                 FROM question
                 LEFT JOIN question_vote qv on question.id = qv.question_id
                 WHERE id = %(question_id)s
-                GROUP BY question.id"""
+                GROUP BY question.id) 
+                AS question_with_vote
+            JOIN "user" on question_with_vote.user_id = "user".id
+                
+                
+                """
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchone()
 
