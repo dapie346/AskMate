@@ -25,12 +25,12 @@ def get_question(cursor, question_id):
 
 
 @database_common.connection_handler
-def add_question(cursor, question, files):
+def add_question(cursor, user_id, question, files):
     query = """
-                INSERT INTO question (submission_time, view_number, vote_number, title, message)
-                VALUES (NOW()::TIMESTAMP(0), 0, 0, %(title)s, %(message)s)
+                INSERT INTO question (submission_time, view_number, user_id, title, message)
+                VALUES (NOW()::TIMESTAMP(0), 0, %(user)s, %(title)s, %(message)s)
                 RETURNING id"""
-    cursor.execute(query, {'title': question['title'], 'message': question['message']})
+    cursor.execute(query, {'user': user_id, 'title': question['title'], 'message': question['message']})
     id = cursor.fetchone()['id']
     if files['image'].filename != '':
         data_handler.save_image(files['image'], f'question_{id}.png')

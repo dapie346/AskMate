@@ -50,8 +50,9 @@ def list_users():
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        id = question_service.add_question(request.form, request.files)
-        return redirect(url_for('show_question', question_id=id))
+        user_id = session['user_id']
+        question_id = question_service.add_question(user_id, request.form, request.files)
+        return redirect(url_for('show_question', question_id=question_id))
     return render_template('add-question.html')
 
 
