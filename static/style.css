@@ -39,6 +39,11 @@ a {
     font-weight: bold;
 }
 
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
 h1 {
     margin: 1px;
 }

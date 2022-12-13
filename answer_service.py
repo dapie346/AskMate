@@ -5,8 +5,10 @@ import database_common
 @database_common.connection_handler
 def get_answers(cursor):
     query = f"""
-        SELECT *
-        FROM answer"""
+        SELECT *, COALESCE(SUM(CASE WHEN av.value IS NULL THEN NULL WHEN av.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
+        FROM answer
+        LEFT JOIN answer_vote av on answer.id = av.answer_id
+        GROUP BY answer.id"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -24,12 +26,20 @@ def get_answer(cursor, answer_id):
 @database_common.connection_handler
 def get_answers_to_question(cursor, question_id):
     query = f"""
-        SELECT answer.id AS id, submission_time, vote_number, question_id, message, image, username
+        WITH cte_votes AS (
+            SELECT answer.id, COALESCE(SUM(CASE WHEN av.value IS NULL THEN NULL WHEN av.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
+            FROM answer
+            LEFT JOIN answer_vote av on answer.id = av.answer_id
+            GROUP BY answer.id
+        )
+        SELECT *, cte_votes.vote_number
         FROM answer
         JOIN "user"
             ON answer.user_id = "user".id
+        LEFT JOIN cte_votes ON answer.id = cte_votes.id
         WHERE question_id = %(q_id)s
-        ORDER BY vote_number DESC"""
+        GROUP BY answer.id, "user".id, cte_votes.id, cte_votes.vote_number
+        ORDER BY cte_votes.vote_number DESC"""
     cursor.execute(query, {'q_id': question_id})
     return cursor.fetchall()
 
@@ -38,12 +48,11 @@ def get_answers_to_question(cursor, question_id):
 def add_answer(cursor, answer, question_id, user_id, files):
     query = """
         INSERT INTO answer (submission_time, vote_number, question_id, user_id, message)
-        VALUES (NOW()::TIMESTAMP(0), %(vn)s, %(q_id)s, %(un)s, %(msg)s)
+        VALUES (NOW()::TIMESTAMP(0), %(q_id)s, %(un)s, %(msg)s)
         RETURNING id"""
     cursor.execute(
         query,
         {
-            'vn': 0,
             'q_id': question_id,
             'un': user_id,
             'msg': answer['message']
@@ -77,13 +86,19 @@ def delete_answer(cursor, answer_id):
 
 
 @database_common.connection_handler
-def answer_vote(cursor, answer_id, vote):
+def answer_vote(cursor, user_id, answer_id, vote):
     query = """
-        UPDATE answer
-        SET vote_number = vote_number+%(vn)s
-        WHERE id = %(id)s
-        RETURNING question_id"""
-    cursor.execute(query, {'vn': vote, 'id': answer_id})
+                INSERT INTO answer_vote AS av (user_id, answer_id, value) VALUES (%(user_id)s, %(answer_id)s, %(vote)s)
+                ON CONFLICT (user_id, answer_id) DO 
+                UPDATE SET value = %(vote)s 
+                WHERE av.user_id = %(user_id)s AND av.answer_id = %(answer_id)s"""
+    cursor.execute(query, {'user_id': user_id, 'answer_id': answer_id, 'vote': vote})
+    query = """
+        SELECT question_id
+        FROM answer
+        WHERE id = %(answer_id)s
+    """
+    cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchone()['question_id']
 
 

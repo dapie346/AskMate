@@ -49,14 +49,14 @@ DROP TABLE IF EXISTS public.question_vote;
 CREATE TABLE question_vote (
   user_id integer,
   question_id integer,
-  value integer
+  value integer,
+    primary key (user_id, question_id)
 );
 
 DROP TABLE IF EXISTS public.answer;
 CREATE TABLE answer (
     id serial NOT NULL,
     submission_time timestamp without time zone,
-    vote_number integer,
     question_id integer,
     user_id integer,
     message text,
@@ -67,7 +67,8 @@ DROP TABLE IF EXISTS public.answer_vote;
 CREATE TABLE answer_vote (
   user_id integer,
   answer_id integer,
-  value integer
+  value integer,
+  primary key (user_id, answer_id)
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -149,6 +150,7 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE;
 
 INSERT INTO "user" VALUES(0, 'bob@gmail.com', 'Bob', 'temp', '2022-11-28 08:29:00');
+INSERT INTO "user" VALUES(1, 'oskar@gmail.com', 'Ostin', '$2b$12$dtNhuwoQ0HjmO01zSC49XO4PYJJZ4h.SAoB5tdWFg.tyeEzE3NRIq', '2022-11-28 08:29:00');
 
 INSERT INTO question VALUES (0, '2022-11-28 08:29:00', 29, 0, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, '2022-11-29 09:19:00', 15, 0, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
@@ -171,24 +173,24 @@ INSERT INTO question VALUES (8, '2022-12-01 10:59:00', 44, 0, 'How can I validat
 INSERT INTO question VALUES (9, '2022-12-01 14:33:00', 29, 0, 'Insert text with single quotes in PostgreSQL', 'I need to insert values like: insert into test values (1,''user''s log''); If there is any method to do this correctly please share.', NULL);
 SELECT pg_catalog.setval('question_id_seq', 9, true);
 
-INSERT INTO answer VALUES (1, '2022-11-28 16:49:00', 4, 1, 0, 'You need to use brackets: my_list = []', NULL);
-INSERT INTO answer VALUES (2, '2022-11-29 14:42:00', 35, 1, 0, 'Look it up in the Python docs', NULL);
-INSERT INTO answer VALUES (3, '2022-11-30 18:11:00', 12, 3, 0, 'You can use psycopg2.sql.Identifier to interpolate an identifier to a query.', NULL);
-INSERT INTO answer VALUES (4, '2022-11-30 23:50:00', 7, 5, 0, '== tests object references, .equals() tests the string values.', 'answer_4.png');
-INSERT INTO answer VALUES (5, '2022-12-01 01:13:00', 0, 3, 0, 'Yes.', 'answer_5.jpg');
-INSERT INTO answer VALUES (6, '2022-12-01 01:14:00', 0, 5, 0, 'I don''t know, but here''s a picture of an apple:', 'answer_6.png');
-INSERT INTO answer VALUES (7, '2022-12-01 07:50:00', 1, 6, 0, 'noob', NULL);
-INSERT INTO answer VALUES (8, '2022-12-01 07:55:00', 21, 6, 0, 'The simplest is this list comprehension one-liner: [lst[i:i + n] for i in range(0, len(lst), n)]', NULL);
-INSERT INTO answer VALUES (9, '2022-12-01 08:31:00', 100, 7, 0, 'The margin: 0 auto is what does the actual centering. You can apply this CSS to the inner <div>:', 'answer_9.png');
-INSERT INTO answer VALUES (10, '2022-12-01 08:45:00', 80, 7, 0, 'You can make the inner div into an inline element that can be centered with text-align like this:', 'answer_10.png');
-INSERT INTO answer VALUES (11, '2022-12-01 08:50:00', 32, 7, 0, 'It''s very easy to style the div horizontally and vertically centered with flexbox. Just add display: flex and justify-content: center; to #outer <div>.', NULL);
-INSERT INTO answer VALUES (12, '2022-12-01 11:20:00', 0, 8, 0, 'i''d like to know it too :(', NULL);
-INSERT INTO answer VALUES (13, '2022-12-01 11:58:00', 2, 8, 0, 'Using regular expressions is probably the best way.', NULL);
-INSERT INTO answer VALUES (14, '2022-12-01 12:01:00', 0, 7, 0, 'Answer', NULL);
-INSERT INTO answer VALUES (15, '2022-12-01 12:03:00', 1, 8, 0, 'The only way to be absolutely, positively sure that what the user entered is in fact an email is to actually send an email and see what happens. Other than that it''s all just guesses.', NULL);
-INSERT INTO answer VALUES (16, '2022-12-01 14:57:00', 9, 9, 0, 'You can escape single quotes by doubling them up, this will work: ''user''''s log''', NULL);
-INSERT INTO answer VALUES (17, '2022-12-01 15:03:00', 7, 9, 0, 'If you have to deal with many single quotes or multiple layers of escaping, you can avoid quoting hell in PostgreSQL with dollar-quoted strings.', NULL);
-INSERT INTO answer VALUES (18, '2022-12-01 17:26:00', 2, 9, 0, 'look it up in the postgres docs', NULL);
+INSERT INTO answer VALUES (1, '2022-11-28 16:49:00', 1, 0, 'You need to use brackets: my_list = []', NULL);
+INSERT INTO answer VALUES (2, '2022-11-29 14:42:00', 1, 0, 'Look it up in the Python docs', NULL);
+INSERT INTO answer VALUES (3, '2022-11-30 18:11:00', 3, 0, 'You can use psycopg2.sql.Identifier to interpolate an identifier to a query.', NULL);
+INSERT INTO answer VALUES (4, '2022-11-30 23:50:00', 5, 0, '== tests object references, .equals() tests the string values.', 'answer_4.png');
+INSERT INTO answer VALUES (5, '2022-12-01 01:13:00', 3, 0, 'Yes.', 'answer_5.jpg');
+INSERT INTO answer VALUES (6, '2022-12-01 01:14:00', 5, 0, 'I don''t know, but here''s a picture of an apple:', 'answer_6.png');
+INSERT INTO answer VALUES (7, '2022-12-01 07:50:00', 6, 0, 'noob', NULL);
+INSERT INTO answer VALUES (8, '2022-12-01 07:55:00', 6, 0, 'The simplest is this list comprehension one-liner: [lst[i:i + n] for i in range(0, len(lst), n)]', NULL);
+INSERT INTO answer VALUES (9, '2022-12-01 08:31:00', 7, 0, 'The margin: 0 auto is what does the actual centering. You can apply this CSS to the inner <div>:', 'answer_9.png');
+INSERT INTO answer VALUES (10, '2022-12-01 08:45:00', 7, 0, 'You can make the inner div into an inline element that can be centered with text-align like this:', 'answer_10.png');
+INSERT INTO answer VALUES (11, '2022-12-01 08:50:00', 7, 0, 'It''s very easy to style the div horizontally and vertically centered with flexbox. Just add display: flex and justify-content: center; to #outer <div>.', NULL);
+INSERT INTO answer VALUES (12, '2022-12-01 11:20:00', 8, 0, 'i''d like to know it too :(', NULL);
+INSERT INTO answer VALUES (13, '2022-12-01 11:58:00', 8, 0, 'Using regular expressions is probably the best way.', NULL);
+INSERT INTO answer VALUES (14, '2022-12-01 12:01:00', 7, 0, 'Answer', NULL);
+INSERT INTO answer VALUES (15, '2022-12-01 12:03:00', 8, 0, 'The only way to be absolutely, positively sure that what the user entered is in fact an email is to actually send an email and see what happens. Other than that it''s all just guesses.', NULL);
+INSERT INTO answer VALUES (16, '2022-12-01 14:57:00', 9, 0, 'You can escape single quotes by doubling them up, this will work: ''user''''s log''', NULL);
+INSERT INTO answer VALUES (17, '2022-12-01 15:03:00', 9, 0, 'If you have to deal with many single quotes or multiple layers of escaping, you can avoid quoting hell in PostgreSQL with dollar-quoted strings.', NULL);
+INSERT INTO answer VALUES (18, '2022-12-01 17:26:00', 9, 0, 'look it up in the postgres docs', NULL);
 SELECT pg_catalog.setval('answer_id_seq', 18, true);
 
 INSERT INTO comment VALUES (1, 0, NULL, 0, 'Please clarify the question as it is too vague!', '2022-11-28 08:49:00', 0);
