@@ -165,7 +165,8 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_question(question_id):
     if request.method == 'POST':
-        comment_service.add_to_question(request.form['message'], question_id)
+        user_id = session['user_id']
+        comment_service.add_to_question(user_id, request.form['message'], question_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('new-comment.html')
 
@@ -173,7 +174,8 @@ def new_comment_to_question(question_id):
 @app.route("/question/<question_id>/<answer_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_answer(answer_id, question_id):
     if request.method == 'POST':
-        comment_service.add_to_answer(request.form['message'], question_id, answer_id)
+        user_id = session['user_id']
+        comment_service.add_to_answer(user_id, request.form['message'], question_id, answer_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('new-comment.html')
 
