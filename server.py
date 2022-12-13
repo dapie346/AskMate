@@ -19,15 +19,15 @@ app.secret_key = os.environ.get('APP_SECRET_KEY')
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
-    
+
 @app.route("/")
 def home_page():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
-    all_questions = question_service.get_questions(order_by, order_direction+' limit 5')
+    all_questions = question_service.get_questions(order_by, order_direction + ' limit 5')
     if 'user_id' in session and 'username' in session:
-        return render_template('home_page.html', all_questions=all_questions,
-                               page='home_page', user_logged_in=True, username=session['username'])
+        return render_template('home_page.html', all_questions=all_questions, page='home_page',
+                               user_logged_in=True, username=session['username'], user_id=session['user_id'])
     return render_template('home_page.html', all_questions=all_questions, page='home_page')
 
 
@@ -50,8 +50,9 @@ def list_users():
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        id = question_service.add_question(request.form, request.files)
-        return redirect(url_for('show_question', question_id=id))
+        user_id = session['user_id']
+        question_id = question_service.add_question(user_id, request.form, request.files)
+        return redirect(url_for('show_question', question_id=question_id))
     return render_template('add-question.html')
 
 
@@ -111,7 +112,8 @@ def question_downvote(question_id):
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
     if request.method == 'POST':
-        answer_service.add_answer(request.form, question_id, request.files)
+        user_id = session['user_id']
+        answer_service.add_answer(request.form, question_id, user_id, request.files)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('post_answer.html')
 
@@ -133,7 +135,8 @@ def tag_question(question_id):
             tag_id = tag_service.add_tag(request.form['tag'])
         question_service.tag_question(question_id, tag_id)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('tag_question.html', tags=tags, question_tags=tag_service.get_tag_names_from_list(question_tags))
+    return render_template('tag_question.html', tags=tags,
+                           question_tags=tag_service.get_tag_names_from_list(question_tags))
 
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete")
@@ -163,7 +166,8 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_question(question_id):
     if request.method == 'POST':
-        comment_service.add_to_question(request.form['message'], question_id)
+        user_id = session['user_id']
+        comment_service.add_to_question(user_id, request.form['message'], question_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('new-comment.html')
 
@@ -171,7 +175,8 @@ def new_comment_to_question(question_id):
 @app.route("/question/<question_id>/<answer_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_answer(answer_id, question_id):
     if request.method == 'POST':
-        comment_service.add_to_answer(request.form['message'], question_id, answer_id)
+        user_id = session['user_id']
+        comment_service.add_to_answer(user_id, request.form['message'], question_id, answer_id)
         return redirect(url_for('show_question', question_id=question_id))
     return render_template('new-comment.html')
 
@@ -224,7 +229,8 @@ def search():
 
     answer_question_ids = [answer['question_id'] for answer in answers]
 
-    return render_template('search_page.html', search_data=results, answers=answers , answer_question_ids=answer_question_ids)
+    return render_template('search_page.html', search_data=results, answers=answers,
+                           answer_question_ids=answer_question_ids)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -249,6 +255,12 @@ def logout():
     session.pop('username', None)
     session.pop('user_id', None)
     return redirect(url_for('home_page'))
+
+
+@app.route('/user/<user_id>')
+def user_profile(user_id):
+    user_data = user_service.get_user_from_id(user_id)
+    return render_template('user_page.html', user=user_data)
 
 
 if __name__ == "__main__":
