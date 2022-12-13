@@ -5,12 +5,17 @@
     <br>
     <div class="display-question-container">
         <h1>{{ question['title'] }}</h1>
+        <div class="time-views">
+            <span class="time-views">Asked {{ question['submission_time'] }} by <a href="{{ url_for('user_profile', user_id=question['user_id']) }}">{{ question['username'] }}</a></span>
+            <span class="time-views">views: {{ question['view_number'] }} </span>
+        </div>
         <div class="question">
             <h3>{{ question['message'] }}</h3>
             {% if question['image'] != None %}
                 <img src="{{ url_for('static', filename=('images/' + question['image'])) }}" class="image">
             {% endif %}
         </div>
+
         <div class="question-tags">
             Tags:
             {% for tag in tags %}
@@ -27,10 +32,7 @@
             {% endfor %}
             <a href="{{ url_for('view_tags') }}">View all Tags</a>
         </div>
-        <div class="time-views">
-            <span class="time-views">Asked {{ question['submission_time'] }} by <a href="{{ url_for('user_profile', user_id=question['user_id']) }}">{{ question['username'] }}</a></span>
-            <span class="time-views">views: {{ question['view_number'] }} </span>
-        </div>
+
         {% if 'user_id' in session %}
             {% if question['user_id'] == session['user_id']  %}
                 <div class="edit-delete">
@@ -90,7 +92,7 @@
                         {% if answer['image'] != None %}
                             <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}" class="image">
                         {% endif %}
-                    </div>question_vote
+                    </div>
                     <span class="time-views"><time> {{ answer['submission_time'] }}</time></span>
                     {% if 'user_id' in session %}
                         {% if answer['user_id'] == session['user_id'] %}
