@@ -42,8 +42,7 @@ def home_page_list():
 @app.route("/users")
 def list_users():
     if 'user_id' not in session:
-        pass
-        #return redirect(url_for('home_page'))
+        return redirect(url_for('home_page'))
     users = user_service.get_all_users()
     return render_template('list_users.html', users=users)
 
