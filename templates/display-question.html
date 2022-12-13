@@ -27,8 +27,8 @@
             {% endfor %}
         </div>
         <div class="time-views">
+            <span class="time-views">Asked {{ question['submission_time'] }} by <a href="{{ url_for('user_profile', user_id=question['user_id']) }}">{{ question['username'] }}</a></span>
             <span class="time-views">views: {{ question['view_number'] }} </span>
-            <span class="time-views">added: {{ question['submission_time'] }}</span>
         </div>
         {% if 'user_id' in session %}
             {% if question['user_id'] == session['user_id']  %}
@@ -46,7 +46,7 @@
                             <p class="comment-message">
                                 {{ comment['message'] }}
                             </p>
-                            <span class="time-views">added: {{ comment['submission_time'] }} </span>
+                            <span class="time-views">Comment published {{ comment['submission_time'] }} by <a href="{{ url_for('user_profile', user_id=comment['user_id']) }}">{{ comment['username'] }}</a></span>
                             {% if 'user_id' in session %}
                                 {% if comment['user_id'] == session['user_id']  %}
                                 <span class="edit-delete-comment">
@@ -74,7 +74,7 @@
         {% if answers %}
             <div class="answer-container">
                 {% for answer in answers %}
-                    <h4>{{ answer['username'] }}</h4>
+                    <h4><a href="{{ url_for('user_profile', user_id=answer['user_id']) }}">{{ answer['username'] }}</a></h4>
                     <div class="answer">
                         <p>
                             <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">
@@ -104,7 +104,7 @@
                                 <p>
                                     {{ comment['message'] }}
                                 </p>
-                                <span class="time-views">added: {{ comment['submission_time'] }} </span>
+                                <span class="time-views">Comment published {{ comment['submission_time'] }} by <a href="{{ url_for('user_profile', user_id=comment['user_id']) }}">{{ comment['username'] }}</a></span>
                         {% if 'user_id' in session %}
                             {% if comment['user_id'] == session['user_id']  %}
                                 <span class="edit-delete-comment">
