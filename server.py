@@ -147,13 +147,13 @@ def remove_tag(question_id, tag_id):
 
 @app.route("/answer/<answer_id>/vote-up")
 def answer_upvote(answer_id):
-    question_id = answer_service.answer_vote(answer_id, 1)
+    question_id = answer_service.answer_vote(session['user_id'], answer_id, 10)
     return redirect(url_for('show_question', question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/vote-down")
 def answer_downvote(answer_id):
-    question_id = answer_service.answer_vote(answer_id, -1)
+    question_id = answer_service.answer_vote(session['user_id'], answer_id, -2)
     return redirect(url_for('show_question', question_id=question_id))
 
 
