@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+    TAGS
+{% endblock %}
+{% block content %}
+    <div class="user-list">
+        <a href="{{ url_for('home_page') }}">Back to Main Page</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Number of questions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tag in tags %}
+                <tr>
+                    <td>{{ tag.name }}</td>
+                    <td>{{ tag.tag_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

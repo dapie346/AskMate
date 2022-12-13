@@ -25,6 +25,7 @@
                     {% endif %}
                 </span>
             {% endfor %}
+            <a href="{{ url_for('view_tags') }}">View all Tags</a>
         </div>
         <div class="time-views">
             <span class="time-views">Asked {{ question['submission_time'] }} by <a href="{{ url_for('user_profile', user_id=question['user_id']) }}">{{ question['username'] }}</a></span>

@@ -263,5 +263,10 @@ def user_profile(user_id):
     return render_template('user_page.html', user=user_data)
 
 
+@app.route('/tags')
+def view_tags():
+    tags = tag_service.get_tags_and_counts()
+    return render_template('view_tags.html', tags=tags)
+
 if __name__ == "__main__":
     app.run(debug=True)

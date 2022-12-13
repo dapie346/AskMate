@@ -48,6 +48,7 @@
                 {% if 'user_id' in session %}
                     <a href="{{ url_for('list_users') }}">View all Users</a>
                 {% endif %}
+                <a href="{{ url_for('view_tags') }}">View all Tags</a>
                 <a href="{{ url_for('add_question') }}">Add Question</a>
                 <table>
                     <thead>
