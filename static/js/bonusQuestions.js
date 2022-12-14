@@ -52,14 +52,6 @@ function toggleTheme() {
     console.log("toggle theme")
 }
 
-
-
-function increaseFontOnPage () {
-let elements = document.querySelectorAll('*');
-    for (const element of elements) {
-      increaseFont(element);
-    }
-}
 function increaseFont() {
     let elements = document.querySelectorAll('*');
     for (const element of elements) {
@@ -72,10 +64,7 @@ function increaseFont() {
     console.log("increaseFont");
 }
 
-
-
-
-function decreaseFont(elementId) {
+function decreaseFont() {
     let elements = document.querySelectorAll('*');
     for (const element of elements) {
         let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
