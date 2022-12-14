@@ -123,7 +123,6 @@ def toggle_accepted_answer_status(cursor, answer_id):
     cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchone()['question_id']
 
-
 @database_common.connection_handler
 def get_user_answers(cursor, user_id):
     query = f'''
