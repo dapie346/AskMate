@@ -75,6 +75,7 @@ def register_user():
             flash('You\'ve already signed up with that email, log in instead!')
             return redirect(url_for('login'))
         else:
+            print(hashed_password)
             user_service.register_new_user(username_input, user_input_email, hashed_password)
             user_data = user_service.get_user_from_username(username_input)
             session['username'] = username_input
@@ -157,6 +158,12 @@ def tag_question(question_id):
 @app.route("/question/<question_id>/tag/<tag_id>/delete")
 def remove_tag(question_id, tag_id):
     tag_service.remove_tag(question_id, tag_id)
+    return redirect(url_for('show_question', question_id=question_id))
+
+
+@app.route("/answer/<answer_id>/accept-answer")
+def accept_answer(answer_id):
+    question_id = answer_service.toggle_accepted_answer_status(answer_id)
     return redirect(url_for('show_question', question_id=question_id))
 
 

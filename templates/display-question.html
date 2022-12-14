@@ -77,7 +77,8 @@
             <div class="answer-container">
                 {% for answer in answers %}
                     <h4><a href="{{ url_for('user_profile', user_id=answer['user_id']) }}">{{ answer['username'] }}</a></h4>
-                    <div class="answer">
+                    {% if answer['accepted'] == True %}<span style="color: #3EB489;">ACCEPTED</span>{% endif %}
+                    <div {% if answer['accepted'] == True %} class="accepted-answer" {% else %} class="answer" {% endif %}>
                         <p>
                             <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">
                                 <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}" class="vote">
@@ -96,7 +97,14 @@
                     {% if 'user_id' in session %}
                         {% if answer['user_id'] == session['user_id'] %}
                             <a href="{{ url_for('edit_answer', answer_id = answer['id'])  }}" class="edit-delete"> EDIT ANSWER</a>
-                            <a href="{{ url_for('delete_answer', answer_id = answer['id'])  }}" class="edit-delete"> DELETE ANSWER</a><br>
+                            <a href="{{ url_for('delete_answer', answer_id = answer['id'])  }}" class="edit-delete">DELETE ANSWER</a><br>
+                        {% endif %}
+                        {% if question['user_id'] == session['user_id'] %}
+                            {% if answer['accepted'] == False %}
+                                <a href="{{ url_for('accept_answer', answer_id = answer['id'])  }}" class="edit-delete">ACCEPT ANSWER</a><br>
+                            {% else %}
+                                <a href="{{ url_for('accept_answer', answer_id = answer['id'])  }}" class="edit-delete">REMOVE ACCEPTED STATUS</a><br>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                     {% if answers_comments %}

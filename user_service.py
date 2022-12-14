@@ -40,6 +40,8 @@ def get_all_users(cursor):
         COALESCE((SELECT SUM(value) FROM question_vote LEFT JOIN question q on question_vote.question_id = q.id WHERE q.user_id = "user".id), 0)
         +
         COALESCE((SELECT SUM(value) FROM answer_vote LEFT JOIN answer a on answer_vote.answer_id = a.id WHERE a.user_id = "user".id), 0)
+        +
+        (SELECT COUNT(id) * 15 FROM answer WHERE user_id = "user".id AND accepted)
         as reputation
         FROM "user"
         GROUP BY "user".id
@@ -70,6 +72,8 @@ def get_user_from_id(cursor, id):
         COALESCE((SELECT SUM(value) FROM question_vote LEFT JOIN question q on question_vote.question_id = q.id WHERE q.user_id = "user".id), 0)
         +
         COALESCE((SELECT SUM(value) FROM answer_vote LEFT JOIN answer a on answer_vote.answer_id = a.id WHERE a.user_id = "user".id), 0)
+        +
+        (SELECT COUNT(id) * 15 FROM answer WHERE user_id = "user".id AND accepted)
         as reputation
         FROM "user"
         GROUP BY "user".id

@@ -188,6 +188,13 @@ td,th {
     width:75%;
 }
 
+.accepted-answer {
+    background-color: #D6E4E5;
+    border: 2px solid #3EB489;
+    border-radius: 5px 10px 5px 10px;
+    width:75%;
+}
+
 .time-views {
     font-size: 11px;
 }
