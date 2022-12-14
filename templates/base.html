@@ -20,6 +20,19 @@
         <h1 class="header-text">
             ASK MATE!
         </h1>
+        <div class="navbar-links-container">
+            <a href="{{ url_for('home_page') }}">Main Page</a>
+            <a href="{{ url_for('add_question') }}">Add Question</a>
+            <a href="{{ url_for('view_tags') }}">View all Tags</a>
+            {% if not user_logged_in %}
+                <a href="{{ url_for('register_user') }}">Register</a>
+                <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+                <a href="{{ url_for('list_users') }}">View all Users</a>
+                <a href="{{ url_for('user_profile', user_id=user_id) }}">My Profile</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+        </div>
     </div>
     <div class="top-div">
     {% block content %}

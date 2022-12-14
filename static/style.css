@@ -147,6 +147,16 @@ td,th {
     font-size: xxx-large;
 }
 
+.navbar-links-container {
+    float: right;
+    padding-top: 40px;
+    margin-right: 40px;
+}
+
+.navbar-links-container > a {
+    margin-right: 15px;
+}
+
 .question {
     background-color: #D6E4E5;
     border-left: 5px;
