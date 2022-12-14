@@ -145,6 +145,12 @@ def remove_tag(question_id, tag_id):
     return redirect(url_for('show_question', question_id=question_id))
 
 
+@app.route("/answer/<answer_id>/accept-answer")
+def accept_answer(answer_id):
+    question_id = answer_service.toggle_accepted_answer_status(answer_id)
+    return redirect(url_for('show_question', question_id=question_id))
+
+
 @app.route("/answer/<answer_id>/vote-up")
 def answer_upvote(answer_id):
     question_id = answer_service.answer_vote(session['user_id'], answer_id, 10)
@@ -267,6 +273,7 @@ def user_profile(user_id):
 def view_tags():
     tags = tag_service.get_tags_and_counts()
     return render_template('view_tags.html', tags=tags)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

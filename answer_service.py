@@ -47,8 +47,8 @@ def get_answers_to_question(cursor, question_id):
 @database_common.connection_handler
 def add_answer(cursor, answer, question_id, user_id, files):
     query = """
-        INSERT INTO answer (submission_time, vote_number, question_id, user_id, message)
-        VALUES (NOW()::TIMESTAMP(0), %(q_id)s, %(un)s, %(msg)s)
+        INSERT INTO answer (submission_time, question_id, user_id, message, accepted)
+        VALUES (NOW()::TIMESTAMP(0), %(q_id)s, %(un)s, %(msg)s, false)
         RETURNING id"""
     cursor.execute(
         query,
@@ -110,4 +110,15 @@ def update_answer(cursor, answer_id, message):
         WHERE id = %(answer_id)s
         RETURNING question_id"""
     cursor.execute(query, {'answer_id': answer_id, 'message': message})
+    return cursor.fetchone()['question_id']
+
+
+@database_common.connection_handler
+def toggle_accepted_answer_status(cursor, answer_id):
+    query = """
+        UPDATE answer
+        SET accepted = NOT accepted
+        WHERE id = %(answer_id)s
+        RETURNING question_id"""
+    cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchone()['question_id']
