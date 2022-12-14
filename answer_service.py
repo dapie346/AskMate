@@ -111,3 +111,14 @@ def update_answer(cursor, answer_id, message):
         RETURNING question_id"""
     cursor.execute(query, {'answer_id': answer_id, 'message': message})
     return cursor.fetchone()['question_id']
+
+
+@database_common.connection_handler
+def get_user_answers(cursor, user_id):
+    query = f'''
+        SELECT message, question_id 
+        FROM answer
+        WHERE user_id = %(id)s
+    '''
+    cursor.execute(query, {'id': user_id})
+    return cursor.fetchall()

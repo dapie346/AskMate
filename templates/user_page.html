@@ -36,6 +36,45 @@
                 <td>{{ user.reputation }}</td>
             </tr>
         </table>
+        <br>
+        <table>
+            <tr>
+                <td class="user-header">{{ user.username }}'s Questions</td>
+            </tr>
+            {% for question in questions %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('show_question', question_id=question.id) }}">
+                            {{ question.title }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td class="user-header">{{ user.username }}'s Answers</td>
+            </tr>
+            {% for answer in answers %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('show_question', question_id=answer.question_id) }}">
+                            {{ answer.message }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td class="user-header">{{ user.username }}'s Comments</td>
+            </tr>
+            {% for comment in comments %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('show_question', question_id=comment.question_id) }}">
+                            {{ comment.message }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}

@@ -260,13 +260,17 @@ def logout():
 @app.route('/user/<user_id>')
 def user_profile(user_id):
     user_data = user_service.get_user_from_id(user_id)
-    return render_template('user_page.html', user=user_data)
+    questions = question_service.get_user_questions(user_id)
+    answers = answer_service.get_user_answers(user_id)
+    comments = comment_service.get_user_comments(user_id)
+    return render_template('user_page.html', user=user_data, questions=questions, answers=answers, comments=comments)
 
 
 @app.route('/tags')
 def view_tags():
     tags = tag_service.get_tags_and_counts()
     return render_template('view_tags.html', tags=tags)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

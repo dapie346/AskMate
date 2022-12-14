@@ -74,3 +74,14 @@ def get_comments_to_answers(cursor, question_id):
         """
     cursor.execute(query, {'q_id': question_id})
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_user_comments(cursor, user_id):
+    query = f'''
+        SELECT message, question_id 
+        FROM comment
+        WHERE user_id = %(id)s
+    '''
+    cursor.execute(query, {'id': user_id})
+    return cursor.fetchall()
