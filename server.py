@@ -153,7 +153,9 @@ def tag_question(question_id):
             tag_id = tag_service.add_tag(request.form['tag'])
         question_service.tag_question(question_id, tag_id)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('tag_question.html', tags=tags, question_tags=tag_service.get_tag_names_from_list(question_tags), js_tags=json.dumps(tag_service.get_tag_names_from_list(tags)))
+    return render_template('tag_question.html', tags=tags,
+                           question_tags=tag_service.get_tag_names_from_list(question_tags),
+                           js_tags=json.dumps(tag_service.get_tag_names_from_list(tags)))
 
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete")
@@ -223,7 +225,8 @@ def edit_comment(comment_id):
     if request.method == 'POST':
         comment_service.edit_comment(comment, request.form['message'])
         return redirect(url_for('show_question', question_id=comment['question_id']))
-    return render_template('edit-comment.html', message=comment['message'], user_logged_in=True, user_id=session['user_id'])
+    return render_template('edit-comment.html', message=comment['message'], user_logged_in=True,
+                           user_id=session['user_id'])
 
 
 @app.route("/answer/<answer_id>/edit", methods=['GET', 'POST'])
@@ -232,7 +235,8 @@ def edit_answer(answer_id):
     if request.method == 'POST':
         question_id = answer_service.update_answer(answer_id, request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('edit_answer.html', message=answer['message'], user_logged_in=True, user_id=session['user_id'])
+    return render_template('edit_answer.html', message=answer['message'], user_logged_in=True,
+                           user_id=session['user_id'])
 
 
 def duplicate_handler_for_search(q_list, a_list):
@@ -249,12 +253,7 @@ def search():
     answer_data = data_handler.search_through_answers(search_phrase)
 
     results = duplicate_handler_for_search(question_data, answer_data)
-    pattern = re.compile(search_phrase, re.IGNORECASE)
-    for question in results:
-        question['title'] = pattern.sub('<mark>' + search_phrase + '</mark>', question['title'])
     answers = data_handler.answers_for_question(search_phrase)
-    for answer in answers:
-        answer['message'] = pattern.sub('<mark>' + search_phrase + '</mark>', answer['message'])
 
     answer_question_ids = [answer['question_id'] for answer in answers]
     if 'user_id' in session:
