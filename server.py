@@ -179,20 +179,26 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_question(question_id):
+    if 'user_id' not in session:
+        flash('You must be logged in to add comment!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
         comment_service.add_to_question(user_id, request.form['message'], question_id)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('new-comment.html')
+    return render_template('new-comment.html', user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/question/<question_id>/<answer_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_answer(answer_id, question_id):
+    if 'user_id' not in session:
+        flash('You must be logged in to add comment!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
         comment_service.add_to_answer(user_id, request.form['message'], question_id, answer_id)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('new-comment.html')
+    return render_template('new-comment.html', user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/comments/<comment_id>/delete", methods=['GET', 'POST'])
@@ -242,7 +248,9 @@ def search():
         answer['message'] = pattern.sub('<mark>' + search_phrase + '</mark>', answer['message'])
 
     answer_question_ids = [answer['question_id'] for answer in answers]
-
+    if 'user_id' in session:
+        return render_template('search_page.html', search_data=results, answers=answers,
+                               answer_question_ids=answer_question_ids, user_logged_in=True, user_id=session['user_id'])
     return render_template('search_page.html', search_data=results, answers=answers,
                            answer_question_ids=answer_question_ids)
 
