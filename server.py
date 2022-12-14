@@ -72,13 +72,14 @@ def register_user():
         if user_service.get_user_from_username(username_input):
             error = 'This username already exists'
         elif user_service.check_user_email(user_input_email):
-            error = 'User with this email already exists'
+            flash('You\'ve already signed up with that email, log in instead!')
+            return redirect(url_for('login'))
         else:
             user_service.register_new_user(username_input, user_input_email, hashed_password)
             user_data = user_service.get_user_from_username(username_input)
             session['username'] = username_input
             session['user_id'] = user_data['id']
-            return redirect(url_for('home_page', user_logged_in=True, username=session['username']))
+            return redirect(url_for('home_page'))
     return render_template('register.html', error=error)
 
 
