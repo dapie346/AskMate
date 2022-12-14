@@ -38,6 +38,7 @@
         </table>
     </div>
     <div class="user-questions-container user-container">
+        {% if questions != [] %}
         <table>
             <tr>
                 <td class="user-header">{{ user.username }}'s Questions</td>
@@ -52,8 +53,10 @@
                 </tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
     <div class="user-container user-answers-container">
+        {% if answers != [] %}
         <table>
             <tr>
                 <td class="user-header">{{ user.username }}'s Answers</td>
@@ -68,8 +71,10 @@
                 </tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
     <div class="user-container user-comments-container">
+        {% if comments != [] %}
         <table>
             <tr>
                 <td class="user-header">{{ user.username }}'s Comments</td>
@@ -84,6 +89,7 @@
                 </tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
