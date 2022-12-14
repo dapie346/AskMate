@@ -4,8 +4,7 @@
 {% endblock %}
 {% block content %}
 <div class="main-page-container">
-    <a href="{{ url_for('home_page') }}">Back to Main Page</a>
-    <div class="centered-page-container">
+    <div class="user-data-container">
         <table>
             <tr>
                 <td class="user-header">User ID</td>
@@ -36,6 +35,60 @@
                 <td>{{ user.reputation }}</td>
             </tr>
         </table>
+    </div>
+    <div class="user-questions-container user-container">
+        {% if questions != [] %}
+        <table>
+            <tr>
+                <td class="user-header">{{ user.username }}'s Questions</td>
+            </tr>
+            {% for question in questions %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('show_question', question_id=question.id) }}" class="title-td">
+                            {{ question.title }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+    <div class="user-container user-answers-container">
+        {% if answers != [] %}
+        <table>
+            <tr>
+                <td class="user-header">{{ user.username }}'s Answers</td>
+            </tr>
+            {% for answer in answers %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('show_question', question_id=answer.question_id) }}" class="title-td">
+                            {{ answer.message }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+    <div class="user-container user-comments-container">
+        {% if comments != [] %}
+        <table>
+            <tr>
+                <td class="user-header">{{ user.username }}'s Comments</td>
+            </tr>
+            {% for comment in comments %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('show_question', question_id=comment.question_id) }}" class="title-td">
+                            {{ comment.message }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

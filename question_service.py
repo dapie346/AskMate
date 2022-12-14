@@ -101,3 +101,14 @@ def tag_question(cursor, question_id, tag_id):
             INSERT INTO question_tag (question_id, tag_id)
             VALUES (%(question_id)s, %(tag_id)s)"""
     cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})
+
+
+@database_common.connection_handler
+def get_user_questions(cursor, user_id):
+    query = f'''
+        SELECT title, id 
+        FROM question
+        WHERE user_id = %(u_id)s
+    '''
+    cursor.execute(query, {'u_id': user_id})
+    return cursor.fetchall()

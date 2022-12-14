@@ -9,13 +9,14 @@ mark {
     margin: 0;
 }
 
-body {
+body, html {
     background-color: #EFF5F5;
     margin: 0;
+    padding: 0;
 }
 
 .top-div {
-    min-height: 700px;
+    min-height: 570px;
 }
 
 .bottom-div {
@@ -31,6 +32,35 @@ body {
 	margin: -150px 0 0 -150px;
 	width: 400px;
 	height: 400px;
+    text-align: center;
+}
+
+.user-data-container {
+    position: absolute;
+    top: 40%;
+    left: 20%;
+    margin: -150px 0 0 -150px;
+	width: 300px;
+	height: 300px;
+}
+
+.user-container {
+    position: absolute;
+    top: 40%;
+    margin: -150px 0 0 -150px;
+	width: 400px;
+}
+
+.user-questions-container {
+    left: 40%;
+}
+
+.user-answers-container {
+    left: 62%;
+}
+
+.user-comments-container {
+    left: 84%;
 }
 
 a {
@@ -51,6 +81,11 @@ h1 {
 a:hover  {
     color: mediumvioletred;
 }
+
+.centered-page-container p {
+    color: mediumvioletred;
+}
+
 thead, .user-header {
     background-color: #497174;
     color: white;
@@ -74,6 +109,10 @@ td,th {
     color: black;
 }
 
+.user-container table tbody tr td {
+    min-width: 300px;
+}
+
 #author-tag {
     color: #D6E4E5;
     font-size: 0.75rem;
@@ -87,18 +126,40 @@ td,th {
     width:auto;
 }
 
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: #D6E4E5;
+    margin: 0;
+    border-bottom: #497174 2px solid;
+    height: 120px;
+}
+
 .img-logo {
     float: left;
     max-height:100px;
     max-width:100px;
+    margin-left: 30px;
+    margin-right: 15px;
 }
 
 .header-text {
     float: left;
+    display: inline-block;
     padding-top: 25px;
     color: #497174;
     font-family: 'Stardos Stencil', cursive;
     font-size: xxx-large;
+}
+
+.navbar-links-container {
+    float: right;
+    padding-top: 40px;
+    margin-right: 40px;
+}
+
+.navbar-links-container > a {
+    margin-right: 15px;
 }
 
 .question {

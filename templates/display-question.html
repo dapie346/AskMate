@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{{ question['title'] }}{% endblock %}
 {% block content %}
-    <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
     <br>
     <div class="display-question-container">
         <h1>{{ question['title'] }}</h1>
@@ -78,8 +77,7 @@
             <div class="answer-container">
                 {% for answer in answers %}
                     <h4><a href="{{ url_for('user_profile', user_id=answer['user_id']) }}">{{ answer['username'] }}</a></h4>
-                    {% if answer['accepted'] == True %}<span style="color: #3EB489;">ACCEPTED</span>{% endif %}
-                    <div {% if answer['accepted'] == True %} class="accepted-answer" {% else %} class="answer" {% endif %}>
+                    <div class="answer">
                         <p>
                             <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">
                                 <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}" class="vote">
@@ -97,6 +95,7 @@
                     <span class="time-views"><time> {{ answer['submission_time'] }}</time></span>
                     {% if 'user_id' in session %}
                         {% if answer['user_id'] == session['user_id'] %}
+                            <a href="{{ url_for('edit_answer', answer_id = answer['id'])  }}" class="edit-delete"> EDIT ANSWER</a>
                             <a href="{{ url_for('delete_answer', answer_id = answer['id'])  }}" class="edit-delete">DELETE ANSWER</a><br>
                         {% endif %}
                         {% if question['user_id'] == session['user_id'] %}
