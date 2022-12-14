@@ -55,6 +55,20 @@ def add_question(cursor, user_id, question, files):
 @database_common.connection_handler
 def delete_question(cursor, question_id):
     query = """
+    SELECT image
+    FROM answer
+    WHERE question_id = %(question_id)s;
+    """
+    cursor.execute(query, {'question_id': question_id})
+    images = cursor.fetchall()
+    for image in images:
+        if image['image'] is not None:
+            try:
+                data_handler.delete_image(image['image'])
+            except FileNotFoundError:
+                pass
+
+    query = """
                 DELETE FROM question
                 WHERE id = %(question_id)s
                 RETURNING image"""
