@@ -4,20 +4,22 @@
 {% endblock %}
 {% block content %}
 <a href="{{ url_for('home_page') }}">&#x2190 Back to Main Page</a>
-<div>
-    <h1>Enter user's email and password</h1>
-    <br>
-        <form action="" method="post">
-            <input type="text" placeholder="Username" name="username" value="{{
-            request.form.username }}" required>
-            <input type="text" placeholder="Email" name="email" value="{{
-            request.form.email }}" required>
-            <input type="password" placeholder="Password" name="password" value="{{
-            request.form.password }}" required>
-            <input class="btn btn-default" type="submit" value="Register">
-        </form>
-        {% if error %}
-            <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
+<div class="main-page-container">
+    <div class="centered-page-container">
+        <h1>Enter user's email and password</h1>
+        <br>
+            <form action="" method="post">
+                <input type="text" placeholder="Username" name="username" value="{{
+                request.form.username }}" required>
+                <input type="text" placeholder="Email" name="email" value="{{
+                request.form.email }}" required>
+                <input type="password" placeholder="Password" name="password" value="{{
+                request.form.password }}" required>
+                <input class="btn btn-default" type="submit" value="Register">
+            </form>
+            {% if error %}
+                <p class="error"><strong>Error:</strong> {{ error }}</p>
+            {% endif %}
     </div>
+</div>
 {% endblock %}
