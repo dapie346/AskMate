@@ -89,7 +89,8 @@ def edit_question(question_id):
     if request.method == 'POST':
         question_service.update_question(question_id, request.form['title'], request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('edit-question.html', title=question['title'], message=question['message'])
+    return render_template('edit-question.html', title=question['title'], message=question['message'],
+                           user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/question/<question_id>")
@@ -214,7 +215,7 @@ def edit_comment(comment_id):
     if request.method == 'POST':
         comment_service.edit_comment(comment, request.form['message'])
         return redirect(url_for('show_question', question_id=comment['question_id']))
-    return render_template('edit-comment.html', message=comment['message'])
+    return render_template('edit-comment.html', message=comment['message'], user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/answer/<answer_id>/edit", methods=['GET', 'POST'])
@@ -223,7 +224,7 @@ def edit_answer(answer_id):
     if request.method == 'POST':
         question_id = answer_service.update_answer(answer_id, request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('edit_answer.html', message=answer['message'])
+    return render_template('edit_answer.html', message=answer['message'], user_logged_in=True, user_id=session['user_id'])
 
 
 def duplicate_handler_for_search(q_list, a_list):
