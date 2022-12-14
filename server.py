@@ -281,16 +281,21 @@ def logout():
 
 @app.route('/user/<user_id>')
 def user_profile(user_id):
+    if 'user_id' not in session:
+        return redirect(url_for('home_page'))
     user_data = user_service.get_user_from_id(user_id)
     questions = question_service.get_user_questions(user_id)
     answers = answer_service.get_user_answers(user_id)
     comments = comment_service.get_user_comments(user_id)
-    return render_template('user_page.html', user=user_data, questions=questions, answers=answers, comments=comments)
+    return render_template('user_page.html', user=user_data, questions=questions, answers=answers, comments=comments,
+                           user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route('/tags')
 def view_tags():
     tags = tag_service.get_tags_and_counts()
+    if 'user_id' in session:
+        return render_template('view_tags.html', tags=tags, user_logged_in=True, user_id=session['user_id'])
     return render_template('view_tags.html', tags=tags)
 
 
