@@ -9,13 +9,14 @@ mark {
     margin: 0;
 }
 
-body {
+body, html {
     background-color: #EFF5F5;
     margin: 0;
+    padding: 0;
 }
 
 .top-div {
-    min-height: 700px;
+    min-height: 570px;
 }
 
 .bottom-div {
@@ -120,14 +121,26 @@ td,th {
     width:auto;
 }
 
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: #D6E4E5;
+    margin: 0;
+    border-bottom: #497174 2px solid;
+    height: 120px;
+}
+
 .img-logo {
     float: left;
     max-height:100px;
     max-width:100px;
+    margin-left: 30px;
+    margin-right: 15px;
 }
 
 .header-text {
     float: left;
+    display: inline-block;
     padding-top: 25px;
     color: #497174;
     font-family: 'Stardos Stencil', cursive;

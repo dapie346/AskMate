@@ -13,6 +13,14 @@
 
 </head>
 <body>
+    <div class="navbar">
+        <a href="{{ url_for('home_page') }}">
+            <img src="{{ url_for('static', filename='images/askmate-logo.png') }}" class="img-logo">
+        </a>
+        <h1 class="header-text">
+            ASK MATE!
+        </h1>
+    </div>
     <div class="top-div">
     {% block content %}
     {% endblock %}
