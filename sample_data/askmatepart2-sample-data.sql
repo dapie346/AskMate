@@ -149,8 +149,11 @@ ALTER TABLE ONLY comment
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE;
 
-INSERT INTO "user" VALUES(0, 'bob@gmail.com', 'Bob', 'temp', '2022-11-28 08:29:00');
-INSERT INTO "user" VALUES(1, 'oskar@gmail.com', 'Ostin', '$2b$12$dtNhuwoQ0HjmO01zSC49XO4PYJJZ4h.SAoB5tdWFg.tyeEzE3NRIq', '2022-11-28 08:29:00');
+INSERT INTO "user" VALUES(0, 'bob@gmail.com', 'Bob', '$2b$12$HINsSsh/CEVmt0d3n1L76.NvbrGkI7YcbOaC.zUXRAhH4fL7bkryG', '2022-11-25 08:27:00');
+INSERT INTO "user" VALUES(1, 'oskar@gmail.com', 'Ostin', '$2b$12$dtNhuwoQ0HjmO01zSC49XO4PYJJZ4h.SAoB5tdWFg.tyeEzE3NRIq', '2022-11-25 08:29:00');
+INSERT INTO "user" VALUES(2, 'carl@gmail.com', 'Carl', '$2b$12$T7T9e6KIdZ7CoLq1vy6MYOBAFgyjEJq4S95PBur/qwAal2nqFNCO6', '2022-11-26 09:19:00');
+INSERT INTO "user" VALUES(3, 'dave@gmail.com', 'Dave', '$2b$12$cA2F/mySUsKG7TUMN8EX3eF5iS6Q2NMzBCg04srBI7uymnx9nlgpu', '2022-11-26 10:10:00');
+INSERT INTO "user" VALUES(4, 'jessica@gmail.com', 'Jessica', '$2b$12$lywnhqXTnHLa/zHJEU2peuHCg/15iSSG7yjujkt7i5V7AYaDT/GF.', '2022-11-26 15:50:00');
 
 INSERT INTO question VALUES (0, '2022-11-28 08:29:00', 29, 0, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, '2022-11-29 09:19:00', 15, 0, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
@@ -162,44 +165,44 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 jquery
 booklet
 app.js (bundled file with webpack, including jquery)', 'question_1.jpeg');
-INSERT INTO question VALUES (2, '2022-11-29 10:41:00', 1364, 0, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
+INSERT INTO question VALUES (2, '2022-11-29 10:41:00', 1364, 1, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
 ', NULL);
-INSERT INTO question VALUES (3, '2022-11-30 15:13:00', 77, 0, 'Compose dynamic SQL string with psycopg2', 'In psycopg2 version 2.7 there''s the new sql module to do this string composition in a way that''s safe against SQL injection. I don''t know how to properly construct it.', NULL);
+INSERT INTO question VALUES (3, '2022-11-30 15:13:00', 77, 1, 'Compose dynamic SQL string with psycopg2', 'In psycopg2 version 2.7 there''s the new sql module to do this string composition in a way that''s safe against SQL injection. I don''t know how to properly construct it.', NULL);
 INSERT INTO question VALUES (4, '2022-11-30 18:11:00', 13, 0, 'How to remove items from a list while iterating?', 'I''m iterating over a list of tuples in Python, and am attempting to remove them if they meet certain criteria.', NULL);
-INSERT INTO question VALUES (5, '2022-11-30 23:01:00', 101, 0, 'How do I compare strings in Java?', 'How do I compare strings in Java?', NULL);
-INSERT INTO question VALUES (6, '2022-12-01 07:45:00', 613, 0, 'How do I split a list into equally-sized chunks?', 'How do I split a list into equally-sized chunks?', NULL);
-INSERT INTO question VALUES (7, '2022-12-01 08:30:00', 905, 0, 'How can I horizontally center an element?', 'How can I horizontally center a <div> within another <div> using CSS?', 'question_7.png');
-INSERT INTO question VALUES (8, '2022-12-01 10:59:00', 44, 0, 'How can I validate an email address in JavaScript?', 'I''d like to check if the user input is an email address in JavaScript, before sending it to a server or attempting to send an email to it, to prevent the most basic mistyping. How could I achieve this?', NULL);
-INSERT INTO question VALUES (9, '2022-12-01 14:33:00', 29, 0, 'Insert text with single quotes in PostgreSQL', 'I need to insert values like: insert into test values (1,''user''s log''); If there is any method to do this correctly please share.', NULL);
+INSERT INTO question VALUES (5, '2022-11-30 23:01:00', 101, 2, 'How do I compare strings in Java?', 'How do I compare strings in Java?', NULL);
+INSERT INTO question VALUES (6, '2022-12-01 07:45:00', 613, 3, 'How do I split a list into equally-sized chunks?', 'How do I split a list into equally-sized chunks?', NULL);
+INSERT INTO question VALUES (7, '2022-12-01 08:30:00', 905, 1, 'How can I horizontally center an element?', 'How can I horizontally center a <div> within another <div> using CSS?', 'question_7.png');
+INSERT INTO question VALUES (8, '2022-12-01 10:59:00', 44, 3, 'How can I validate an email address in JavaScript?', 'I''d like to check if the user input is an email address in JavaScript, before sending it to a server or attempting to send an email to it, to prevent the most basic mistyping. How could I achieve this?', NULL);
+INSERT INTO question VALUES (9, '2022-12-01 14:33:00', 29, 2, 'Insert text with single quotes in PostgreSQL', 'I need to insert values like: insert into test values (1,''user''s log''); If there is any method to do this correctly please share.', NULL);
 SELECT pg_catalog.setval('question_id_seq', 9, true);
 
-INSERT INTO answer VALUES (1, '2022-11-28 16:49:00', 1, 0, 'You need to use brackets: my_list = []', NULL);
-INSERT INTO answer VALUES (2, '2022-11-29 14:42:00', 1, 0, 'Look it up in the Python docs', NULL);
-INSERT INTO answer VALUES (3, '2022-11-30 18:11:00', 3, 0, 'You can use psycopg2.sql.Identifier to interpolate an identifier to a query.', NULL);
-INSERT INTO answer VALUES (4, '2022-11-30 23:50:00', 5, 0, '== tests object references, .equals() tests the string values.', 'answer_4.png');
+INSERT INTO answer VALUES (1, '2022-11-28 16:49:00', 1, 1, 'You need to use brackets: my_list = []', NULL);
+INSERT INTO answer VALUES (2, '2022-11-29 14:42:00', 1, 2, 'Look it up in the Python docs', NULL);
+INSERT INTO answer VALUES (3, '2022-11-30 18:11:00', 3, 3, 'You can use psycopg2.sql.Identifier to interpolate an identifier to a query.', NULL);
+INSERT INTO answer VALUES (4, '2022-11-30 23:50:00', 5, 4, '== tests object references, .equals() tests the string values.', 'answer_4.png');
 INSERT INTO answer VALUES (5, '2022-12-01 01:13:00', 3, 0, 'Yes.', 'answer_5.jpg');
-INSERT INTO answer VALUES (6, '2022-12-01 01:14:00', 5, 0, 'I don''t know, but here''s a picture of an apple:', 'answer_6.png');
+INSERT INTO answer VALUES (6, '2022-12-01 01:14:00', 5, 1, 'I don''t know, but here''s a picture of an apple:', 'answer_6.png');
 INSERT INTO answer VALUES (7, '2022-12-01 07:50:00', 6, 0, 'noob', NULL);
-INSERT INTO answer VALUES (8, '2022-12-01 07:55:00', 6, 0, 'The simplest is this list comprehension one-liner: [lst[i:i + n] for i in range(0, len(lst), n)]', NULL);
-INSERT INTO answer VALUES (9, '2022-12-01 08:31:00', 7, 0, 'The margin: 0 auto is what does the actual centering. You can apply this CSS to the inner <div>:', 'answer_9.png');
-INSERT INTO answer VALUES (10, '2022-12-01 08:45:00', 7, 0, 'You can make the inner div into an inline element that can be centered with text-align like this:', 'answer_10.png');
-INSERT INTO answer VALUES (11, '2022-12-01 08:50:00', 7, 0, 'It''s very easy to style the div horizontally and vertically centered with flexbox. Just add display: flex and justify-content: center; to #outer <div>.', NULL);
+INSERT INTO answer VALUES (8, '2022-12-01 07:55:00', 6, 2, 'The simplest is this list comprehension one-liner: [lst[i:i + n] for i in range(0, len(lst), n)]', NULL);
+INSERT INTO answer VALUES (9, '2022-12-01 08:31:00', 7, 4, 'The margin: 0 auto is what does the actual centering. You can apply this CSS to the inner <div>:', 'answer_9.png');
+INSERT INTO answer VALUES (10, '2022-12-01 08:45:00', 7, 2, 'You can make the inner div into an inline element that can be centered with text-align like this:', 'answer_10.png');
+INSERT INTO answer VALUES (11, '2022-12-01 08:50:00', 7, 3, 'It''s very easy to style the div horizontally and vertically centered with flexbox. Just add display: flex and justify-content: center; to #outer <div>.', NULL);
 INSERT INTO answer VALUES (12, '2022-12-01 11:20:00', 8, 0, 'i''d like to know it too :(', NULL);
-INSERT INTO answer VALUES (13, '2022-12-01 11:58:00', 8, 0, 'Using regular expressions is probably the best way.', NULL);
+INSERT INTO answer VALUES (13, '2022-12-01 11:58:00', 8, 1, 'Using regular expressions is probably the best way.', NULL);
 INSERT INTO answer VALUES (14, '2022-12-01 12:01:00', 7, 0, 'Answer', NULL);
-INSERT INTO answer VALUES (15, '2022-12-01 12:03:00', 8, 0, 'The only way to be absolutely, positively sure that what the user entered is in fact an email is to actually send an email and see what happens. Other than that it''s all just guesses.', NULL);
-INSERT INTO answer VALUES (16, '2022-12-01 14:57:00', 9, 0, 'You can escape single quotes by doubling them up, this will work: ''user''''s log''', NULL);
-INSERT INTO answer VALUES (17, '2022-12-01 15:03:00', 9, 0, 'If you have to deal with many single quotes or multiple layers of escaping, you can avoid quoting hell in PostgreSQL with dollar-quoted strings.', NULL);
-INSERT INTO answer VALUES (18, '2022-12-01 17:26:00', 9, 0, 'look it up in the postgres docs', NULL);
+INSERT INTO answer VALUES (15, '2022-12-01 12:03:00', 8, 2, 'The only way to be absolutely, positively sure that what the user entered is in fact an email is to actually send an email and see what happens. Other than that it''s all just guesses.', NULL);
+INSERT INTO answer VALUES (16, '2022-12-01 14:57:00', 9, 4, 'You can escape single quotes by doubling them up, this will work: ''user''''s log''', NULL);
+INSERT INTO answer VALUES (17, '2022-12-01 15:03:00', 9, 3, 'If you have to deal with many single quotes or multiple layers of escaping, you can avoid quoting hell in PostgreSQL with dollar-quoted strings.', NULL);
+INSERT INTO answer VALUES (18, '2022-12-01 17:26:00', 9, 1, 'look it up in the postgres docs', NULL);
 SELECT pg_catalog.setval('answer_id_seq', 18, true);
 
-INSERT INTO comment VALUES (1, 0, NULL, 0, 'Please clarify the question as it is too vague!', '2022-11-28 08:49:00', 0);
-INSERT INTO comment VALUES (2, 1, 1, 0, 'I think you could use my_list = list() as well.', '2022-11-28 16:55:00', 0);
-INSERT INTO comment VALUES (3, 3, NULL, 0, 'Never, never, NEVER use Python string concatenation (+) or string parameters interpolation (%) to pass variables to a SQL query string. Not even at gunpoint.', '2022-11-30 16:13:00', 1);
-INSERT INTO comment VALUES (4, 7, 10, 0, 'I like this solution.', '2022-12-01 09:10:00', 1);
-INSERT INTO comment VALUES (5, 8, NULL, 0, 'let''s be realistic: you would not be using JavaScript to confirm whether an e-mail is authentic', '2022-12-01 11:58:00', 0);
-INSERT INTO comment VALUES (6, 9, 16, 0, 'Thanks, this worked!', '2022-12-01 15:15:00', 0);
-INSERT INTO comment VALUES (7, 2, NULL, 0, 'Fixed it, don''t worry', '2022-12-01 18:16:00', 0);
+INSERT INTO comment VALUES (1, 0, NULL, 1, 'Please clarify the question as it is too vague!', '2022-11-28 08:49:00', 0);
+INSERT INTO comment VALUES (2, 1, 1, 4, 'I think you could use my_list = list() as well.', '2022-11-28 16:55:00', 0);
+INSERT INTO comment VALUES (3, 3, NULL, 2, 'Never, never, NEVER use Python string concatenation (+) or string parameters interpolation (%) to pass variables to a SQL query string. Not even at gunpoint.', '2022-11-30 16:13:00', 1);
+INSERT INTO comment VALUES (4, 7, 10, 3, 'I like this solution.', '2022-12-01 09:10:00', 1);
+INSERT INTO comment VALUES (5, 8, NULL, 4, 'let''s be realistic: you would not be using JavaScript to confirm whether an e-mail is authentic', '2022-12-01 11:58:00', 0);
+INSERT INTO comment VALUES (6, 9, 16, 2, 'Thanks, this worked!', '2022-12-01 15:15:00', 0);
+INSERT INTO comment VALUES (7, 2, NULL, 1, 'Fixed it, don''t worry', '2022-12-01 18:16:00', 0);
 SELECT pg_catalog.setval('comment_id_seq', 7, true);
 
 INSERT INTO tag VALUES (1, 'python');

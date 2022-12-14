@@ -75,6 +75,7 @@ def register_user():
             flash('You\'ve already signed up with that email, log in instead!')
             return redirect(url_for('login'))
         else:
+            print(hashed_password)
             user_service.register_new_user(username_input, user_input_email, hashed_password)
             user_data = user_service.get_user_from_username(username_input)
             session['username'] = username_input
