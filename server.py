@@ -36,6 +36,9 @@ def home_page_list():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
     all_questions = question_service.get_questions(order_by, order_direction)
+    if 'user_id' in session and 'username' in session:
+        return render_template('home_page.html', all_questions=all_questions, page='home_page_list',
+                               user_logged_in=True, username=session['username'], user_id=session['user_id'])
     return render_template('home_page.html', all_questions=all_questions, page='home_page_list')
 
 
@@ -44,16 +47,19 @@ def list_users():
     if 'user_id' not in session:
         return redirect(url_for('home_page'))
     users = user_service.get_all_users()
-    return render_template('list_users.html', users=users)
+    return render_template('list_users.html', users=users, user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
+    if 'user_id' not in session:
+        flash('You must be logged in to add question!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
         question_id = question_service.add_question(user_id, request.form, request.files)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('add-question.html')
+    return render_template('add-question.html', user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -66,13 +72,14 @@ def register_user():
         if user_service.get_user_from_username(username_input):
             error = 'This username already exists'
         elif user_service.check_user_email(user_input_email):
-            error = 'User with this email already exists'
+            flash('You\'ve already signed up with that email, log in instead!')
+            return redirect(url_for('login'))
         else:
             user_service.register_new_user(username_input, user_input_email, hashed_password)
             user_data = user_service.get_user_from_username(username_input)
             session['username'] = username_input
             session['user_id'] = user_data['id']
-            return redirect(url_for('home_page', user_logged_in=True, username=session['username']))
+            return redirect(url_for('home_page'))
     return render_template('register.html', error=error)
 
 
@@ -82,7 +89,8 @@ def edit_question(question_id):
     if request.method == 'POST':
         question_service.update_question(question_id, request.form['title'], request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('edit-question.html', title=question['title'], message=question['message'])
+    return render_template('edit-question.html', title=question['title'], message=question['message'],
+                           user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/question/<question_id>")
@@ -93,6 +101,10 @@ def show_question(question_id):
     question_comments = comment_service.get_comments_to_question(question_id)
     answers_comments = comment_service.get_comments_to_answers(question_id)
     tags = tag_service.get_question_tags(question_id)
+    if 'user_id' in session:
+        return render_template('display-question.html', question=question, answers=answers, tags=tags,
+                               question_comments=question_comments, answers_comments=answers_comments,
+                               user_logged_in=True, user_id=session['user_id'])
     return render_template('display-question.html', question=question, answers=answers, tags=tags,
                            question_comments=question_comments, answers_comments=answers_comments)
 
@@ -111,11 +123,14 @@ def question_downvote(question_id):
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
+    if 'user_id' not in session:
+        flash('You must be logged in to add answer!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
         answer_service.add_answer(request.form, question_id, user_id, request.files)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('post_answer.html')
+    return render_template('post_answer.html', user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
@@ -171,20 +186,26 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_question(question_id):
+    if 'user_id' not in session:
+        flash('You must be logged in to add comment!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
         comment_service.add_to_question(user_id, request.form['message'], question_id)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('new-comment.html')
+    return render_template('new-comment.html', user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/question/<question_id>/<answer_id>/new-comment", methods=['GET', 'POST'])
 def new_comment_to_answer(answer_id, question_id):
+    if 'user_id' not in session:
+        flash('You must be logged in to add comment!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
         comment_service.add_to_answer(user_id, request.form['message'], question_id, answer_id)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('new-comment.html')
+    return render_template('new-comment.html', user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/comments/<comment_id>/delete", methods=['GET', 'POST'])
@@ -200,7 +221,7 @@ def edit_comment(comment_id):
     if request.method == 'POST':
         comment_service.edit_comment(comment, request.form['message'])
         return redirect(url_for('show_question', question_id=comment['question_id']))
-    return render_template('edit-comment.html', message=comment['message'])
+    return render_template('edit-comment.html', message=comment['message'], user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/answer/<answer_id>/edit", methods=['GET', 'POST'])
@@ -209,7 +230,7 @@ def edit_answer(answer_id):
     if request.method == 'POST':
         question_id = answer_service.update_answer(answer_id, request.form['message'])
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('edit_answer.html', message=answer['message'])
+    return render_template('edit_answer.html', message=answer['message'], user_logged_in=True, user_id=session['user_id'])
 
 
 def duplicate_handler_for_search(q_list, a_list):
@@ -234,7 +255,9 @@ def search():
         answer['message'] = pattern.sub('<mark>' + search_phrase + '</mark>', answer['message'])
 
     answer_question_ids = [answer['question_id'] for answer in answers]
-
+    if 'user_id' in session:
+        return render_template('search_page.html', search_data=results, answers=answers,
+                               answer_question_ids=answer_question_ids, user_logged_in=True, user_id=session['user_id'])
     return render_template('search_page.html', search_data=results, answers=answers,
                            answer_question_ids=answer_question_ids)
 
@@ -265,13 +288,21 @@ def logout():
 
 @app.route('/user/<user_id>')
 def user_profile(user_id):
+    if 'user_id' not in session:
+        return redirect(url_for('home_page'))
     user_data = user_service.get_user_from_id(user_id)
-    return render_template('user_page.html', user=user_data)
+    questions = question_service.get_user_questions(user_id)
+    answers = answer_service.get_user_answers(user_id)
+    comments = comment_service.get_user_comments(user_id)
+    return render_template('user_page.html', user=user_data, questions=questions, answers=answers, comments=comments,
+                           user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route('/tags')
 def view_tags():
     tags = tag_service.get_tags_and_counts()
+    if 'user_id' in session:
+        return render_template('view_tags.html', tags=tags, user_logged_in=True, user_id=session['user_id'])
     return render_template('view_tags.html', tags=tags)
 
 
