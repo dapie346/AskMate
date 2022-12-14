@@ -77,7 +77,8 @@
             <div class="answer-container">
                 {% for answer in answers %}
                     <h4><a href="{{ url_for('user_profile', user_id=answer['user_id']) }}">{{ answer['username'] }}</a></h4>
-                    <div class="answer">
+                    {% if answer['accepted'] == True %}<span style="color: #3EB489;">ACCEPTED</span>{% endif %}
+                    <div {% if answer['accepted'] == True %} class="accepted-answer" {% else %} class="answer" {% endif %}>
                         <p>
                             <a href="{{ url_for('answer_upvote', answer_id = answer['id']) }}">
                                 <img src="{{ url_for('static', filename='images/angle-circle-up.png') }}" class="vote">
