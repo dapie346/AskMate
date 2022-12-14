@@ -1,3 +1,5 @@
+import json
+
 from bonus_questions import SAMPLE_QUESTIONS
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import os
@@ -151,8 +153,7 @@ def tag_question(question_id):
             tag_id = tag_service.add_tag(request.form['tag'])
         question_service.tag_question(question_id, tag_id)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('tag_question.html', tags=tags,
-                           question_tags=tag_service.get_tag_names_from_list(question_tags))
+    return render_template('tag_question.html', tags=tags, question_tags=tag_service.get_tag_names_from_list(question_tags), js_tags=json.dumps(tag_service.get_tag_names_from_list(tags)))
 
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete")

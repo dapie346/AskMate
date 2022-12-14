@@ -26,7 +26,7 @@ def add_tag(cursor, tag):
             INSERT INTO tag (name)
             VALUES (%(name)s)
             RETURNING id"""
-    cursor.execute(query, {'name': tag})
+    cursor.execute(query, {'name': tag.lower()})
     return cursor.fetchone()['id']
 
 
