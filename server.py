@@ -100,6 +100,10 @@ def show_question(question_id):
     question_comments = comment_service.get_comments_to_question(question_id)
     answers_comments = comment_service.get_comments_to_answers(question_id)
     tags = tag_service.get_question_tags(question_id)
+    if 'user_id' in session:
+        return render_template('display-question.html', question=question, answers=answers, tags=tags,
+                               question_comments=question_comments, answers_comments=answers_comments,
+                               user_logged_in=True, user_id=session['user_id'])
     return render_template('display-question.html', question=question, answers=answers, tags=tags,
                            question_comments=question_comments, answers_comments=answers_comments)
 
@@ -118,11 +122,14 @@ def question_downvote(question_id):
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
+    if 'user_id' not in session:
+        flash('You must be logged in to add answer!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
         answer_service.add_answer(request.form, question_id, user_id, request.files)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('post_answer.html')
+    return render_template('post_answer.html', user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
