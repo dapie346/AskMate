@@ -5,25 +5,36 @@
 {% block content %}
     <div class="main-page-container">
         <div class="home-page-content">
-            <div class="filter-container">
-                <div class="filter-header">
-                    <h3>Filter</h3>
+            <div class="left-bar">
+                <div class="filter-container">
+                    <div class="filter-header">
+                        <h3>Filter</h3>
+                    </div>
+                    <form action="{{ url_for('home_page_list') }}" method="GET">
+                        <p><label for="order_by">Sort by:</label></p>
+                            <select id="order_by" name="order_by">
+                                <option value="submission_time" selected>Submission time</option>
+                                <option value="view_number">Views</option>
+                                <option value="vote_number">Votes</option>
+                                <option value="title">Title</option>
+                            </select>
+                        <p>Order: </p>
+                            <input type="radio" id="desc" name="order_direction" value="desc" checked>
+                            <label for="desc">DESC</label>
+                            <input type="radio" id="asc" name="order_direction" value="asc">
+                            <label for="asc">ASC</label>
+                        <p><button type="submit">SORT</button></p>
+                    </form>
                 </div>
-                <form action="{{ url_for('home_page_list') }}" method="GET">
-                    <p><label for="order_by">Sort by:</label></p>
-                        <select id="order_by" name="order_by">
-                            <option value="submission_time" selected>Submission time</option>
-                            <option value="view_number">Views</option>
-                            <option value="vote_number">Votes</option>
-                            <option value="title">Title</option>
-                        </select>
-                    <p>Order: </p>
-                        <input type="radio" id="desc" name="order_direction" value="desc" checked>
-                        <label for="desc">DESC</label>
-                        <input type="radio" id="asc" name="order_direction" value="asc">
-                        <label for="asc">ASC</label>
-                    <p><button type="submit">SORT</button></p>
-                </form>
+                <div class="change-fontsize">
+                    <p>Font size:</p>
+                    <select id="input-font" class="input"
+                        onchange="changeFontStyle (this);">
+                        <option value="small">Small</option>
+                        <option value="initial" selected>Default</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
             </div>
             <div class="questions-list">
                 {% if user_logged_in %}
@@ -70,4 +81,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
