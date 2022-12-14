@@ -19,7 +19,7 @@ function checkFontCookie() {
     selectImplementedOption();
 }
 
-let changeFontStyle = function (font) {
+let changeFontSize = function (font) {
     document.getElementById("top-div").style.fontSize = font.value;
     setCookie("font-size", font.value);
 }

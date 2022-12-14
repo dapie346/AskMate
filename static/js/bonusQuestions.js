@@ -1,3 +1,12 @@
+selector();
+
+function selector() {
+    let elements = document.querySelectorAll('*');
+    for (const element of elements) {
+      console.log(element);
+    }
+}
+
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
 function getSortedItems(items, sortField, sortDirection) {
     console.log(items)
@@ -43,10 +52,37 @@ function toggleTheme() {
     console.log("toggle theme")
 }
 
+
+
+function increaseFontOnPage () {
+let elements = document.querySelectorAll('*');
+    for (const element of elements) {
+      increaseFont(element);
+    }
+}
 function increaseFont() {
-    console.log("increaseFont")
+    let elements = document.querySelectorAll('*');
+    for (const element of elements) {
+        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+        let fontSize = parseFloat(style);
+        if (fontSize < 15) {
+            element.style.fontSize = (fontSize + 1) + 'px';
+        }
+    }
+    console.log("increaseFont");
 }
 
-function decreaseFont() {
-    console.log("decreaseFont")
+
+
+
+function decreaseFont(elementId) {
+    let elements = document.querySelectorAll('*');
+    for (const element of elements) {
+        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+        let fontSize = parseFloat(style);
+        if (fontSize > 3) {
+            element.style.fontSize = (fontSize - 1) + 'px';
+        }
+    }
+    console.log("decreaseFont");
 }
