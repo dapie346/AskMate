@@ -36,6 +36,9 @@ def home_page_list():
     order_by = request.args.get('order_by', default='submission_time')
     order_direction = request.args.get('order_direction', default='desc')
     all_questions = question_service.get_questions(order_by, order_direction)
+    if 'user_id' in session and 'username' in session:
+        return render_template('home_page.html', all_questions=all_questions, page='home_page_list',
+                               user_logged_in=True, username=session['username'], user_id=session['user_id'])
     return render_template('home_page.html', all_questions=all_questions, page='home_page_list')
 
 
@@ -44,16 +47,19 @@ def list_users():
     if 'user_id' not in session:
         return redirect(url_for('home_page'))
     users = user_service.get_all_users()
-    return render_template('list_users.html', users=users)
+    return render_template('list_users.html', users=users, user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
+    if 'user_id' not in session:
+        flash('You must be logged in to add question!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
         question_id = question_service.add_question(user_id, request.form, request.files)
         return redirect(url_for('show_question', question_id=question_id))
-    return render_template('add-question.html')
+    return render_template('add-question.html', user_logged_in=True, user_id=session['user_id'])
 
 
 @app.route("/register", methods=['GET', 'POST'])
