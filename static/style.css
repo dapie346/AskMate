@@ -47,7 +47,6 @@ body {
     top: 40%;
     margin: -150px 0 0 -150px;
 	width: 400px;
-
 }
 
 .user-questions-container {
@@ -102,6 +101,10 @@ td,th {
 .title-td {
     max-width: 500px;
     color: black;
+}
+
+.user-container table tbody tr td {
+    min-width: 300px;
 }
 
 #author-tag {

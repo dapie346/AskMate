@@ -47,7 +47,7 @@ def get_answers_to_question(cursor, question_id):
 @database_common.connection_handler
 def add_answer(cursor, answer, question_id, user_id, files):
     query = """
-        INSERT INTO answer (submission_time, vote_number, question_id, user_id, message)
+        INSERT INTO answer (submission_time, question_id, user_id, message)
         VALUES (NOW()::TIMESTAMP(0), %(q_id)s, %(un)s, %(msg)s)
         RETURNING id"""
     cursor.execute(
