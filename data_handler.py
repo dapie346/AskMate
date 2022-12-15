@@ -5,12 +5,12 @@ import question_service
 IMAGE_FOLDER = 'static/images'
 
 
-def save_image(file, filename):
-    file.save(os.path.join(os.path.abspath(IMAGE_FOLDER), filename))
+def save_image(file, folder, filename):
+    file.save(os.path.join(os.path.abspath(IMAGE_FOLDER + folder), filename))
 
 
-def delete_image(filename):
-    os.remove(os.path.join(os.path.abspath(IMAGE_FOLDER), filename))
+def delete_image(folder, filename):
+    os.remove(os.path.join(os.path.abspath(IMAGE_FOLDER + folder), filename))
 
 
 @database_common.connection_handler

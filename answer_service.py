@@ -1,6 +1,7 @@
 import data_handler
 import database_common
 
+FOLDER = '/answer'
 
 @database_common.connection_handler
 def get_answers(cursor):
@@ -60,7 +61,7 @@ def add_answer(cursor, answer, question_id, user_id, files):
     )
     id = cursor.fetchone()['id']
     if files['image'].filename != '':
-        data_handler.save_image(files['image'], f'answer_{id}.png')
+        data_handler.save_image(files['image'], FOLDER, f'answer_{id}.png')
         query = """
                 UPDATE answer
                 SET image = %(image)s
@@ -79,7 +80,7 @@ def delete_answer(cursor, answer_id):
     image = query_returns['image']
     if image is not None:
         try:
-            data_handler.delete_image(image)
+            data_handler.delete_image(FOLDER, image)
         except FileNotFoundError:
             pass
     return query_returns['question_id']

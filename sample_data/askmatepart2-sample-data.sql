@@ -223,3 +223,41 @@ INSERT INTO question_tag VALUES (6, 1);
 INSERT INTO question_tag VALUES (7, 3);
 INSERT INTO question_tag VALUES (8, 5);
 INSERT INTO question_tag VALUES (9, 2);
+
+DROP FUNCTION IF EXISTS calculate_reputation();
+CREATE OR REPLACE FUNCTION calculate_reputation()
+RETURNS TABLE (id INT, reputation BIGINT)
+LANGUAGE plpgsql
+AS
+    $$
+    #variable_conflict use_column
+    BEGIN
+    RETURN QUERY SELECT
+    "user".id,
+    COALESCE((SELECT SUM(value) FROM question_vote LEFT JOIN question q on question_vote.question_id = q.id WHERE q.user_id = "user".id), 0)
+    +
+    COALESCE((SELECT SUM(value) FROM answer_vote LEFT JOIN answer a on answer_vote.answer_id = a.id WHERE a.user_id = "user".id), 0)
+    +
+    (SELECT COUNT(id) * 15 FROM answer WHERE user_id = "user".id AND accepted)
+    as reputation
+    FROM "user"
+    GROUP BY "user".id;
+    END;
+    $$;
+
+DROP FUNCTION IF EXISTS get_user_counts();
+CREATE OR REPLACE FUNCTION get_user_counts()
+RETURNS TABLE (id INT, question_count BIGINT, answer_count BIGINT, comment_count BIGINT)
+LANGUAGE plpgsql
+AS
+    $$
+    #variable_conflict use_column
+    BEGIN
+    RETURN QUERY SELECT
+    "user".id,
+    (SELECT COUNT(DISTINCT question.id) FROM question WHERE question.user_id = "user".id) AS question_count,
+    (SELECT COUNT(DISTINCT answer.id) FROM answer WHERE answer.user_id = "user".id) AS answer_count,
+    (SELECT COUNT(DISTINCT comment.id) FROM comment WHERE comment.user_id = "user".id) AS comment_count
+    FROM "user";
+    END;
+    $$;
