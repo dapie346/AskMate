@@ -16,7 +16,7 @@ body, html {
 }
 
 .top-div {
-    min-height: 570px;
+    min-height: 500px;
 }
 
 .bottom-div {
@@ -198,9 +198,9 @@ td,th {
 }
 
 .left-bar {
-    width: 15%;
-    min-width: 150px;
     float: left;
+    margin-left: 100px;
+    margin-top: 70px;
 }
 
 .filter-container {
@@ -223,8 +223,7 @@ td,th {
 }
 
 .questions-list {
-    width: 80%;
-    float: left;
+    float: right;
 }
 
 .tag-container {
@@ -266,7 +265,6 @@ td,th {
 }
 
 .comment {
-    border-bottom: 1px;
     border-bottom-style: solid;
     border-bottom-width: thin;
     font-size: smaller;
