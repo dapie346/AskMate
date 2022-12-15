@@ -131,3 +131,13 @@ def get_user_questions(cursor, user_id):
     '''
     cursor.execute(query, {'u_id': user_id})
     return cursor.fetchall()
+
+@database_common.connection_handler
+def get_question_user_id(cursor, question_id):
+    query = f'''
+            SELECT user_id 
+            FROM question
+            WHERE id = %(question_id)s
+        '''
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()['user_id']

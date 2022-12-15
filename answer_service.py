@@ -133,3 +133,23 @@ def get_user_answers(cursor, user_id):
     '''
     cursor.execute(query, {'id': user_id})
     return cursor.fetchall()
+
+@database_common.connection_handler
+def get_answer_user_id(cursor, answer_id):
+    query = f'''
+            SELECT user_id 
+            FROM answer
+            WHERE id = %(answer_id)s
+        '''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()['user_id']
+
+@database_common.connection_handler
+def get_answer_question_id(cursor, answer_id):
+    query = f'''
+            SELECT question_id
+            FROM answer
+            WHERE id = %(answer_id)s
+        '''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()['question_id']
