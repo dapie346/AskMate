@@ -28,12 +28,16 @@ function getFilteredItems(items, filterValue) {
     console.log(items)
     console.log(filterValue)
 
-    // === SAMPLE CODE ===
-    // if you have not changed the original html uncomment the code below to have an idea of the
-    // effect this function has on the table
-    //
-    for (let i=0; i<filterValue.length; i++) {
-        items.pop()
+    if (filterValue[0] === '!'){
+        filterValue = filterValue.substring(1);
+        items = items.filter(function (obj){
+            return !obj.Title.includes(filterValue) && !obj.Description.includes(filterValue);
+        })
+    }
+    else {
+        items = items.filter(function (obj){
+            return obj.Title.includes(filterValue) || obj.Description.includes(filterValue);
+        })
     }
 
     return items
