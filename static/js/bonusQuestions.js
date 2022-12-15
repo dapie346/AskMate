@@ -40,7 +40,9 @@ function getFilteredItems(items, filterValue) {
 }
 
 function toggleTheme() {
-    console.log("toggle theme")
+    let currentTheme = document.documentElement.getAttribute("data-theme");
+    let switchToTheme = currentTheme === "light-to-dark" ? "dark-to-light" : "light-to-dark";
+    document.documentElement.setAttribute("data-theme", switchToTheme);
 }
 
 function getFontSizes(elements) {
