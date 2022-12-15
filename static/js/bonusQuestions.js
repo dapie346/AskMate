@@ -30,14 +30,39 @@ function getFilteredItems(items, filterValue) {
 
     if (filterValue[0] === '!'){
         filterValue = filterValue.substring(1);
-        items = items.filter(function (obj){
-            return !obj.Title.includes(filterValue) && !obj.Description.includes(filterValue);
-        })
+        if(filterValue.includes('Description:')){
+            filterValue = filterValue.split(":").pop();
+            items = items.filter(function (obj){
+                return !obj.Description.includes(filterValue);})
+        }
+        else if(filterValue.includes('Title:')){
+            filterValue = filterValue.split(":").pop();
+            items = items.filter(function (obj){
+                return !obj.Title.includes(filterValue);})
+        }
+        else {
+            items = items.filter(function (obj) {
+                return !obj.Title.includes(filterValue) && !obj.Description.includes(filterValue);
+            })
+        }
     }
+
     else {
-        items = items.filter(function (obj){
-            return obj.Title.includes(filterValue) || obj.Description.includes(filterValue);
-        })
+        if(filterValue.includes('Description:')){
+            filterValue = filterValue.split(":").pop();
+            items = items.filter(function (obj){
+                return obj.Description.includes(filterValue);})
+        }
+        else if(filterValue.includes('Title:')){
+            filterValue = filterValue.split(":").pop();
+            items = items.filter(function (obj){
+                return obj.Title.includes(filterValue);})
+        }
+        else {
+            items = items.filter(function (obj) {
+                return obj.Title.includes(filterValue) || obj.Description.includes(filterValue);
+            })
+        }
     }
 
     return items
