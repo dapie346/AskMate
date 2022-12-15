@@ -1,6 +1,7 @@
 import data_handler
 import database_common
 
+FOLDER = '/question'
 
 @database_common.connection_handler
 def get_questions(cursor, order_by='submission_time', additions=''):
@@ -47,7 +48,7 @@ def add_question(cursor, user_id, question, files):
     cursor.execute(query, {'user': user_id, 'title': question['title'], 'message': question['message']})
     id = cursor.fetchone()['id']
     if files['image'].filename != '':
-        data_handler.save_image(files['image'], f'question_{id}.png')
+        data_handler.save_image(files['image'], FOLDER, f'question_{id}.png')
         query = """
                         UPDATE question
                         SET image = %(image)s
@@ -68,7 +69,7 @@ def delete_question(cursor, question_id):
     for image in images:
         if image['image'] is not None:
             try:
-                data_handler.delete_image(image['image'])
+                data_handler.delete_image('/answer', image['image'])
             except FileNotFoundError:
                 pass
 
@@ -80,7 +81,7 @@ def delete_question(cursor, question_id):
     image = cursor.fetchone()['image']
     if image is not None:
         try:
-            data_handler.delete_image(image)
+            data_handler.delete_image(FOLDER, image)
         except FileNotFoundError:
             pass
 
