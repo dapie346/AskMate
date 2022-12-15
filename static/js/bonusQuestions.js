@@ -43,26 +43,39 @@ function toggleTheme() {
     console.log("toggle theme")
 }
 
-function increaseFont() {
-    let elements = document.querySelectorAll('*');
+function getFontSizes(elements) {
+    const sizes = [];
     for (const element of elements) {
         let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
         let fontSize = parseFloat(style);
-        if (fontSize < 15) {
-            element.style.fontSize = (fontSize + 1) + 'px';
+        sizes.push(fontSize);
         }
-    }
+    return sizes;
+}
+
+
+function increaseFont() {
+    let elements = document.body.querySelectorAll('*');
+    let sizes = getFontSizes(elements);
+    if (sizes.some(el => el <= 15)) {
+        for (const element of elements) {
+            let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+            let fontSize = parseFloat(style);
+            element.style.fontSize = (fontSize + 1) + 'px';
+            }
+        }
     console.log("increaseFont");
 }
 
 function decreaseFont() {
     let elements = document.body.querySelectorAll('*');
-    for (const element of elements) {
-        let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
-        let fontSize = parseFloat(style);
-        if (fontSize > 3) {
+    let sizes = getFontSizes(elements);
+    if (sizes.every(el => el >= 3)) {
+        for (const element of elements) {
+            let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+            let fontSize = parseFloat(style);
             element.style.fontSize = (fontSize - 1) + 'px';
+            }
         }
-    }
     console.log("decreaseFont");
 }
