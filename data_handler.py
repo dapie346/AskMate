@@ -14,31 +14,27 @@ def delete_image(folder, filename):
 
 
 @database_common.connection_handler
-def search_through_questions(cursor, value):
+def search_through_questions(cursor, search):
     cursor.execute("""
-        SELECT question.*, COALESCE(SUM(CASE WHEN qv.value IS NULL THEN NULL WHEN qv.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
+        SELECT 
+        question.id
         FROM question
-        LEFT JOIN question_vote qv on question.id = qv.question_id
-        WHERE title ILIKE '%%' || %s || '%%' OR  message LIKE '%%' || %s || '%%' 
-        GROUP BY question.id""", [value, value]
-    )
-    return cursor.fetchall()
+        WHERE title ILIKE '%%' || %s || '%%' OR  message LIKE '%%' || %s || '%%' """, [search, search]
+                   )
+    questions = cursor.fetchall()
+    return [question['id'] for question in questions]
 
 
 @database_common.connection_handler
 def search_through_answers(cursor, value):
     cursor.execute("""
-        SELECT question_id,message
+        SELECT question_id
         FROM answer
         WHERE message ILIKE '%%' || %s || '%%' 
     """, [value]
-    )
+                   )
     answers = cursor.fetchall()
-    print(answers)
-    questions = []
-    for i in answers:
-        questions.append(question_service.get_question(i['question_id']))
-    return questions
+    return [answer['question_id'] for answer in answers]
 
 
 @database_common.connection_handler
@@ -48,6 +44,6 @@ def answers_for_question(cursor, value):
         FROM answer
         WHERE message ILIKE '%%' || %s || '%%' 
     """, [value]
-    )
+                   )
     answers = cursor.fetchall()
     return answers
