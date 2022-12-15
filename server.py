@@ -257,11 +257,11 @@ def edit_answer(answer_id):
                            user_id=session['user_id'])
 
 
-def duplicate_handler_for_search(q_list, a_list):
-    for i in a_list:
-        if i not in q_list:
-            q_list.append(i)
-    return q_list
+def duplicate_handler_for_search(question_list, answer_list):
+    for answer in answer_list:
+        if answer not in question_list:
+            question_list.append(answer)
+    return question_list
 
 
 @app.route("/search")
@@ -272,6 +272,10 @@ def search():
 
     results = duplicate_handler_for_search(question_data, answer_data)
     answers = data_handler.answers_for_question(search_phrase)
+
+    print(results)
+
+    results = [question_service.get_question(question) for question in results]
 
     answer_question_ids = [answer['question_id'] for answer in answers]
     if 'user_id' in session:
