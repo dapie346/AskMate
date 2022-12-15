@@ -4,14 +4,18 @@ import database_common
 
 @database_common.connection_handler
 def get_questions(cursor, order_by='submission_time', additions=''):
-    query = f"""
-        SELECT question.*, COALESCE(SUM(CASE WHEN qv.value IS NULL THEN NULL WHEN qv.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
-        FROM question
-        LEFT JOIN question_vote qv on question.id = qv.question_id
-        GROUP BY question.id
-        ORDER BY {order_by} {additions}"""
-    cursor.execute(query)
-    return cursor.fetchall()
+    order_by_list = ['submission_time', 'view_number', 'vote_number', 'title']
+    additions_list = ['desc limit 5', 'desc', 'asc limit 5', 'asc']
+    if order_by in order_by_list and additions in additions_list:
+        query = f"""
+            SELECT question.*, COALESCE(SUM(CASE WHEN qv.value IS NULL THEN NULL WHEN qv.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
+            FROM question
+            LEFT JOIN question_vote qv on question.id = qv.question_id
+            GROUP BY question.id
+            ORDER BY {order_by} {additions}"""
+        cursor.execute(query)
+        return cursor.fetchall()
+    return []
 
 
 @database_common.connection_handler

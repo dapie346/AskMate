@@ -1,12 +1,3 @@
-selector();
-
-function selector() {
-    let elements = document.querySelectorAll('*');
-    for (const element of elements) {
-      console.log(element);
-    }
-}
-
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
 function getSortedItems(items, sortField, sortDirection) {
     console.log(items)
@@ -65,7 +56,7 @@ function increaseFont() {
 }
 
 function decreaseFont() {
-    let elements = document.querySelectorAll('*');
+    let elements = document.body.querySelectorAll('*');
     for (const element of elements) {
         let style = window.getComputedStyle(element, null).getPropertyValue('font-size');
         let fontSize = parseFloat(style);
