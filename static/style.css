@@ -36,31 +36,24 @@ body, html {
 }
 
 .user-data-container {
-    position: absolute;
+    /*position: absolute;
     top: 40%;
     left: 20%;
     margin: -150px 0 0 -150px;
 	width: 300px;
 	height: 300px;
+	*/
+    width: 25%;
 }
 
 .user-container {
+    /*
     position: absolute;
     top: 40%;
     margin: -150px 0 0 -150px;
 	width: 400px;
-}
-
-.user-questions-container {
-    left: 40%;
-}
-
-.user-answers-container {
-    left: 62%;
-}
-
-.user-comments-container {
-    left: 84%;
+     */
+    width: 25%;
 }
 
 a {
@@ -326,5 +319,6 @@ td,th {
 }
 
 .main-page-container {
-    margin-left: 4%;
+    overflow: hidden;
+    display: inline-flex;
 }

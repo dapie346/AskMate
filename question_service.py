@@ -1,17 +1,22 @@
 import data_handler
 import database_common
 
+FOLDER = '/question'
 
 @database_common.connection_handler
 def get_questions(cursor, order_by='submission_time', additions=''):
-    query = f"""
-        SELECT question.*, COALESCE(SUM(CASE WHEN qv.value IS NULL THEN NULL WHEN qv.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
-        FROM question
-        LEFT JOIN question_vote qv on question.id = qv.question_id
-        GROUP BY question.id
-        ORDER BY {order_by} {additions}"""
-    cursor.execute(query)
-    return cursor.fetchall()
+    order_by_list = ['submission_time', 'view_number', 'vote_number', 'title']
+    additions_list = ['desc limit 5', 'desc', 'asc limit 5', 'asc']
+    if order_by in order_by_list and additions in additions_list:
+        query = f"""
+            SELECT question.*, COALESCE(SUM(CASE WHEN qv.value IS NULL THEN NULL WHEN qv.value >= 0 THEN 1 ELSE -1 END), 0) as vote_number
+            FROM question
+            LEFT JOIN question_vote qv on question.id = qv.question_id
+            GROUP BY question.id
+            ORDER BY {order_by} {additions}"""
+        cursor.execute(query)
+        return cursor.fetchall()
+    return []
 
 
 @database_common.connection_handler
@@ -43,7 +48,7 @@ def add_question(cursor, user_id, question, files):
     cursor.execute(query, {'user': user_id, 'title': question['title'], 'message': question['message']})
     id = cursor.fetchone()['id']
     if files['image'].filename != '':
-        data_handler.save_image(files['image'], f'question_{id}.png')
+        data_handler.save_image(files['image'], FOLDER, f'question_{id}.png')
         query = """
                         UPDATE question
                         SET image = %(image)s
@@ -64,7 +69,7 @@ def delete_question(cursor, question_id):
     for image in images:
         if image['image'] is not None:
             try:
-                data_handler.delete_image(image['image'])
+                data_handler.delete_image('/answer', image['image'])
             except FileNotFoundError:
                 pass
 
@@ -76,7 +81,7 @@ def delete_question(cursor, question_id):
     image = cursor.fetchone()['image']
     if image is not None:
         try:
-            data_handler.delete_image(image)
+            data_handler.delete_image(FOLDER, image)
         except FileNotFoundError:
             pass
 
@@ -126,3 +131,13 @@ def get_user_questions(cursor, user_id):
     '''
     cursor.execute(query, {'u_id': user_id})
     return cursor.fetchall()
+
+@database_common.connection_handler
+def get_question_user_id(cursor, question_id):
+    query = f'''
+            SELECT user_id 
+            FROM question
+            WHERE id = %(question_id)s
+        '''
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()['user_id']

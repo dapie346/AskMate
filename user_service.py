@@ -35,30 +35,22 @@ def get_user_from_username(cursor, username):
 def get_all_users(cursor):
     query = f'''
         WITH cte_reputation AS (
-        SELECT
-        "user".id,
-        COALESCE((SELECT SUM(value) FROM question_vote LEFT JOIN question q on question_vote.question_id = q.id WHERE q.user_id = "user".id), 0)
-        +
-        COALESCE((SELECT SUM(value) FROM answer_vote LEFT JOIN answer a on answer_vote.answer_id = a.id WHERE a.user_id = "user".id), 0)
-        +
-        (SELECT COUNT(id) * 15 FROM answer WHERE user_id = "user".id AND accepted)
-        as reputation
-        FROM "user"
-        GROUP BY "user".id
-        )       
+            SELECT * FROM calculate_reputation()
+        )
+        , cte_counts AS (
+            SELECT * FROM get_user_counts()
+        )
         SELECT "user".username,
        "user".registration_date,
        "user".id,
-       COUNT(DISTINCT q.id) AS question_count,
-       COUNT(DISTINCT a.id) AS answer_count,
-       COUNT(DISTINCT c.id) AS comment_count,
+       cte_counts.question_count,
+       cte_counts.answer_count,
+       cte_counts.comment_count,
         cte_reputation.reputation
         FROM "user"
-        LEFT JOIN question q on "user".id = q.user_id
-        LEFT JOIN answer a on "user".id = a.user_id
-        LEFT JOIN comment c on "user".id = c.user_id
+        LEFT JOIN cte_counts on "user".id = cte_counts.id
         LEFT JOIN cte_reputation on "user".id = cte_reputation.id
-        GROUP BY "user".id, cte_reputation.reputation;'''
+        GROUP BY "user".id, cte_reputation.reputation, cte_counts.question_count, cte_counts.answer_count, cte_counts.comment_count;'''
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -66,32 +58,23 @@ def get_all_users(cursor):
 @database_common.connection_handler
 def get_user_from_id(cursor, id):
     query = f'''
-        WITH cte_reputation AS (
-        SELECT
-        "user".id,
-        COALESCE((SELECT SUM(value) FROM question_vote LEFT JOIN question q on question_vote.question_id = q.id WHERE q.user_id = "user".id), 0)
-        +
-        COALESCE((SELECT SUM(value) FROM answer_vote LEFT JOIN answer a on answer_vote.answer_id = a.id WHERE a.user_id = "user".id), 0)
-        +
-        (SELECT COUNT(id) * 15 FROM answer WHERE user_id = "user".id AND accepted)
-        as reputation
-        FROM "user"
-        GROUP BY "user".id
-        )  
-        SELECT "user".id, 
-        "user".username,
-        "user".registration_date,
-        COUNT(DISTINCT q.id) AS question_count,
-        COUNT(DISTINCT a.id) AS answer_count,
-        COUNT(DISTINCT c.id) AS comment_count,
-        cte_reputation.reputation
-        FROM "user"
-            LEFT JOIN question q on "user".id = q.user_id
-            LEFT JOIN answer a on "user".id = a.user_id
-            LEFT JOIN comment c on "user".id = c.user_id
+            WITH cte_reputation AS (
+                SELECT * FROM calculate_reputation()
+            )
+            , cte_counts AS (
+                SELECT * FROM get_user_counts()
+            )
+            SELECT "user".username,
+           "user".registration_date,
+           "user".id,
+           cte_counts.question_count,
+           cte_counts.answer_count,
+           cte_counts.comment_count,
+            cte_reputation.reputation
+            FROM "user"
+            LEFT JOIN cte_counts on "user".id = cte_counts.id
             LEFT JOIN cte_reputation on "user".id = cte_reputation.id
-        WHERE "user".id = %(id)s
-        GROUP BY "user".id, cte_reputation.reputation;
-    '''
+            WHERE "user".id = %(id)s
+            GROUP BY "user".id, cte_reputation.reputation, cte_counts.question_count, cte_counts.answer_count, cte_counts.comment_count;'''
     cursor.execute(query, {'id': id})
     return cursor.fetchone()

@@ -11,7 +11,7 @@
         <div class="question">
             <h3>{{ question['message'] }}</h3>
             {% if question['image'] != None %}
-                <img src="{{ url_for('static', filename=('images/' + question['image'])) }}" class="image">
+                <img src="{{ url_for('static', filename=('images/question/' + question['image'])) }}" class="image">
             {% endif %}
         </div>
 
@@ -90,7 +90,7 @@
                             {{ answer['message'] }}
                         </p>
                         {% if answer['image'] != None %}
-                            <img src="{{ url_for('static', filename=('images/' + answer['image'])) }}" class="image">
+                            <img src="{{ url_for('static', filename=('images/answer/' + answer['image'])) }}" class="image">
                         {% endif %}
                     </div>
                     <span class="time-views"><time> {{ answer['submission_time'] }}</time></span>

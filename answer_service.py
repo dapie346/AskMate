@@ -1,6 +1,7 @@
 import data_handler
 import database_common
 
+FOLDER = '/answer'
 
 @database_common.connection_handler
 def get_answers(cursor):
@@ -60,7 +61,7 @@ def add_answer(cursor, answer, question_id, user_id, files):
     )
     id = cursor.fetchone()['id']
     if files['image'].filename != '':
-        data_handler.save_image(files['image'], f'answer_{id}.png')
+        data_handler.save_image(files['image'], FOLDER, f'answer_{id}.png')
         query = """
                 UPDATE answer
                 SET image = %(image)s
@@ -79,7 +80,7 @@ def delete_answer(cursor, answer_id):
     image = query_returns['image']
     if image is not None:
         try:
-            data_handler.delete_image(image)
+            data_handler.delete_image(FOLDER, image)
         except FileNotFoundError:
             pass
     return query_returns['question_id']
@@ -132,3 +133,23 @@ def get_user_answers(cursor, user_id):
     '''
     cursor.execute(query, {'id': user_id})
     return cursor.fetchall()
+
+@database_common.connection_handler
+def get_answer_user_id(cursor, answer_id):
+    query = f'''
+            SELECT user_id 
+            FROM answer
+            WHERE id = %(answer_id)s
+        '''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()['user_id']
+
+@database_common.connection_handler
+def get_answer_question_id(cursor, answer_id):
+    query = f'''
+            SELECT question_id
+            FROM answer
+            WHERE id = %(answer_id)s
+        '''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()['question_id']

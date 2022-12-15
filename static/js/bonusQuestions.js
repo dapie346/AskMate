@@ -1,23 +1,23 @@
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
 function getSortedItems(items, sortField, sortDirection) {
-    console.log(items)
-    console.log(sortField)
-    console.log(sortDirection)
+    // console.log(items)
+    // console.log(sortField)
+    // console.log(sortDirection)
 
-    // === SAMPLE CODE ===
-    // if you have not changed the original html uncomment the code below to have an idea of the
-    // effect this function has on the table
-    //
     if (sortDirection === "asc") {
-        const firstItem = items.shift()
-        if (firstItem) {
-            items.push(firstItem)
-        }
+        items.sort(function (a,b){
+            if (isNaN(a[sortField]))
+                return a[sortField].localeCompare(b[sortField]);
+            else
+                return parseInt(a[sortField]) - parseInt(b[sortField]);
+        });
     } else {
-        const lastItem = items.pop()
-        if (lastItem) {
-            items.push(lastItem)
-        }
+        items.sort(function (a,b){
+            if (isNaN(a[sortField]))
+                return a[sortField].localeCompare(b[sortField]);
+            else
+                return parseInt(a[sortField]) - parseInt(b[sortField]);
+        }).reverse();
     }
 
     return items

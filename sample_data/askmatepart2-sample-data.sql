@@ -155,6 +155,7 @@ INSERT INTO "user" VALUES(1, 'oskar@gmail.com', 'Ostin', '$2b$12$dtNhuwoQ0HjmO01
 INSERT INTO "user" VALUES(2, 'carl@gmail.com', 'Carl', '$2b$12$T7T9e6KIdZ7CoLq1vy6MYOBAFgyjEJq4S95PBur/qwAal2nqFNCO6', '2022-11-26 09:19:00');
 INSERT INTO "user" VALUES(3, 'dave@gmail.com', 'Dave', '$2b$12$cA2F/mySUsKG7TUMN8EX3eF5iS6Q2NMzBCg04srBI7uymnx9nlgpu', '2022-11-26 10:10:00');
 INSERT INTO "user" VALUES(4, 'jessica@gmail.com', 'Jessica', '$2b$12$lywnhqXTnHLa/zHJEU2peuHCg/15iSSG7yjujkt7i5V7AYaDT/GF.', '2022-11-26 15:50:00');
+SELECT pg_catalog.setval('user_id_seq', 4, true);
 
 INSERT INTO question VALUES (0, '2022-11-28 08:29:00', 29, 0, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, '2022-11-29 09:19:00', 15, 0, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
@@ -223,3 +224,41 @@ INSERT INTO question_tag VALUES (6, 1);
 INSERT INTO question_tag VALUES (7, 3);
 INSERT INTO question_tag VALUES (8, 5);
 INSERT INTO question_tag VALUES (9, 2);
+
+DROP FUNCTION IF EXISTS calculate_reputation();
+CREATE OR REPLACE FUNCTION calculate_reputation()
+RETURNS TABLE (id INT, reputation BIGINT)
+LANGUAGE plpgsql
+AS
+    $$
+    #variable_conflict use_column
+    BEGIN
+    RETURN QUERY SELECT
+    "user".id,
+    COALESCE((SELECT SUM(value) FROM question_vote LEFT JOIN question q on question_vote.question_id = q.id WHERE q.user_id = "user".id), 0)
+    +
+    COALESCE((SELECT SUM(value) FROM answer_vote LEFT JOIN answer a on answer_vote.answer_id = a.id WHERE a.user_id = "user".id), 0)
+    +
+    (SELECT COUNT(id) * 15 FROM answer WHERE user_id = "user".id AND accepted)
+    as reputation
+    FROM "user"
+    GROUP BY "user".id;
+    END;
+    $$;
+
+DROP FUNCTION IF EXISTS get_user_counts();
+CREATE OR REPLACE FUNCTION get_user_counts()
+RETURNS TABLE (id INT, question_count BIGINT, answer_count BIGINT, comment_count BIGINT)
+LANGUAGE plpgsql
+AS
+    $$
+    #variable_conflict use_column
+    BEGIN
+    RETURN QUERY SELECT
+    "user".id,
+    (SELECT COUNT(DISTINCT question.id) FROM question WHERE question.user_id = "user".id) AS question_count,
+    (SELECT COUNT(DISTINCT answer.id) FROM answer WHERE answer.user_id = "user".id) AS answer_count,
+    (SELECT COUNT(DISTINCT comment.id) FROM comment WHERE comment.user_id = "user".id) AS comment_count
+    FROM "user";
+    END;
+    $$;
