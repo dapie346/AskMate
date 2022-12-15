@@ -85,3 +85,13 @@ def get_user_comments(cursor, user_id):
     '''
     cursor.execute(query, {'id': user_id})
     return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comment_user_id(cursor, comment_id):
+    query = f'''
+            SELECT user_id 
+            FROM comment
+            WHERE id = %(comment_id)s
+        '''
+    cursor.execute(query, {'comment_id': comment_id})
+    return cursor.fetchone()['user_id']

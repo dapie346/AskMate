@@ -50,8 +50,9 @@
                 element.innerHTML = element.innerHTML.replace(searchRegex, '<mark>' + search + '</mark>');
             }
         }
-
-        highlight("{{ request.args.get('q') }}", "result-answer");
-        highlight("{{ request.args.get('q') }}", "result");
+        if ("{{ request.args.get('q') }}" !== "") {
+            highlight("{{ request.args.get('q') }}", "result-answer");
+            highlight("{{ request.args.get('q') }}", "result");
+        }
     </script>
 {% endblock %}

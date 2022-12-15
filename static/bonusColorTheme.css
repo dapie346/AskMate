@@ -1,0 +1,20 @@
+:root {
+  --background-color: #fff;
+  --text-color: #000;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+[data-theme="light-to-dark"] {
+  --background-color: #3F3F3F;
+  --text-color: #fff;
+}
+
+[data-theme="dark-to-light"] {
+  --background-color: #fff;
+  --text-color: #000;
+}
+

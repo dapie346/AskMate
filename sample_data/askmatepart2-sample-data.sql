@@ -155,6 +155,7 @@ INSERT INTO "user" VALUES(1, 'oskar@gmail.com', 'Ostin', '$2b$12$dtNhuwoQ0HjmO01
 INSERT INTO "user" VALUES(2, 'carl@gmail.com', 'Carl', '$2b$12$T7T9e6KIdZ7CoLq1vy6MYOBAFgyjEJq4S95PBur/qwAal2nqFNCO6', '2022-11-26 09:19:00');
 INSERT INTO "user" VALUES(3, 'dave@gmail.com', 'Dave', '$2b$12$cA2F/mySUsKG7TUMN8EX3eF5iS6Q2NMzBCg04srBI7uymnx9nlgpu', '2022-11-26 10:10:00');
 INSERT INTO "user" VALUES(4, 'jessica@gmail.com', 'Jessica', '$2b$12$lywnhqXTnHLa/zHJEU2peuHCg/15iSSG7yjujkt7i5V7AYaDT/GF.', '2022-11-26 15:50:00');
+SELECT pg_catalog.setval('user_id_seq', 4, true);
 
 INSERT INTO question VALUES (0, '2022-11-28 08:29:00', 29, 0, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, '2022-11-29 09:19:00', 15, 0, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();

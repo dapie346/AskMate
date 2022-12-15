@@ -18,7 +18,7 @@ app.secret_key = os.environ.get('APP_SECRET_KEY')
 
 
 @app.route("/bonus-questions")
-def main():
+def bonus_questions():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
 
@@ -88,6 +88,8 @@ def register_user():
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
 def edit_question(question_id):
+    if 'user_id' not in session or session['user_id'] != question_service.get_question_user_id(question_id):
+        return redirect(url_for('home_page'))
     question = question_service.get_question(question_id)
     if request.method == 'POST':
         question_service.update_question(question_id, request.form['title'], request.form['message'])
@@ -127,7 +129,6 @@ def question_downvote(question_id):
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def post_answer(question_id):
     if 'user_id' not in session:
-        flash('You must be logged in to add answer!')
         return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['user_id']
@@ -138,12 +139,16 @@ def post_answer(question_id):
 
 @app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
 def delete_question(question_id):
+    if 'user_id' not in session or session['user_id'] != question_service.get_question_user_id(question_id):
+        return redirect(url_for('home_page'))
     question_service.delete_question(question_id)
     return redirect(url_for('home_page'))
 
 
 @app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
 def tag_question(question_id):
+    if 'user_id' not in session or session['user_id'] != question_service.get_question_user_id(question_id):
+        return redirect(url_for('home_page'))
     tags = tag_service.get_tags()
     question_tags = tag_service.get_question_tags(question_id)
     if request.method == 'POST':
@@ -160,12 +165,17 @@ def tag_question(question_id):
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete")
 def remove_tag(question_id, tag_id):
+    if 'user_id' not in session or session['user_id'] != question_service.get_question_user_id(question_id):
+        return redirect(url_for('home_page'))
     tag_service.remove_tag(question_id, tag_id)
     return redirect(url_for('show_question', question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/accept-answer")
 def accept_answer(answer_id):
+    question_id = answer_service.get_answer_question_id(answer_id)
+    if 'user_id' not in session or session['user_id'] != question_service.get_question_user_id(question_id):
+        return redirect(url_for('home_page'))
     question_id = answer_service.toggle_accepted_answer_status(answer_id)
     return redirect(url_for('show_question', question_id=question_id))
 
@@ -184,6 +194,8 @@ def answer_downvote(answer_id):
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
+    if 'user_id' not in session or session['user_id'] != answer_service.get_answer_user_id(answer_id):
+        return redirect(url_for('home_page'))
     question_id = answer_service.delete_answer(answer_id)
     return redirect(url_for('show_question', question_id=question_id))
 
@@ -214,6 +226,8 @@ def new_comment_to_answer(answer_id, question_id):
 
 @app.route("/comments/<comment_id>/delete", methods=['GET', 'POST'])
 def delete_comment(comment_id):
+    if 'user_id' not in session or session['user_id'] != comment_service.get_comment_user_id(comment_id):
+        return redirect(url_for('home_page'))
     comment = comment_service.get_comment(comment_id)
     comment_service.delete_comment(comment)
     return redirect(url_for('show_question', question_id=comment['question_id']))
@@ -221,6 +235,8 @@ def delete_comment(comment_id):
 
 @app.route("/comments/<comment_id>/edit", methods=['GET', 'POST'])
 def edit_comment(comment_id):
+    if 'user_id' not in session or session['user_id'] != comment_service.get_comment_user_id(comment_id):
+        return redirect(url_for('home_page'))
     comment = comment_service.get_comment(comment_id)
     if request.method == 'POST':
         comment_service.edit_comment(comment, request.form['message'])
@@ -231,6 +247,8 @@ def edit_comment(comment_id):
 
 @app.route("/answer/<answer_id>/edit", methods=['GET', 'POST'])
 def edit_answer(answer_id):
+    if 'user_id' not in session or session['user_id'] != answer_service.get_answer_user_id(answer_id):
+        return redirect(url_for('home_page'))
     answer = answer_service.get_answer(answer_id)
     if request.method == 'POST':
         question_id = answer_service.update_answer(answer_id, request.form['message'])
